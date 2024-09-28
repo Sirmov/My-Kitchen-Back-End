@@ -17,6 +17,8 @@ What is the high-level goal of this epic?
 ### Related User Stories:
 - [ ] User Story (#)
 
+---
+
 ### Additional Details:
 - Priority: **[Low/Medium/High]**
 - Complexity: **[Simple/Intermediate/Hard]**

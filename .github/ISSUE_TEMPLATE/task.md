@@ -16,6 +16,8 @@ What needs to be done?
 ### Additional Context:
 - [ ] (Blocker/Dependancy)
 
+---
+
 ### Additional Details:
 - Priority: **[Low/Medium/High]**
 - Complexity: **[Simple/Intermediate/Hard]**
