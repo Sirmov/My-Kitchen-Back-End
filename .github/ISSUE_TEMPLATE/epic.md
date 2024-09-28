@@ -8,7 +8,6 @@ assignees: Sirmov
 ---
 
 ### Description:
-**Overview of the Epic:**
 What is the high-level goal of this epic?
 
 ### Acceptance Criteria:

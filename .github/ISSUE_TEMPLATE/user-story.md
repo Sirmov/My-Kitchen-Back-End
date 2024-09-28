@@ -15,8 +15,10 @@ As a **[type of user]**, I want to **[perform an action]**, so that **[goal to b
 - [ ] Criterion 2
 - [ ] Criterion 3
 
+### Related Tasks:
+- [ ] Task (#)
+
 ### Additional Details:
-- Related issues: # (mention related issues)
 - Priority: **[Low/Medium/High]**
 - Complexity: **[Simple/Intermediate/Hard]**
 - Estimated time to resolve: **[Short-term/Mid-term/Long-term]**
