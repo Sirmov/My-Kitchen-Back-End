@@ -1,7 +1,7 @@
 ---
 name: Spike
 about: Research task to resolve technical or design uncertainty
-title: Spike [research topic]
+title: Spike: [research topic]
 labels: research, spike
 assignees: Sirmov
 
