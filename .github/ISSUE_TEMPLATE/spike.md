@@ -1,7 +1,7 @@
 ---
 name: Spike
 about: Research task to resolve technical or design uncertainty
-title: Spike: [research topic]
+title: 'Spike: [research topic]'
 labels: research, spike
 assignees: Sirmov
 
@@ -30,6 +30,6 @@ Conclusion or recommendation
 
 ---
 
-### Additional Contex:
+### Additional Context:
 - Provide any additional details, screenshots, or logs relevant to this improvement.
 - Related issues: Issue (#)
