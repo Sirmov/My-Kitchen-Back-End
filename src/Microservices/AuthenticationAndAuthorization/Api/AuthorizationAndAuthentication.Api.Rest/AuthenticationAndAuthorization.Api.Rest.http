@@ -1,0 +1,6 @@
+@AuthenticationAndAuthorization.Api.Rest_HostAddress = http://localhost:5203
+
+GET {{AuthenticationAndAuthorization.Api.Rest_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
