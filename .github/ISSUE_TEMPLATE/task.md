@@ -14,9 +14,9 @@ What needs to be done?
 - [ ] Step 3
 
 ### Additional Context:
-- [ ] (Blocker/Dependancy)
-
----
+- Blocker/Dependancy
+- Documentation
+- Reference
 
 ### Additional Details:
 - Priority: **[Low/Medium/High]**

@@ -25,10 +25,10 @@ Why is this improvement or refactoring necessary?
 - Are there any risks associated with this refactoring/improvement?
 - Any areas that need special attention?
 
+---
+
 ### Additional Context:
 Provide any additional details, screenshots, or logs relevant to this improvement.
-
----
 
 ### Additional Details:
 - Related issues: Issue (#)
