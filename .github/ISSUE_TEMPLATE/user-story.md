@@ -20,8 +20,6 @@ As a **[type of user]**, I want to **[perform an action]**, so that **[goal to b
 
 ---
 
-### Additional Details:
-- Priority: **[Low/Medium/High]**
-- Complexity: **[Simple/Intermediate/Hard]**
-- Estimated time to resolve: **[Short-term/Mid-term/Long-term]**
-- Effort estimation: **[Minimal/Moderate/Heavy]**
+### Additional Context:
+- Include any relevant information such as logs, documentation, or references.
+- Related issues: Issue (#)

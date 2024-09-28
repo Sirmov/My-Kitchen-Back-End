@@ -14,12 +14,6 @@ What needs to be done?
 - [ ] Step 3
 
 ### Additional Context:
+- Include any relevant information such as logs, documentation, or references.
 - Blocker/Dependancy
-- Documentation
-- Reference
-
-### Additional Details:
-- Priority: **[Low/Medium/High]**
-- Complexity: **[Simple/Intermediate/Hard]**
-- Estimated time to resolve: **[Short-term/Mid-term/Long-term]**
-- Effort estimation: **[Minimal/Moderate/Heavy]**
+- Related issues: Issue (#)

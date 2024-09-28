@@ -28,11 +28,5 @@ Why is this improvement or refactoring necessary?
 ---
 
 ### Additional Context:
-Provide any additional details, screenshots, or logs relevant to this improvement.
-
-### Additional Details:
+- Provide any additional details, screenshots, or logs relevant to this improvement.
 - Related issues: Issue (#)
-- Priority: **[Low/Medium/High]**
-- Complexity: **[Simple/Intermediate/Hard]**
-- Estimated time to resolve: **[Short-term/Mid-term/Long-term]**
-- Effort estimation: **[Minimal/Moderate/Heavy]**
