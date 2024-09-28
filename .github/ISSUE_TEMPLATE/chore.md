@@ -21,11 +21,5 @@ Why is this task necessary for the project (e.g., routine maintenance, system up
 ---
 
 ### Additional Context:
-Include any relevant information such as logs, documentation, or references.
-
-### Additional Details:
+- Include any relevant information such as logs, documentation, or references.
 - Related issues: Issue (#)
-- Priority: **[Low/Medium/High]**
-- Complexity: **[Simple/Intermediate/Hard]**
-- Estimated time to resolve: **[Short-term/Mid-term/Long-term]**
-- Effort estimation: **[Minimal/Moderate/Heavy]**

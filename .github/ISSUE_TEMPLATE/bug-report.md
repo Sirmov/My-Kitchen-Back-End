@@ -32,9 +32,6 @@ If applicable, add screenshots or log files to help explain your problem.
 
 ---
 
-### Additional Details:
+### Additional Context:
+- Include any relevant information such as logs, documentation, or references.
 - Related issues: Issue (#)
-- Priority: **[Low/Medium/High]**
-- Complexity: **[Simple/Intermediate/Hard]**
-- Estimated time to resolve: **[Short-term/Mid-term/Long-term]**
-- Effort estimation: **[Minimal/Moderate/Heavy]**
