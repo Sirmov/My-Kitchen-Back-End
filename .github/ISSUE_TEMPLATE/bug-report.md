@@ -2,7 +2,7 @@
 name: Bug Report
 about: Report a bug or unexpected behavior in the project
 title: 'Bug: [describe the issue]'
-labels: bug
+labels: bug, enhancement
 assignees: Sirmov
 
 ---
