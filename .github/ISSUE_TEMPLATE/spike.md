@@ -10,8 +10,6 @@ assignees: Sirmov
 ### Objective:
 What do you need to investigate or research?
 
-### Expected Outcome:
-
 #### Goal 
 What is the goal of this spike?
 - [ ] Goal 1
