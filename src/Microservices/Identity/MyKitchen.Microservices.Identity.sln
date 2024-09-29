@@ -5,15 +5,15 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{E28E67D1-D5A5-4C33-9EAA-D7611ED0F2FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationAndAuthorization.Api.Rest", "Api\AuthorizationAndAuthentication.Api.Rest\AuthenticationAndAuthorization.Api.Rest.csproj", "{F3DEFBF0-10D1-4337-881D-4B7EE22FCB33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Api.Rest", "Api\MyKitchen.Microservices.Identity.Api.Rest\MyKitchen.Microservices.Identity.Api.Rest.csproj", "{F3DEFBF0-10D1-4337-881D-4B7EE22FCB33}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{A5935308-DCD4-4FCC-A166-01D8FBC582CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationAndAuthorization.Data", "Data\AuthenticationAndAuthorization.Data\AuthenticationAndAuthorization.Data.csproj", "{9832CC93-97E8-4B46-9D40-CA634B4889FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Data", "Data\MyKitchen.Microservices.Identity.Data\MyKitchen.Microservices.Identity.Data.csproj", "{9832CC93-97E8-4B46-9D40-CA634B4889FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationAndAuthorization.Data.Common", "Data\AuthenticationAndAuthorization.Data.Common\AuthenticationAndAuthorization.Data.Common.csproj", "{7B501955-F020-4AB7-BBA7-2BF72DDF45EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Data.Common", "Data\MyKitchen.Microservices.Identity.Data.Common\MyKitchen.Microservices.Identity.Data.Common.csproj", "{7B501955-F020-4AB7-BBA7-2BF72DDF45EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationAndAuthorization.Data.Models", "Data\AuthenticationAndAuthorization.Data.Models\AuthenticationAndAuthorization.Data.Models.csproj", "{BE567138-5A76-4CB5-B804-7D5297130B46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Data.Models", "Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj", "{BE567138-5A76-4CB5-B804-7D5297130B46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

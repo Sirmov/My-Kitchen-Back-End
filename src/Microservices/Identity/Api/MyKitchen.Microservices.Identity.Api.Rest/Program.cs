@@ -1,5 +1,5 @@
 
-namespace AuthenticationAndAuthorization.Api.Rest
+namespace MyKitchen.Microservices.Identity.Api.Rest
 {
     public class Program
     {
@@ -12,7 +12,7 @@ namespace AuthenticationAndAuthorization.Api.Rest
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(null);
 
             var app = builder.Build();
 
@@ -20,7 +20,7 @@ namespace AuthenticationAndAuthorization.Api.Rest
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(null);
             }
 
             app.UseHttpsRedirection();
