@@ -19,17 +19,22 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
         {
             services.AddApplicationOptions();
 
+            services.AddMongoDbClient(configuration);
+            services.AddMongoDbIdentity(configuration);
+
             services.AddControllers();
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(null);
+            services.AddSwaggerGen();
         }
 
         private static void ConfigurePipelineAsync(WebApplication app)
         {
             if (app.Environment.IsDevelopment())
             {
+                // IConfigurationRoot configurationRoot = (IConfigurationRoot)app.Configuration;
+                // Console.WriteLine(configurationRoot.GetDebugView());
                 app.UseSwagger();
-                app.UseSwaggerUI(null);
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
