@@ -12,7 +12,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Options
         /// Gets the connection uri.
         /// </summary>
         public string ConnectionURI
-            => $"mongodb://{Username}:{Password}@{Host}:{Port}/{DatabaseName}?authSource={AuthenticationDatabase}";
+            => $"mongodb://{Username}:{Password}@{Host}:{Port}/{DatabaseName}?authMechanism={AuthMechanism}&authSource={AuthenticationDatabase}";
 
         /// <summary>
         /// Gets or sets the host.
@@ -45,6 +45,11 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Options
         /// Gets or sets the name of the authentication database.
         /// </summary>
         public string AuthenticationDatabase { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or sets the name of the authentication mechanism.
+        /// </summary>
+        public string AuthMechanism { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the name of the collection holding the users.
