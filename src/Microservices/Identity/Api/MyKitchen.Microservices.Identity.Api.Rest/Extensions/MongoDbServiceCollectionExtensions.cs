@@ -2,6 +2,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
 {
     using Microsoft.Extensions.Options;
 
+    using MongoDB.Bson.Serialization.Conventions;
     using MongoDB.Driver;
 
     using MyKitchen.Microservices.Identity.Api.Rest.Options;
@@ -13,6 +14,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             MongoDbOptions configuration = new MongoDbOptions();
             options.Invoke(configuration);
 
+            SetFieldNamingConvention();
             MongoClient client = new(configuration.ConnectionURI);
             IMongoDatabase database = client.GetDatabase(configuration.DatabaseName);
 
@@ -24,6 +26,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
 
         public static IServiceCollection AddMongoDbClient(this IServiceCollection services, MongoDbOptions options)
         {
+            SetFieldNamingConvention();
             MongoClient client = new(options.ConnectionURI);
             IMongoDatabase database = client.GetDatabase(options.DatabaseName);
 
@@ -38,10 +41,11 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             MongoDbOptions options = configuration.GetSection(nameof(MongoDbOptions)).Get<MongoDbOptions>() ??
                 throw new ArgumentNullException(nameof(options));
 
+            SetFieldNamingConvention();
             MongoClient client = new(options.ConnectionURI);
             IMongoDatabase database = client.GetDatabase(options.DatabaseName);
 
-            services.AddSingleton<MongoClient>(client);
+            services.AddSingleton<IMongoClient>(client);
             services.AddSingleton<IMongoDatabase>(database);
 
             return services;
@@ -52,6 +56,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             MongoDbOptions options = new();
             configureOptions.Configure(options);
 
+            SetFieldNamingConvention();
             MongoClient client = new(options.ConnectionURI);
             IMongoDatabase database = client.GetDatabase(options.DatabaseName);
 
@@ -59,6 +64,12 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             services.AddSingleton<IMongoDatabase>(database);
 
             return services;
+        }
+
+        private static void SetFieldNamingConvention()
+        {
+            ConventionPack camelCaseConvention = new() { new CamelCaseElementNameConvention() };
+            ConventionRegistry.Register(nameof(camelCaseConvention), camelCaseConvention, type => true);
         }
     }
 }
