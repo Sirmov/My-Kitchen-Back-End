@@ -5,6 +5,7 @@ namespace MyKitchen.Microservices.Identity.Data.Models.Common
     using MyKitchen.Microservices.Identity.Data.Models.Contracts;
 
     public abstract class BaseDocument<TKey> : IAuditInfo, IDeletableDocument
+        where TKey : notnull
     {
         [BsonId]
         public TKey Id { get; set; } = default!;
