@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Common\MyKitchen.Common\MyKitchen.Common.csproj" />
+    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>
