@@ -1,6 +1,7 @@
 
 namespace MyKitchen.Microservices.Identity.Api.Rest
 {
+    using MyKitchen.Common.Guard;
     using MyKitchen.Microservices.Identity.Api.Rest.Extensions;
 
     public class Program
@@ -18,6 +19,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddApplicationOptions();
+
+            services.AddSingleton<IGuard>(new Guard());
 
             services.AddMongoDbClient(configuration);
             services.AddMongoDbIdentity(configuration);
