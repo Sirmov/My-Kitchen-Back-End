@@ -1,6 +1,10 @@
 namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
 {
+    using System.Runtime.CompilerServices;
+
     using AspNetCore.Identity.Mongo;
+
+    using AutoMapper;
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Options;
@@ -44,27 +48,17 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             MongoIdentityOptions mongoIdentityOptions = configuration.GetSection(nameof(MongoIdentityOptions)).Get<MongoIdentityOptions>() ??
                 throw new ArgumentNullException(nameof(mongoIdentityOptions));
 
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<IdentityOptions, IdentityOptions>();
+                cfg.CreateMap<MongoIdentityOptions, MongoIdentityOptions>();
+            });
+            IMapper mapper = new Mapper(mapperConfiguration);
+
             services
                 .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, ObjectId>(
-                    identity =>
-                    {
-                        identity.SignIn.RequireConfirmedAccount = identityOptions.SignIn.RequireConfirmedAccount;
-
-                        identity.Lockout.MaxFailedAccessAttempts = identityOptions.Lockout.MaxFailedAccessAttempts;
-                        identity.Lockout.DefaultLockoutTimeSpan = identityOptions.Lockout.DefaultLockoutTimeSpan;
-
-                        identity.Password.RequireNonAlphanumeric = identityOptions.Password.RequireNonAlphanumeric;
-                        identity.Password.RequireDigit = identityOptions.Password.RequireDigit;
-                        identity.Password.RequireUppercase = identityOptions.Password.RequireUppercase;
-                        identity.Password.RequiredLength = identityOptions.Password.RequiredLength;
-                    },
-                    mongoIdentity =>
-                    {
-                        mongoIdentity.ConnectionString = mongoIdentityOptions.ConnectionString;
-                        mongoIdentity.UsersCollection = mongoIdentityOptions.UsersCollection;
-                        mongoIdentity.RolesCollection = mongoIdentityOptions.RolesCollection;
-                        mongoIdentity.MigrationCollection = mongoIdentityOptions.MigrationCollection;
-                    });
+                    identity => mapper.Map(identityOptions, identity),
+                    mongoIdentity => mapper.Map(mongoIdentityOptions, mongoIdentity));
 
             return services;
         }
