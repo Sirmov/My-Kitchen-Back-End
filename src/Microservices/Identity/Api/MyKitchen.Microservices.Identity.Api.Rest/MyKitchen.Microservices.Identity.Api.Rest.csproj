@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
     <ProjectReference Include="..\..\..\..\Common\MyKitchen.Common\MyKitchen.Common.csproj" />
+    <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>

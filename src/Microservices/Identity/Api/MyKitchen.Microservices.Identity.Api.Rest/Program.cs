@@ -1,8 +1,13 @@
 
 namespace MyKitchen.Microservices.Identity.Api.Rest
 {
+    using System.Reflection;
+
+    using AutoMapper;
+
     using MyKitchen.Common.Guard;
     using MyKitchen.Microservices.Identity.Api.Rest.Extensions;
+    using MyKitchen.Microservices.Identity.Services.Mapping;
 
     public class Program
     {
@@ -24,6 +29,15 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
 
             services.AddMongoDbClient(configuration);
             services.AddMongoDbIdentity(configuration);
+
+            // Automapper configuration
+            var asseblies = new Assembly[]
+            {
+                //  typeof(ExampleDto).GetTypeInfo().Assembly,
+            };
+            AutoMapperConfig.RegisterMappings(asseblies);
+            IMapper mapper = AutoMapperConfig.MapperInstance;
+            services.AddSingleton<IMapper>(mapper);
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
