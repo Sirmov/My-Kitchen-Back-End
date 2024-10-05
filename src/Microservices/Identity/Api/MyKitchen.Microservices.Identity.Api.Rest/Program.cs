@@ -5,8 +5,11 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
 
     using AutoMapper;
 
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+
     using MyKitchen.Common.Guard;
     using MyKitchen.Microservices.Identity.Api.Rest.Extensions;
+    using MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator;
     using MyKitchen.Microservices.Identity.Services.Mapping;
 
     public class Program
@@ -23,10 +26,15 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddControllers();
+
             services.AddApplicationOptions();
 
-            services.AddSingleton<IGuard>(new Guard());
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer();
+            services.ConfigureOptions<JwtBearerOptionsConfigurator>();
 
+            services.AddSingleton<IGuard>(new Guard());
             services.AddMongoDbClient(configuration);
             services.AddMongoDbIdentity(configuration);
 
@@ -39,7 +47,6 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
             IMapper mapper = AutoMapperConfig.MapperInstance;
             services.AddSingleton<IMapper>(mapper);
 
-            services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
         }
