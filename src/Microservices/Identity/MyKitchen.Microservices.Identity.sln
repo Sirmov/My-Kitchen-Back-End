@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{3E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Mapping", "Services\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj", "{3410A40E-96BC-42D9-836C-34492AF3FB71}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Tokens", "Services\MyKitchen.Microservices.Identity.Services.Tokens\MyKitchen.Microservices.Identity.Services.Tokens.csproj", "{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Common", "MyKitchen.Microservices.Identity.Common\MyKitchen.Microservices.Identity.Common.csproj", "{13AACC98-856C-43E7-8D4D-4493E9428702}"
 EndProject
 Global
@@ -50,6 +52,10 @@ Global
 		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{13AACC98-856C-43E7-8D4D-4493E9428702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{13AACC98-856C-43E7-8D4D-4493E9428702}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13AACC98-856C-43E7-8D4D-4493E9428702}.Release|Any CPU.ActiveCfg = Release|Any CPU
