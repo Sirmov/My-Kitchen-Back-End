@@ -1,4 +1,4 @@
-namespace MyKitchen.Microservices.Identity.Data.Common.Constants
+namespace MyKitchen.Common.Constants
 {
     public class ExceptionMessages
     {

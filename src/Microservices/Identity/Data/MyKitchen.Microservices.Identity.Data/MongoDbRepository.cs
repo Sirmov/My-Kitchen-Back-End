@@ -3,8 +3,8 @@ namespace MyKitchen.Microservices.Identity.Data
     using MongoDB.Driver;
 
     using MyKitchen.Common.Guard;
+    using MyKitchen.Common.Constants;
     using MyKitchen.Microservices.Identity.Data.Common;
-    using MyKitchen.Microservices.Identity.Data.Common.Constants;
     using MyKitchen.Microservices.Identity.Data.Contracts;
     using MyKitchen.Microservices.Identity.Data.Models.Common;
 
