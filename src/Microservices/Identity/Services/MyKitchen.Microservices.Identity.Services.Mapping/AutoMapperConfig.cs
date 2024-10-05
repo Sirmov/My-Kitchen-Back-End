@@ -67,6 +67,31 @@ namespace MyKitchen.Microservices.Identity.Services.Mapping
             MapperInstance = new Mapper(new MapperConfiguration(config));
         }
 
+        public static IMapper CreateDuplicateTypeMapper<TOptions>()
+        {
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TOptions, TOptions>();
+            });
+            IMapper mapper = new Mapper(mapperConfiguration);
+
+            return mapper;
+        }
+
+        public static IMapper CreateDuplicateTypeMapper(params Type[] types)
+        {
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                foreach (var type in types)
+                {
+                    cfg.CreateMap(type, type);
+                }
+            });
+            IMapper mapper = new Mapper(mapperConfiguration);
+
+            return mapper;
+        }
+
         private static IEnumerable<TypesMap> GetFromMaps(IEnumerable<Type> types)
         {
             var fromMaps = from t in types
