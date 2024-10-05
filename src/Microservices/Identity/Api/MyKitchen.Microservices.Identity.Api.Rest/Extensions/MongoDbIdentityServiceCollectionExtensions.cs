@@ -1,7 +1,5 @@
 namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
 {
-    using System.Runtime.CompilerServices;
-
     using AspNetCore.Identity.Mongo;
 
     using AutoMapper;
@@ -11,7 +9,9 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
 
     using MongoDB.Bson;
 
+    using MyKitchen.Common.Constants;
     using MyKitchen.Microservices.Identity.Data.Models;
+    using MyKitchen.Microservices.Identity.Services.Mapping;
 
     public static class MongoDbIdentityServiceCollectionExtensions
     {
@@ -29,31 +29,25 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             IdentityOptions identityOptions,
             MongoIdentityOptions mongoIdentityOptions)
         {
+            IMapper mapper = AutoMapperConfig.CreateDuplicateTypeMapper(typeof(IdentityOptions), typeof(MongoIdentityOptions));
+
             services
                 .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, ObjectId>(
-                    identity => identity = identityOptions,
-                    mongoIdentity => mongoIdentity = mongoIdentityOptions);
+                    identity => mapper.Map(identityOptions, identity),
+                    mongoIdentity => mapper.Map(mongoIdentityOptions, mongoIdentity));
 
             return services;
         }
 
         public static IServiceCollection AddMongoDbIdentity(this IServiceCollection services, IConfiguration configuration)
         {
-            IConfigurationRoot configurationRoot = (IConfigurationRoot)configuration;
-            Console.WriteLine(configurationRoot.GetDebugView());
-
             IdentityOptions identityOptions = configuration.GetSection(nameof(IdentityOptions)).Get<IdentityOptions>() ??
-                throw new ArgumentNullException(nameof(identityOptions));
+                throw new NullReferenceException(string.Format(ExceptionMessages.VariableIsNull, nameof(IdentityOptions)));
 
             MongoIdentityOptions mongoIdentityOptions = configuration.GetSection(nameof(MongoIdentityOptions)).Get<MongoIdentityOptions>() ??
-                throw new ArgumentNullException(nameof(mongoIdentityOptions));
+                throw new NullReferenceException(string.Format(ExceptionMessages.VariableIsNull, nameof(MongoIdentityOptions)));
 
-            var mapperConfiguration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<IdentityOptions, IdentityOptions>();
-                cfg.CreateMap<MongoIdentityOptions, MongoIdentityOptions>();
-            });
-            IMapper mapper = new Mapper(mapperConfiguration);
+            IMapper mapper = AutoMapperConfig.CreateDuplicateTypeMapper(typeof(IdentityOptions), typeof(MongoIdentityOptions));
 
             services
                 .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, ObjectId>(
