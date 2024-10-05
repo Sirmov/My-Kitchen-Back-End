@@ -29,6 +29,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
             services.AddControllers();
 
             services.AddApplicationOptions();
+            services.AddApplicationServices();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer();
