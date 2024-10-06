@@ -13,7 +13,7 @@ namespace MyKitchen.Microservices.Identity.Data.Common
         {
         }
 
-        public static QueryResult Successful => new();
+        public static new QueryResult Successful => new();
 
         public static implicit operator QueryResult(Exception failure) => new(failure);
     }

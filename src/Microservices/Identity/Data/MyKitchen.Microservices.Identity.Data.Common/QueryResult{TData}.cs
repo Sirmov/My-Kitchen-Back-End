@@ -17,5 +17,7 @@ namespace MyKitchen.Microservices.Identity.Data.Common
         public static implicit operator QueryResult<TData>(Exception failure) => new(failure);
 
         public static implicit operator QueryResult<TData>(TData data) => new(data);
+
+        public static implicit operator QueryResult(QueryResult<TData> queryResult) => new(queryResult.Failure!);
     }
 }
