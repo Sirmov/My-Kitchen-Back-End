@@ -126,5 +126,55 @@ namespace MyKitchen.Common.Constants
         /// A error message indicating that something is already in some state.
         /// </summary>
         public const string ObjectIsAlready = "{0} is already {1}.";
+
+        /// <summary>
+        /// A error message indicating a variable is set to a null reference.
+        /// 0 Parameter - The name of the variable.
+        /// </summary>
+        public const string NullReference = "{0} is set to a null reference.";
+
+        /// <summary>
+        /// A error message indicating that the entity cannot be found.
+        /// 0 Parameter - The name of the entity.
+        /// </summary>
+        public const string EntityNotFound = "The {0} cannot be found.";
+
+        /// <summary>
+        /// A error message indicating that the source or destination object is null.
+        /// </summary>
+        public const string SourceOrDestinationNull = "Source or/and Destination Objects are null";
+
+        /// <summary>
+        /// A error message indicating that a controller cannot be assumed and should be specified.
+        /// </summary>
+        public const string ControlledCanNotBeAssuemd = "Controller cannot be assumed, it has to be specified.";
+
+        /// <summary>
+        /// A error message indicating that the deserialization was not successful.
+        /// </summary>
+        public const string DeserializationFailed = "Deserialization was not successful.";
+
+        /// <summary>
+        /// A error message indicating that an unexpected internal server error has occurred.
+        /// </summary>
+        public const string InternalServerError = "An unexpected error has occurred.";
+
+        /// <summary>
+        /// A error message indicating that a user is already in role.
+        /// </summary>
+        public const string UserAlreadyInRole = "The user cannot be added to a role that he is in.";
+
+        /// <summary>
+        /// A error message indicating that a user is not in a role.
+        /// </summary>
+        public const string UserNotInRole = "The user cannot be removed from a role he is not in.";
+
+        /// <summary>
+        /// A error message indicating that a property cannot be found in a object.
+        /// 0 Parameter - The name of the property.
+        /// 1 Parameter - The type of the object.
+        /// </summary>
+        public const string PropertyNotFound = "Property '{0}' not found in object of type '{1}'.";
+
     }
 }
