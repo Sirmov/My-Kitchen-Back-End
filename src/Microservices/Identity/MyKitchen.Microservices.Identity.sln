@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Ide
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Common", "Services\MyKitchen.Microservices.Identity.Services.Common\MyKitchen.Microservices.Identity.Services.Common.csproj", "{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Users", "Services\MyKitchen.Microservices.Identity.Services.Users\MyKitchen.Microservices.Identity.Services.Users.csproj", "{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F3DEFBF0-10D1-4337-881D-4B7EE22FCB33} = {E28E67D1-D5A5-4C33-9EAA-D7611ED0F2FD}
@@ -75,5 +81,6 @@ Global
 		{3410A40E-96BC-42D9-836C-34492AF3FB71} = {3EDA80C6-506F-4ED1-BC92-38B030983056}
 		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5} = {3EDA80C6-506F-4ED1-BC92-38B030983056}
 		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC} = {3EDA80C6-506F-4ED1-BC92-38B030983056}
+		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65} = {3EDA80C6-506F-4ED1-BC92-38B030983056}
 	EndGlobalSection
 EndGlobal
