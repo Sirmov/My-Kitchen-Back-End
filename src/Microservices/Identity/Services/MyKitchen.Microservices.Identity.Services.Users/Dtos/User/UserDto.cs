@@ -21,5 +21,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users.Dtos.User
         [Required(AllowEmptyStrings = false)]
         [StringLength(UsernameMaxLength, MinimumLength = UsernameMinLength)]
         public string UserName { get; set; } = null!;
+
+        public IEnumerable<string> Roles { get; set; } = Enumerable.Empty<string>();
     }
 }
