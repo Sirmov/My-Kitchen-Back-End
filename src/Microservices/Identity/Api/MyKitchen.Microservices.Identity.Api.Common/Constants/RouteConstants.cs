@@ -10,11 +10,11 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Common.Constants
         {
             public const string BaseRoute = $"{RouteConstants.BaseRoute}/users";
 
-            public const string RegisterEndpoint = $"{BaseRoute}/register";
+            public const string RegisterEndpoint = $"register";
 
-            public const string LoginEndpoint = $"{BaseRoute}/login";
+            public const string LoginEndpoint = $"login";
 
-            public const string LogoutEndpoint = $"{BaseRoute}/logout";
+            public const string LogoutEndpoint = $"logout";
         }
     }
 }
