@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Tokens\MyKitchen.Microservices.Identity.Services.Tokens.csproj" />
     <ProjectReference Include="..\..\MyKitchen.Microservices.Identity.Common\MyKitchen.Microservices.Identity.Common.csproj" />
     <ProjectReference Include="..\MyKitchen.Microservices.Identity.Api.Common\MyKitchen.Microservices.Identity.Api.Common.csproj" />
+    <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Users\MyKitchen.Microservices.Identity.Services.Users.csproj" />
   </ItemGroup>
 
 </Project>
