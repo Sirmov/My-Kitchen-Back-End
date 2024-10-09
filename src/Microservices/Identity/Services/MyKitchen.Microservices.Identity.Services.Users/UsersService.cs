@@ -108,7 +108,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         {
             var findResult = await this.FindUserByEmailAsync(userLoginDto.Email);
 
-            var signInResult = await findResult.BindAsync<SignInResult>(async user =>
+            var signInResult = await findResult.BindAsync<ServiceResult<SignInResult>, SignInResult>(async user =>
             {
                 return await this.signInManager.PasswordSignInAsync(user, userLoginDto.Password, isPersistant, isLockout);
             });
@@ -120,12 +120,12 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         {
             var findResult = await this.FindUserByUsernameAsync(username);
 
-            var signInResult = await findResult.BindAsync<SignInResult>(async user =>
+            var signInResult = await findResult.BindAsync<ServiceResult<SignInResult>, SignInResult>(async user =>
             {
                 return await this.signInManager.PasswordSignInAsync(user, password, isPersistant, isLockout);
             });
 
-            return signInResult!;
+            return signInResult;
         }
 
         public async Task<ServiceResult> LogoutAsync()
