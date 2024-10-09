@@ -6,8 +6,10 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
     using AutoMapper;
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
 
     using MyKitchen.Common.Guard;
+    using MyKitchen.Microservices.Identity.Api.Rest.Common.Constants;
     using MyKitchen.Microservices.Identity.Api.Rest.Extensions;
     using MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator;
     using MyKitchen.Microservices.Identity.Services.Mapping;
@@ -54,6 +56,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
 
         private static void ConfigurePipelineAsync(WebApplication app)
         {
+            app.UseExceptionHandler(RouteConstants.ErrorHandlerRoute);
+
             if (app.Environment.IsDevelopment())
             {
                 // IConfigurationRoot configurationRoot = (IConfigurationRoot)app.Configuration;
