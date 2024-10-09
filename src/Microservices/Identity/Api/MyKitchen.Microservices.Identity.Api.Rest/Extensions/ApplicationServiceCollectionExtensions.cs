@@ -8,8 +8,10 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
     using MyKitchen.Microservices.Identity.Api.Rest.Options;
     using MyKitchen.Microservices.Identity.Services.Tokens;
     using MyKitchen.Microservices.Identity.Services.Tokens.Contracts;
+    using MyKitchen.Microservices.Identity.Services.Users;
+    using MyKitchen.Microservices.Identity.Services.Users.Contracts;
 
-    using TokenOptions = Common.TokenOptions;
+    using TokenOptions = Identity.Common.TokenOptions;
 
     public static class ApplicationServiceCollectionExtensions
     {
@@ -44,7 +46,9 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<ITokensService, TokensService>();
+            services.AddScoped(typeof(ITokensService<,>), typeof(TokensService<,>));
+            services.AddScoped(typeof(IUsersService<,>), typeof(UsersService<,>));
+            services.AddScoped(typeof(IUserRolesService<,>), typeof(UserRolesService<,>));
 
             return services;
         }
