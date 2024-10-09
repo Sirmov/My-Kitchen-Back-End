@@ -104,28 +104,34 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return ServiceResult.Successful;
         }
 
-        public async Task<ServiceResult<SignInResult>> LoginWithEmailAsync(UserLoginDto userLoginDto, bool isPersistant = false, bool isLockout = true)
+        public async Task<ServiceResult<TUser>> LoginWithEmailAsync(UserLoginDto userLoginDto, bool isPersistant = false, bool isLockout = true)
         {
             var findResult = await this.FindUserByEmailAsync(userLoginDto.Email);
 
             var signInResult = await findResult.BindAsync<ServiceResult<SignInResult>, SignInResult>(async user =>
             {
-                return await this.signInManager.PasswordSignInAsync(user, userLoginDto.Password, isPersistant, isLockout);
+                var signInResult = await this.signInManager.PasswordSignInAsync(user, userLoginDto.Password, isPersistant, isLockout);
+
+                return signInResult.Succeeded ? signInResult : new UnauthorizedDetails(string.Format(ExceptionMessages.Unauthorized));
             });
 
-            return signInResult;
+            findResult.DependOn(signInResult);
+            return findResult;
         }
 
-        public async Task<ServiceResult<SignInResult>> LoginWithUsernameAsync(string username, string password, bool isPersistant = false, bool isLockout = true)
+        public async Task<ServiceResult<TUser>> LoginWithUsernameAsync(string username, string password, bool isPersistant = false, bool isLockout = true)
         {
             var findResult = await this.FindUserByUsernameAsync(username);
 
             var signInResult = await findResult.BindAsync<ServiceResult<SignInResult>, SignInResult>(async user =>
             {
-                return await this.signInManager.PasswordSignInAsync(user, password, isPersistant, isLockout);
+                var signInResult = await this.signInManager.PasswordSignInAsync(user, password, isPersistant, isLockout);
+
+                return signInResult.Succeeded ? signInResult : new UnauthorizedDetails(string.Format(ExceptionMessages.Unauthorized));
             });
 
-            return signInResult;
+            findResult.DependOn(signInResult);
+            return findResult;
         }
 
         public async Task<ServiceResult> LogoutAsync()

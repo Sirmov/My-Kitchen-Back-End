@@ -16,9 +16,9 @@ namespace MyKitchen.Microservices.Identity.Services.Users.Contracts
 
         public Task<ServiceResult> UpdateUserAsync(UserDto userDto);
 
-        public Task<ServiceResult<SignInResult>> LoginWithEmailAsync(UserLoginDto userLoginDto, bool isPersistant = false, bool isLockout = true);
+        public Task<ServiceResult<TUser>> LoginWithEmailAsync(UserLoginDto userLoginDto, bool isPersistant = false, bool isLockout = true);
 
-        public Task<ServiceResult<SignInResult>> LoginWithUsernameAsync(string username, string password, bool isPersistant = false, bool isLockout = true);
+        public Task<ServiceResult<TUser>> LoginWithUsernameAsync(string username, string password, bool isPersistant = false, bool isLockout = true);
 
         public Task<ServiceResult> LogoutAsync();
 
