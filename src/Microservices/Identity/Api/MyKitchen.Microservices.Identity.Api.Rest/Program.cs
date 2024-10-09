@@ -13,6 +13,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
     using MyKitchen.Microservices.Identity.Api.Rest.Extensions;
     using MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator;
     using MyKitchen.Microservices.Identity.Services.Mapping;
+    using MyKitchen.Microservices.Identity.Services.Users.Dtos.User;
 
     public class Program
     {
@@ -30,6 +31,16 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
         {
             services.AddControllers();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DevelopmentCors", policy =>
+                {
+                    policy.AllowAnyHeader()
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod();
+                });
+            });
+
             services.AddApplicationOptions();
             services.AddApplicationServices();
 
@@ -44,7 +55,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
             // Automapper configuration
             var asseblies = new Assembly[]
             {
-                //  typeof(ExampleDto).GetTypeInfo().Assembly,
+                typeof(UserDto).GetTypeInfo().Assembly,
             };
             AutoMapperConfig.RegisterMappings(asseblies);
             IMapper mapper = AutoMapperConfig.MapperInstance;
@@ -64,12 +75,13 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
                 // Console.WriteLine(configurationRoot.GetDebugView());
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseCors("DevelopmentCors");
             }
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
         }
