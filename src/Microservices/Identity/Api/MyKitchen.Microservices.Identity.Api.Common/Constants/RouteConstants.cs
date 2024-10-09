@@ -8,7 +8,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Common.Constants
 
         public static class Users
         {
-            private const string BaseRoute = $"{RouteConstants.BaseRoute}/users";
+            public const string BaseRoute = $"{RouteConstants.BaseRoute}/users";
 
             public const string RegisterEndpoint = $"{BaseRoute}/register";
 
