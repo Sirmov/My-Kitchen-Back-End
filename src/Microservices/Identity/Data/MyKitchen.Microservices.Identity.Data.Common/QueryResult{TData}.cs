@@ -1,8 +1,9 @@
 namespace MyKitchen.Microservices.Identity.Data.Common
 {
     using MyKitchen.Common.Result;
+    using MyKitchen.Common.Result.Contracts;
 
-    public class QueryResult<TData> : Result<TData, Exception>
+    public class QueryResult<TData> : Result<TData, Exception>, IDataResult<TData, Exception>
     {
         public QueryResult(TData data)
             : base(data)
@@ -13,6 +14,8 @@ namespace MyKitchen.Microservices.Identity.Data.Common
             : base(exception)
         {
         }
+
+        public static new QueryResult<TData> Successful(TData data) => new(data);
 
         public static implicit operator QueryResult<TData>(Exception failure) => new(failure);
 

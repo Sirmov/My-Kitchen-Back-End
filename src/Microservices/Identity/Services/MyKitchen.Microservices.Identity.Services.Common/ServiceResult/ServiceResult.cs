@@ -3,8 +3,9 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
     using Microsoft.AspNetCore.Mvc;
 
     using MyKitchen.Common.Result;
+    using MyKitchen.Common.Result.Contracts;
 
-    public class ServiceResult : Result<ProblemDetails>
+    public sealed class ServiceResult : Result<ProblemDetails>, IResult<ProblemDetails>
     {
         public ServiceResult()
         {

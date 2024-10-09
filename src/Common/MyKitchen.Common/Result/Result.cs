@@ -1,6 +1,8 @@
 namespace MyKitchen.Common.Result
 {
-    public class Result<TFailure>
+    using MyKitchen.Common.Result.Contracts;
+
+    public class Result<TFailure> : IResult<TFailure>
         where TFailure : class
     {
         public Result()
@@ -18,11 +20,11 @@ namespace MyKitchen.Common.Result
 
         public bool Failed => this.Failure != null;
 
-        public static Result<TFailure> Successful => new();
+        public static IResult<TFailure> Successful => new Result<TFailure>();
 
         public static implicit operator Result<TFailure>(TFailure failure) => new(failure);
 
-        public bool DependOn(Result<TFailure> result)
+        public bool DependOn(IResult<TFailure> result)
         {
             if (result.Failed)
             {
@@ -30,6 +32,16 @@ namespace MyKitchen.Common.Result
             }
 
             return result.Succeed;
+        }
+
+        public TMatch Match<TMatch>(Func<IResult<TFailure>, TMatch> onSuccess, Func<IResult<TFailure>, TMatch> onFailure)
+        {
+            if (this.Succeed)
+            {
+                return onSuccess(this);
+            }
+
+            return onFailure(this);
         }
     }
 }

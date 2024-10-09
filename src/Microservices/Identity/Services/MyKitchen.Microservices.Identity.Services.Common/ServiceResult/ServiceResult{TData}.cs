@@ -3,8 +3,9 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
     using Microsoft.AspNetCore.Mvc;
 
     using MyKitchen.Common.Result;
+    using MyKitchen.Common.Result.Contracts;
 
-    public class ServiceResult<TData> : Result<TData, ProblemDetails>
+    public sealed class ServiceResult<TData> : Result<TData, ProblemDetails>, IDataResult<TData, ProblemDetails>
     {
         public ServiceResult(TData data)
             : base(data)
@@ -16,7 +17,7 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
         {
         }
 
-        public static new ServiceResult Successful => new();
+        public static new ServiceResult<TData> Successful(TData data) => new(data);
 
         public static implicit operator ServiceResult<TData>(ProblemDetails problemDetails) => new(problemDetails);
 

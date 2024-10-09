@@ -1,8 +1,9 @@
 namespace MyKitchen.Microservices.Identity.Data.Common
 {
     using MyKitchen.Common.Result;
+    using MyKitchen.Common.Result.Contracts;
 
-    public class QueryResult : Result<Exception>
+    public class QueryResult : Result<Exception>, IResult<Exception>
     {
         public QueryResult()
         {
