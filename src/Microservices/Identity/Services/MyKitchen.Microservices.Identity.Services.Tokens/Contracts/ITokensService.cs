@@ -2,8 +2,10 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens.Contracts
 {
     using MyKitchen.Microservices.Identity.Data.Models;
 
-    public interface ITokensService
+    public interface ITokensService<TUser, TRole>
+        where TUser : ApplicationUser, new()
+        where TRole : ApplicationRole, new()
     {
-        public string GenerateAccessTokenAsync(ApplicationUser user);
+        public Task<string> GenerateAccessTokenAsync(TUser user);
     }
 }

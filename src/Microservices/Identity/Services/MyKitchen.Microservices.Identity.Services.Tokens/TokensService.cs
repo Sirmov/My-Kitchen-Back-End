@@ -9,17 +9,26 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
     using MyKitchen.Microservices.Identity.Common;
     using MyKitchen.Microservices.Identity.Data.Models;
     using MyKitchen.Microservices.Identity.Services.Tokens.Contracts;
+    // using MyKitchen.Microservices.Identity.Services.Users;
+    using MyKitchen.Microservices.Identity.Services.Users.Contracts;
 
-    public class TokensService : ITokensService
+    public class TokensService<TUser, TRole> : ITokensService<TUser, TRole>
+        where TUser : ApplicationUser, new()
+        where TRole : ApplicationRole, new()
     {
         private readonly TokenOptions tokenOptions;
-
-        public TokensService(IOptions<TokenOptions> tokenOptions)
+        // private readonly IUsersService<TUser, TRole> usersService;
+        private readonly IUserRolesService<TUser, TRole> userRolesService;
+        public TokensService(IOptions<TokenOptions> tokenOptions,
+            // UsersService<TUser, TRole> usersService,
+            IUserRolesService<TUser, TRole> userRolesService)
         {
             this.tokenOptions = tokenOptions.Value;
+            // this.usersService = usersService;
+            this.userRolesService = userRolesService;
         }
 
-        public string GenerateAccessTokenAsync(ApplicationUser user)
+        public async Task<string> GenerateAccessTokenAsync(TUser user)
         {
             var authClaims = new List<Claim>
             {
@@ -29,12 +38,12 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
-            // var userRoles = await this.usersService.GetUserRolesAsync(user);
+            var userRoles = await this.userRolesService.GetUserRolesAsync(user);
 
-            // foreach (var role in userRoles.Data ?? Enumerable.Empty<string>())
-            // {
-            //     authClaims.Add(new Claim(ClaimTypes.Role, role));
-            // }
+            foreach (var role in userRoles.Data ?? Enumerable.Empty<string>())
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
