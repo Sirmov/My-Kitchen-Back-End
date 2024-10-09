@@ -25,21 +25,21 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
 
         public static implicit operator ServiceResult(ServiceResult<TData> serviceResult) => new(serviceResult.Failure!);
 
-        public IActionResult ToActionResult(Func<ServiceResult<TData>, IActionResult> onSuccess)
+        public IActionResult ToActionResult(Func<TData, IActionResult> onSuccess)
         {
-            if (this.Succeed)
+            if (this.Succeed && this.Data != null)
             {
-                return onSuccess(this.Data!);
+                return onSuccess(this.Data);
             }
 
             return this.ToErrorResponse();
         }
 
-        public async Task<IActionResult> ToActionResult(Func<ServiceResult<TData>, Task<IActionResult>> onSuccess)
+        public async Task<IActionResult> ToActionResult(Func<TData, Task<IActionResult>> onSuccess)
         {
-            if (this.Succeed)
+            if (this.Succeed && this.Data != null)
             {
-                return await onSuccess(this);
+                return await onSuccess(this.Data);
             }
 
             return this.ToErrorResponse();
