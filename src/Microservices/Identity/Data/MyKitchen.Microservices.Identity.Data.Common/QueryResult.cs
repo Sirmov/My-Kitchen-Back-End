@@ -1,4 +1,4 @@
-namespace MyKitchen.Microservices.Identity.Data.Common
+namespace MyKitchen.Microservices.Identity.Data.Common.QueryResult
 {
     using MyKitchen.Common.Result;
     using MyKitchen.Common.Result.Contracts;

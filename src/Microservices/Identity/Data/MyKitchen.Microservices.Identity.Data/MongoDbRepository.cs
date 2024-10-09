@@ -4,9 +4,9 @@ namespace MyKitchen.Microservices.Identity.Data
 
     using MyKitchen.Common.Guard;
     using MyKitchen.Common.Constants;
-    using MyKitchen.Microservices.Identity.Data.Common;
     using MyKitchen.Microservices.Identity.Data.Contracts;
     using MyKitchen.Microservices.Identity.Data.Models.Common;
+    using MyKitchen.Microservices.Identity.Data.Common.QueryResult;
 
     public class MongoDbRepository<TDocument, TKey> : IMongoDbRepository<TDocument, TKey>
         where TDocument : BaseDocument<TKey>

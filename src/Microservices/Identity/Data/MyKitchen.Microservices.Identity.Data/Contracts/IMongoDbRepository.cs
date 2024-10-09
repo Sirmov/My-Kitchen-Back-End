@@ -2,7 +2,7 @@ namespace MyKitchen.Microservices.Identity.Data.Contracts
 {
     using MongoDB.Driver;
 
-    using MyKitchen.Microservices.Identity.Data.Common;
+    using MyKitchen.Microservices.Identity.Data.Common.QueryResult;
 
     public interface IMongoDbRepository<TDocument, TKey>
     {
