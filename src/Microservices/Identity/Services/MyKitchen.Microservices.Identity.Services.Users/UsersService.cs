@@ -3,6 +3,9 @@ namespace MyKitchen.Microservices.Identity.Services.Users
     using System.ComponentModel.DataAnnotations;
     using System.Security.Claims;
 
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
@@ -17,26 +20,31 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         where TUser : ApplicationUser, new()
         where TRole : ApplicationRole, new()
     {
+        private readonly IMapper mapper;
         private readonly UserManager<TUser> userManager;
         private readonly SignInManager<TUser> signInManager;
-        private readonly UserRolesService<TUser, TRole> userRolesService;
+        private readonly IUserRolesService<TUser, TRole> userRolesService;
 
         public UsersService(
+            IMapper mapper,
             UserManager<TUser> userManager,
             SignInManager<TUser> signInManager,
-            UserRolesService<TUser, TRole> userRolesService)
+            IUserRolesService<TUser, TRole> userRolesService)
         {
+            this.mapper = mapper;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.userRolesService = userRolesService;
         }
 
-        public async Task<ServiceResult<IEnumerable<TUser>>> GetAllUsersAsync()
+        public async Task<ServiceResult<IEnumerable<UserDto>>> GetAllUsersAsync()
         {
-            return await this.userManager.Users.ToListAsync();
+            return await this.userManager.Users
+                .ProjectTo<UserDto>(this.mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
-        public async Task<ServiceResult<IdentityResult>> RegisterWithEmailAndUsernameAsync(UserRegisterDto userRegisterDto, IEnumerable<string>? roles = null)
+        public async Task<ServiceResult<TUser>> RegisterWithEmailAndUsernameAsync(UserRegisterDto userRegisterDto, IEnumerable<string>? roles = null)
         {
             var isUserValid = this.ValidateDto(userRegisterDto);
 
@@ -46,7 +54,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             }
 
             TUser user = this.CreateUserWithEmailAndUsername(userRegisterDto.Email, userRegisterDto.Username);
-            var registerResult = await this.userManager.CreateAsync(user);
+            var registerResult = await this.userManager.CreateAsync(user, userRegisterDto.Password);
 
             if (!registerResult.Succeeded)
             {
@@ -64,7 +72,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
                 }
             }
 
-            return registerResult;
+            return user;
         }
 
         public async Task<ServiceResult> UpdateUserAsync(UserDto userDto)

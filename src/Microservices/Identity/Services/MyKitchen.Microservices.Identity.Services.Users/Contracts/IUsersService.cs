@@ -10,9 +10,9 @@ namespace MyKitchen.Microservices.Identity.Services.Users.Contracts
         where TUser : ApplicationUser, new()
         where TRole : ApplicationRole, new()
     {
-        public Task<ServiceResult<IEnumerable<TUser>>> GetAllUsersAsync();
+        public Task<ServiceResult<IEnumerable<UserDto>>> GetAllUsersAsync();
 
-        public Task<ServiceResult<IdentityResult>> RegisterWithEmailAndUsernameAsync(UserRegisterDto userRegisterDto, IEnumerable<string>? roles = null);
+        public Task<ServiceResult<TUser>> RegisterWithEmailAndUsernameAsync(UserRegisterDto userRegisterDto, IEnumerable<string>? roles = null);
 
         public Task<ServiceResult> UpdateUserAsync(UserDto userDto);
 
