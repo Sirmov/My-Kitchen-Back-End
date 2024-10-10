@@ -2,6 +2,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
 {
     using System.Net.Mime;
 
+    using AutoMapper;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -15,15 +17,18 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
     [Route(RouteConstants.Users.BaseRoute)]
     public class UsersController : BaseController
     {
+        private readonly IMapper mapper;
         private readonly IUsersService<ApplicationUser, ApplicationRole> usersService;
         private readonly IUserRolesService<ApplicationUser, ApplicationRole> userRolesService;
         private readonly ITokensService<ApplicationUser, ApplicationRole> tokensService;
 
         public UsersController(
+            IMapper mapper,
             IUsersService<ApplicationUser, ApplicationRole> usersService,
             IUserRolesService<ApplicationUser, ApplicationRole> userRolesService,
             ITokensService<ApplicationUser, ApplicationRole> tokensService)
         {
+            this.mapper = mapper;
             this.usersService = usersService;
             this.userRolesService = userRolesService;
             this.tokensService = tokensService;
@@ -32,13 +37,13 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route(RouteConstants.Users.RegisterEndpoint)]
-        [ProducesResponseType(typeof(ApplicationUser), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(BadRequestDetails), StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto user)
         {
-            var result = await this.usersService.RegisterWithEmailAndUsernameAsync(user);
+            var registerResult = await this.usersService.RegisterWithEmailAndUsernameAsync(user);
 
-            return result.ToActionResult(r => StatusCode(201, user));
+            return registerResult.ToActionResult(userDto => StatusCode(201, registerResult.Data));
         }
 
         [HttpPost]
