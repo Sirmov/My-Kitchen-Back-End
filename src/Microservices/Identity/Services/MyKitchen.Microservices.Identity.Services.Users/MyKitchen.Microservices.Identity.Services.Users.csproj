@@ -1,20 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>
+      ../../../../Documentation/Microservices/Identity/Services/MyKitchen.Microservices.Identity.Services.Users.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
-    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Services.Common\MyKitchen.Microservices.Identity.Services.Common.csproj" />
-    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj" />
-    <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Common\MyKitchen.Microservices.Identity.Data.Common.csproj" />
+    <ProjectReference
+      Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
+    <ProjectReference
+      Include="..\MyKitchen.Microservices.Identity.Services.Common\MyKitchen.Microservices.Identity.Services.Common.csproj" />
+    <ProjectReference
+      Include="..\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj" />
+    <ProjectReference
+      Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Common\MyKitchen.Microservices.Identity.Data.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
 
 </Project>
