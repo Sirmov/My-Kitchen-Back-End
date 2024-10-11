@@ -4,7 +4,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
     using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Mvc;
 
-    using MyKitchen.Microservices.Identity.Api.Rest.Common.Constants;
+    using MyKitchen.Microservices.Identity.Api.Common.Constants;
 
     public class ErrorController : BaseController
     {

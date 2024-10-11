@@ -8,7 +8,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
     using Microsoft.AspNetCore.Mvc;
 
     using MyKitchen.Common.ProblemDetails;
-    using MyKitchen.Microservices.Identity.Api.Rest.Common.Constants;
+    using MyKitchen.Microservices.Identity.Api.Common.Constants;
     using MyKitchen.Microservices.Identity.Data.Models;
     using MyKitchen.Microservices.Identity.Services.Tokens.Contracts;
     using MyKitchen.Microservices.Identity.Services.Users.Contracts;

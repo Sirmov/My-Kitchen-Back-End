@@ -1,4 +1,4 @@
-namespace MyKitchen.Microservices.Identity.Api.Rest.Common.Constants
+namespace MyKitchen.Microservices.Identity.Api.Common.Constants
 {
     public static class RouteConstants
     {
