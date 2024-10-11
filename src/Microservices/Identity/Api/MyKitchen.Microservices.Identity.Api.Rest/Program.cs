@@ -9,7 +9,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
     using Microsoft.AspNetCore.Builder;
 
     using MyKitchen.Common.Guard;
-    using MyKitchen.Microservices.Identity.Api.Rest.Common.Constants;
+    using MyKitchen.Microservices.Identity.Api.Common.Constants;
     using MyKitchen.Microservices.Identity.Api.Rest.Extensions;
     using MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator;
     using MyKitchen.Microservices.Identity.Services.Mapping;
@@ -61,6 +61,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
             IMapper mapper = AutoMapperConfig.MapperInstance;
             services.AddSingleton<IMapper>(mapper);
 
+            services.ConfigureOptions<SwaggerGenOptionsConfigurator>();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
         }
