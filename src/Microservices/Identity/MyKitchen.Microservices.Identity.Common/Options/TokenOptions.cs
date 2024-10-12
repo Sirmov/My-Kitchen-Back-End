@@ -1,4 +1,4 @@
-namespace MyKitchen.Microservices.Identity.Common
+namespace MyKitchen.Microservices.Identity.Common.Options
 {
     using System.Text;
 

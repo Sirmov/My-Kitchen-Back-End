@@ -6,7 +6,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
 
-    using MyKitchen.Microservices.Identity.Common;
+    using MyKitchen.Microservices.Identity.Common.Options;
     using MyKitchen.Microservices.Identity.Data.Models;
     using MyKitchen.Microservices.Identity.Services.Tokens.Contracts;
     // using MyKitchen.Microservices.Identity.Services.Users;
