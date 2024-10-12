@@ -1,29 +1,55 @@
+// |-----------------------------------------------------------------------------------------------------|
+// <copyright file="Result.cs" company="MyKitchen">
+// Copyright (c) MyKitchen. All Rights Reserved.
+// Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+// |-----------------------------------------------------------------------------------------------------|
+
 namespace MyKitchen.Common.Result
 {
     using MyKitchen.Common.Result.Contracts;
 
+    /// <summary>
+    /// This class implements the <see cref="IResult{TFailure}"/> interface.
+    /// The result is successful while no <see cref="Result{TFailure}.Failure"/> is registered.
+    /// </summary>
+    /// <typeparam name="TFailure"><inheritdoc cref="IResult{TFailure}"/></typeparam>
     public class Result<TFailure> : IResult<TFailure>
         where TFailure : class
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Result{TFailure}"/> class.
+        /// </summary>
         public Result()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Result{TFailure}"/> class.
+        /// The result automatically fails.
+        /// </summary>
+        /// <param name="failure">The failure details.</param>
         public Result(TFailure failure)
         {
             this.Failure = failure;
         }
 
-        public TFailure? Failure { get; set; } = null;
+        /// <inheritdoc/>
+        public TFailure? Failure { get; set; }
 
+        /// <inheritdoc/>
         public bool Succeed => this.Failure == null;
 
+        /// <inheritdoc/>
         public bool Failed => this.Failure != null;
 
-        public static IResult<TFailure> Successful => new Result<TFailure>();
+        /// <summary>
+        /// Implicit conversion from a <typeparamref name="TFailure"/> to a failed <see cref="Result{TFailure}"/>.
+        /// </summary>
+        /// <param name="failure">The failure details.</param>
+        public static implicit operator Result<TFailure>(TFailure failure) => new (failure);
 
-        public static implicit operator Result<TFailure>(TFailure failure) => new(failure);
-
+        /// <inheritdoc/>
         public bool DependOn(IResult<TFailure> result)
         {
             if (result.Failed)
@@ -34,6 +60,7 @@ namespace MyKitchen.Common.Result
             return result.Succeed;
         }
 
+        /// <inheritdoc/>
         public TMatch Match<TMatch>(Func<IResult<TFailure>, TMatch> onSuccess, Func<IResult<TFailure>, TMatch> onFailure)
         {
             if (this.Succeed)

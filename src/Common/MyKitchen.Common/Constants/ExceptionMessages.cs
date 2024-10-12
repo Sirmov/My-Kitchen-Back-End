@@ -1,6 +1,16 @@
+// |-----------------------------------------------------------------------------------------------------|
+// <copyright file="ExceptionMessages.cs" company="MyKitchen">
+// Copyright (c) MyKitchen. All Rights Reserved.
+// Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+// |-----------------------------------------------------------------------------------------------------|
+
 namespace MyKitchen.Common.Constants
 {
-    public class ExceptionMessages
+    /// <summary>
+    /// This static class contains all exception messages.
+    /// </summary>
+    public static class ExceptionMessages
     {
         /// <summary>
         /// A error message indicating that no document was found.
@@ -175,6 +185,5 @@ namespace MyKitchen.Common.Constants
         /// 1 Parameter - The type of the object.
         /// </summary>
         public const string PropertyNotFound = "Property '{0}' not found in object of type '{1}'.";
-
     }
 }
