@@ -1,3 +1,10 @@
+// |-----------------------------------------------------------------------------------------------------|
+// <copyright file="UsersController.cs" company="MyKitchen">
+// Copyright (c) MyKitchen. All Rights Reserved.
+// Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+// |-----------------------------------------------------------------------------------------------------|
+
 namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
 {
     using System.Net.Mime;
@@ -14,6 +21,9 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
     using MyKitchen.Microservices.Identity.Services.Users.Contracts;
     using MyKitchen.Microservices.Identity.Services.Users.Dtos.User;
 
+    /// <summary>
+    /// This controller is responsible for the operations regarding the users and their identity.
+    /// </summary>
     [Route(RouteConstants.Users.BaseRoute)]
     public class UsersController : BaseController
     {
@@ -22,6 +32,13 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         private readonly IUserRolesService<ApplicationUser, ApplicationRole> userRolesService;
         private readonly ITokensService<ApplicationUser, ApplicationRole> tokensService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UsersController"/> class.
+        /// </summary>
+        /// <param name="mapper">The implementation of <see cref="IMapper"/>.</param>
+        /// <param name="usersService">The implementation of <see cref="IUsersService{TUser, TRole}"/>.</param>
+        /// <param name="userRolesService">The implementation of <see cref="IUserRolesService{TUser, TRole}"/>.</param>
+        /// <param name="tokensService">The implementation of <see cref="ITokensService{TUser, TRole}"/>.</param>
         public UsersController(
             IMapper mapper,
             IUsersService<ApplicationUser, ApplicationRole> usersService,
@@ -34,6 +51,11 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
             this.tokensService = tokensService;
         }
 
+        /// <summary>
+        /// This action is responsible for handling the user registration.
+        /// </summary>
+        /// <param name="user">The <see cref="UserRegisterDto"/> to be registered.</param>
+        /// <returns>Returns a <see cref="UserDto"/> when the registration is successful.</returns>
         [HttpPost]
         [AllowAnonymous]
         [Route(RouteConstants.Users.RegisterEndpoint)]
@@ -43,9 +65,14 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         {
             var registerResult = await this.usersService.RegisterWithEmailAndUsernameAsync(user);
 
-            return registerResult.ToActionResult(userDto => StatusCode(201, registerResult.Data));
+            return registerResult.ToActionResult(userDto => this.StatusCode(201, registerResult.Data));
         }
 
+        /// <summary>
+        /// This action is responsible for handling the login of a user.
+        /// </summary>
+        /// <param name="loginDto">The user login credentials.</param>
+        /// <returns>Returns a <c>string</c> representing a JWT access token.</returns>
         [HttpPost]
         [AllowAnonymous]
         [Route(RouteConstants.Users.LoginEndpoint)]
@@ -60,10 +87,14 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
             {
                 var token = await this.tokensService.GenerateAccessTokenAsync(user);
 
-                return Ok(new { Token = token });
+                return this.Ok(new { Token = token });
             });
         }
 
+        /// <summary>
+        /// This action is responsible for handling the logout of a user.
+        /// </summary>
+        /// <returns>Returns a empty response.</returns>
         [HttpGet]
         [Route(RouteConstants.Users.LogoutEndpoint)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -71,10 +102,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         {
             var logoutResult = await this.usersService.LogoutAsync();
 
-            return logoutResult.ToActionResult(_ =>
-            {
-                return NoContent();
-            });
+            return logoutResult.ToActionResult(_ => this.NoContent());
         }
     }
 }

@@ -1,3 +1,10 @@
+// |-----------------------------------------------------------------------------------------------------|
+// <copyright file="SwaggerGenOptionsConfigurator.cs" company="MyKitchen">
+// Copyright (c) MyKitchen. All Rights Reserved.
+// Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+// |-----------------------------------------------------------------------------------------------------|
+
 namespace MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator
 {
     using Microsoft.Extensions.Options;
@@ -5,8 +12,13 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator
 
     using Swashbuckle.AspNetCore.SwaggerGen;
 
+    /// <summary>
+    /// This class implements the <see cref="IConfigureOptions{TOptions}"/>.
+    /// It is used to configure the <see cref="SwaggerGenOptions"/>.
+    /// </summary>
     public class SwaggerGenOptionsConfigurator : IConfigureOptions<SwaggerGenOptions>
     {
+        /// <inheritdoc/>
         public void Configure(SwaggerGenOptions options)
         {
             options.SwaggerDoc("v1", new OpenApiInfo

@@ -1,3 +1,10 @@
+// |-----------------------------------------------------------------------------------------------------|
+// <copyright file="AutoMapperConfig.cs" company="MyKitchen">
+// Copyright (c) MyKitchen. All Rights Reserved.
+// Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+// |-----------------------------------------------------------------------------------------------------|
+
 namespace MyKitchen.Microservices.Identity.Services.Mapping
 {
     using System.Reflection;
@@ -67,17 +74,27 @@ namespace MyKitchen.Microservices.Identity.Services.Mapping
             MapperInstance = new Mapper(new MapperConfiguration(config));
         }
 
-        public static IMapper CreateDuplicateTypeMapper<TOptions>()
+        /// <summary>
+        /// This method creates a automapper instance that can maps objects of the same <typeparamref name="TType"/>.
+        /// </summary>
+        /// <typeparam name="TType">The type of the objects that can mapped between themselves.</typeparam>
+        /// <returns>Returns a configured <see cref="IMapper"/> instance.</returns>
+        public static IMapper CreateDuplicateTypeMapper<TType>()
         {
             var mapperConfiguration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<TOptions, TOptions>();
+                cfg.CreateMap<TType, TType>();
             });
             IMapper mapper = new Mapper(mapperConfiguration);
 
             return mapper;
         }
 
+        /// <summary>
+        /// This method creates a automapper instance that can maps objects of the same type.
+        /// </summary>
+        /// <param name="types">The types of the objects that can mapped between themselves.</param>
+        /// <returns>Returns a configured <see cref="IMapper"/> instance.</returns>
         public static IMapper CreateDuplicateTypeMapper(params Type[] types)
         {
             var mapperConfiguration = new MapperConfiguration(cfg =>

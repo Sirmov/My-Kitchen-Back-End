@@ -1,3 +1,9 @@
+// |-----------------------------------------------------------------------------------------------------|
+// <copyright file="Program.cs" company="MyKitchen">
+// Copyright (c) MyKitchen. All Rights Reserved.
+// Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+// |-----------------------------------------------------------------------------------------------------|
 
 namespace MyKitchen.Microservices.Identity.Api.Rest
 {
@@ -15,7 +21,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
     using MyKitchen.Microservices.Identity.Services.Mapping;
     using MyKitchen.Microservices.Identity.Services.Users.Dtos.User;
 
-    public class Program
+    internal static class Program
     {
         public static void Main(string[] args)
         {

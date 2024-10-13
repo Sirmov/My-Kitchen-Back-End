@@ -1,3 +1,10 @@
+// |-----------------------------------------------------------------------------------------------------|
+// <copyright file="UserRolesService.cs" company="MyKitchen">
+// Copyright (c) MyKitchen. All Rights Reserved.
+// Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+// |-----------------------------------------------------------------------------------------------------|
+
 namespace MyKitchen.Microservices.Identity.Services.Users
 {
     using System.Collections.Generic;
@@ -6,12 +13,16 @@ namespace MyKitchen.Microservices.Identity.Services.Users
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
+    using MyKitchen.Common.Constants;
+    using MyKitchen.Common.ProblemDetails;
     using MyKitchen.Microservices.Identity.Data.Models;
     using MyKitchen.Microservices.Identity.Services.Common.ServiceResult;
     using MyKitchen.Microservices.Identity.Services.Users.Contracts;
-    using MyKitchen.Common.Constants;
-    using MyKitchen.Common.ProblemDetails;
 
+    /// <summary>
+    /// This class contains the business logic around the identity user roles.
+    /// </summary>
+    /// <inheritdoc cref="IUserRolesService{TUser, TRole}"/>
     public class UserRolesService<TUser, TRole> : IUserRolesService<TUser, TRole>
         where TUser : ApplicationUser, new()
         where TRole : ApplicationRole, new()
@@ -19,6 +30,11 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         private readonly UserManager<TUser> userManager;
         private readonly RoleManager<TRole> roleManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserRolesService{TUser, TRole}"/> class.
+        /// </summary>
+        /// <param name="userManager">The identity user manager.</param>
+        /// <param name="roleManager">The identity role manager.</param>
         public UserRolesService(
             UserManager<TUser> userManager,
             RoleManager<TRole> roleManager)
@@ -27,6 +43,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             this.roleManager = roleManager;
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult<IEnumerable<string>>> GetAllRolesAsync()
         {
             var roles = await this.roleManager.Roles
@@ -37,6 +54,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return roles;
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult<IEnumerable<string>>> GetUserRolesAsync(TUser user)
         {
             var roles = await this.userManager.GetRolesAsync(user);
@@ -44,6 +62,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return roles.ToList();
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult> AddToRoleAsync(TUser user, string role)
         {
             if (user == null)
@@ -69,6 +88,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return ServiceResult.Successful;
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult> RemoveFromRoleAsync(TUser user, string role)
         {
             if (user == null)
@@ -94,6 +114,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return ServiceResult.Successful;
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult<bool>> DoesRoleExistAsync(string role)
         {
             return await this.roleManager.RoleExistsAsync(role);

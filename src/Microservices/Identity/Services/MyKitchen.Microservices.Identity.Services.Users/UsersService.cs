@@ -1,3 +1,10 @@
+// |-----------------------------------------------------------------------------------------------------|
+// <copyright file="UsersService.cs" company="MyKitchen">
+// Copyright (c) MyKitchen. All Rights Reserved.
+// Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+// |-----------------------------------------------------------------------------------------------------|
+
 namespace MyKitchen.Microservices.Identity.Services.Users
 {
     using System.ComponentModel.DataAnnotations;
@@ -16,6 +23,10 @@ namespace MyKitchen.Microservices.Identity.Services.Users
     using MyKitchen.Microservices.Identity.Services.Users.Contracts;
     using MyKitchen.Microservices.Identity.Services.Users.Dtos.User;
 
+     /// <summary>
+    /// This class contains the business logic around the identity user.
+    /// </summary>
+    /// <inheritdoc cref="IUsersService{TUser, TRole}"/>
     public class UsersService<TUser, TRole> : IUsersService<TUser, TRole>
         where TUser : ApplicationUser, new()
         where TRole : ApplicationRole, new()
@@ -25,6 +36,13 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         private readonly SignInManager<TUser> signInManager;
         private readonly IUserRolesService<TUser, TRole> userRolesService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UsersService{TUser, TRole}"/> class.
+        /// </summary>
+        /// <param name="mapper">The implementation of <see cref="IMapper"/>.</param>
+        /// <param name="userManager">The identity user manager.</param>
+        /// <param name="signInManager">The identity sign in manager.</param>
+        /// <param name="userRolesService">The implementation of <see cref="IUserRolesService{TUser, TRole}"/>.</param>
         public UsersService(
             IMapper mapper,
             UserManager<TUser> userManager,
@@ -37,6 +55,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             this.userRolesService = userRolesService;
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult<IEnumerable<UserDto>>> GetAllUsersAsync()
         {
             return await this.userManager.Users
@@ -44,6 +63,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
                 .ToListAsync();
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult<TUser>> RegisterWithEmailAndUsernameAsync(UserRegisterDto userRegisterDto, IEnumerable<string>? roles = null)
         {
             var isUserValid = this.ValidateDto(userRegisterDto);
@@ -75,6 +95,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return user;
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult> UpdateUserAsync(UserDto userDto)
         {
             var isUserValid = this.ValidateDto(userDto);
@@ -88,7 +109,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
 
             if (!findResult.Succeed)
             {
-                return new(new NotFoundDetails(string.Format(ExceptionMessages.NoEntityWithPropertyFound, nameof(userDto), nameof(userDto.Id))));
+                return new (new NotFoundDetails(string.Format(ExceptionMessages.NoEntityWithPropertyFound, nameof(userDto), nameof(userDto.Id))));
             }
 
             var user = findResult.Data!;
@@ -112,6 +133,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return ServiceResult.Successful;
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult<TUser>> LoginWithEmailAsync(UserLoginDto userLoginDto, bool isPersistant = false, bool isLockout = true)
         {
             var findResult = await this.FindUserByEmailAsync(userLoginDto.Email);
@@ -127,13 +149,14 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return findResult;
         }
 
-        public async Task<ServiceResult<TUser>> LoginWithUsernameAsync(string username, string password, bool isPersistant = false, bool isLockout = true)
+        /// <inheritdoc/>
+        public async Task<ServiceResult<TUser>> LoginWithUsernameAsync(string username, string password, bool isPersistent = false, bool isLockout = true)
         {
             var findResult = await this.FindUserByUsernameAsync(username);
 
             var signInResult = await findResult.BindAsync<ServiceResult<SignInResult>, SignInResult>(async user =>
             {
-                var signInResult = await this.signInManager.PasswordSignInAsync(user, password, isPersistant, isLockout);
+                var signInResult = await this.signInManager.PasswordSignInAsync(user, password, isPersistent, isLockout);
 
                 return signInResult.Succeeded ? signInResult : new UnauthorizedDetails(string.Format(ExceptionMessages.Unauthorized));
             });
@@ -142,12 +165,14 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return findResult;
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult> LogoutAsync()
         {
             await this.signInManager.SignOutAsync();
             return ServiceResult.Successful;
         }
 
+        /// <inheritdoc/>
         public ServiceResult<bool> IsSignedIn(TUser user)
         {
             if (user == null)
@@ -160,6 +185,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return this.signInManager.IsSignedIn(principal!);
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult<TUser>> FindUserByEmailAsync(string email)
         {
             var user = await this.userManager.FindByEmailAsync(email);
@@ -172,6 +198,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return user;
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult<TUser>> FindUserByUsernameAsync(string username)
         {
             var user = await this.userManager.FindByNameAsync(username);
@@ -184,6 +211,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return user;
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult<TUser>> FindUserByIdAsync(string id)
         {
             var user = await this.userManager.FindByIdAsync(id);
@@ -196,11 +224,13 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             return user;
         }
 
+        /// <inheritdoc/>
         public Task<ServiceResult<IdentityResult>> DeleteUserWithId(string id)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public async Task<ServiceResult<bool>> ExistsAsync(string id)
         {
             var findResult = await this.FindUserByIdAsync(id);
