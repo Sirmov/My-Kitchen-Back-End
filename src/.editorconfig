@@ -402,3 +402,74 @@ dotnet_diagnostic.IDE0070.severity = warning
 
 # Convert typeof to nameof
 dotnet_diagnostic.IDE0082.severity = warning
+
+# StyleCop Analyzers configuration in EditorConfig
+
+# Spacing rules
+dotnet_diagnostic.SA1000.severity = warning          # Keywords should be spaced correctly
+dotnet_diagnostic.SA1001.severity = warning          # Commas should be spaced correctly
+dotnet_diagnostic.SA1002.severity = warning          # Semicolons should be spaced correctly
+dotnet_diagnostic.SA1003.severity = warning          # Symbols should be spaced correctly
+dotnet_diagnostic.SA1004.severity = warning          # Documentation lines should begin with a single space
+dotnet_diagnostic.SA1005.severity = warning          # Single line comments should begin with a single space
+dotnet_diagnostic.SA1006.severity = warning          # Preprocessor keywords should not be preceded by space
+dotnet_diagnostic.SA1007.severity = warning          # Operator keyword should be followed by space
+dotnet_diagnostic.SA1008.severity = warning          # Opening parenthesis should be spaced correctly
+dotnet_diagnostic.SA1009.severity = suggestion       # Closing parenthesis should be spaced correctly
+dotnet_diagnostic.SA1010.severity = warning          # Opening square brackets should be spaced correctly
+dotnet_diagnostic.SA1011.severity = warning          # Closing square brackets should be spaced correctly
+dotnet_diagnostic.SA1012.severity = warning          # Opening braces should be spaced correctly
+dotnet_diagnostic.SA1013.severity = warning          # Closing braces should be spaced correctly
+dotnet_diagnostic.SA1014.severity = warning          # Opening generic brackets should be spaced correctly
+dotnet_diagnostic.SA1015.severity = warning          # Closing generic brackets should be spaced correctly
+dotnet_diagnostic.SA1016.severity = warning          # Opening attribute brackets should be spaced correctly
+dotnet_diagnostic.SA1017.severity = warning          # Closing attribute brackets should be spaced correctly
+dotnet_diagnostic.SA1018.severity = warning          # Nullable type symbols should be spaced correctly
+dotnet_diagnostic.SA1019.severity = warning          # Member access symbols should be spaced correctly
+dotnet_diagnostic.SA1020.severity = warning          # Increment decrement symbols should be spaced correctly
+dotnet_diagnostic.SA1021.severity = warning          # Negative signs should be spaced correctly
+dotnet_diagnostic.SA1022.severity = warning          # Positive signs should be spaced correctly
+dotnet_diagnostic.SA1023.severity = warning          # Dereference and access of symbols should be spaced correctly
+dotnet_diagnostic.SA1024.severity = warning          # Colons should be spaced correctly
+dotnet_diagnostic.SA1025.severity = warning          # Code should not contain multiple whitespace in a row
+dotnet_diagnostic.SA1026.severity = warning          # No space after new or stackalloc keyword in implicitly typed array allocation
+dotnet_diagnostic.SA1027.severity = warning          # Use tabs correctly
+dotnet_diagnostic.SA1028.severity = warning          # Code should not contain trailing whitespace
+
+# Documentation rules
+dotnet_diagnostic.SA1600.severity = warning          # Elements should be documented
+dotnet_diagnostic.SA1601.severity = warning          # Partial elements should be documented
+dotnet_diagnostic.SA1602.severity = warning          # Enumeration items should be documented
+dotnet_diagnostic.SA1604.severity = warning          # Element documentation should have summary
+dotnet_diagnostic.SA1605.severity = warning          # Partial element documentation should have summary
+dotnet_diagnostic.SA1606.severity = warning          # Element documentation should have summary text
+dotnet_diagnostic.SA1607.severity = warning          # Partial element documentation should have summary text
+dotnet_diagnostic.SA1608.severity = warning          # Element documentation should not have default summary
+
+# Naming rules
+dotnet_diagnostic.SA1300.severity = warning          # Element should begin with an uppercase letter
+dotnet_diagnostic.SA1302.severity = warning          # Interface names should begin with I
+dotnet_diagnostic.SA1303.severity = warning          # Const field names should begin with an uppercase letter
+dotnet_diagnostic.SA1306.severity = warning          # Field names should begin with a lowercase letter
+dotnet_diagnostic.SA1309.severity = warning          # Field names should not begin with underscore
+dotnet_diagnostic.SA1310.severity = warning          # Field names should not contain underscore
+dotnet_diagnostic.SA1312.severity = warning          # Variable names should begin with a lowercase letter
+
+# Maintainability rules
+dotnet_diagnostic.SA1400.severity = warning          # Access modifier should be declared
+dotnet_diagnostic.SA1401.severity = warning          # Fields should be private
+dotnet_diagnostic.SA1407.severity = warning          # Arithmetic expressions should declare precedence
+dotnet_diagnostic.SA1408.severity = warning          # Conditional expressions should declare precedence
+dotnet_diagnostic.SA1410.severity = warning          # Remove delegate parentheses when possible
+dotnet_diagnostic.SA1413.severity = warning          # Use trailing comma in multi-line initializers
+
+# Layout rules
+dotnet_diagnostic.SA1500.severity = warning          # Braces for multi-line statements should not share a line
+dotnet_diagnostic.SA1501.severity = warning          # Statements should not be on a single line
+dotnet_diagnostic.SA1503.severity = warning          # Braces should not be omitted
+dotnet_diagnostic.SA1505.severity = warning          # Opening braces should not be followed by a blank line
+dotnet_diagnostic.SA1506.severity = warning          # Element documentation headers should not be followed by a blank line
+dotnet_diagnostic.SA1516.severity = warning          # Elements should be separated by a blank line
+dotnet_diagnostic.SA1517.severity = warning          # Code should not contain blank lines at the start of the file
+dotnet_diagnostic.SA1519.severity = warning          # Braces should not be omitted from multi-line child statements
+dotnet_diagnostic.SA1520.severity = warning          # Use braces consistently
