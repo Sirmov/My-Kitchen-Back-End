@@ -72,7 +72,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         /// This action is responsible for handling the login of a user.
         /// </summary>
         /// <param name="loginDto">The user login credentials.</param>
-        /// <returns>Returns a <c>string</c> representing a JWT access token.</returns>
+        /// <returns>Returns a <see langword="string"/> representing a JWT access token.</returns>
         [HttpPost]
         [AllowAnonymous]
         [Route(RouteConstants.Users.LoginEndpoint)]

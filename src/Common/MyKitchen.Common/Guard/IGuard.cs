@@ -15,7 +15,7 @@ namespace MyKitchen.Common.Guard
     public interface IGuard
     {
         /// <summary>
-        /// This method guards against <c>null</c>. When <paramref name="variable"/> is <c>null</c> a exception message
+        /// This method guards against <see langword="null"/>. When <paramref name="variable"/> is <see langword="null"/> a exception message
         /// is generated using the <paramref name="formatString"/> and the provided <paramref name="args"/>. A new
         /// instance of <typeparamref name="TOut"/> is created using the exception message as a constructor argument.
         /// </summary>
@@ -30,7 +30,7 @@ namespace MyKitchen.Common.Guard
         public TOut? AgainstNull<TOut>(object? variable, string formatString, params object?[] args);
 
         /// <summary>
-        /// This method guards against <c>true</c>. When <paramref name="boolean"/> is <c>true</c> a exception message
+        /// This method guards against <see langword="true"/>. When <paramref name="boolean"/> is <see langword="true"/> a exception message
         /// is generated using the <paramref name="formatString"/> and the provided <paramref name="args"/>. A new
         /// instance of <typeparamref name="TOut"/> is created using the exception message as a constructor argument.
         /// </summary>
@@ -45,7 +45,7 @@ namespace MyKitchen.Common.Guard
         public TOut? AgainstTrue<TOut>(bool boolean, string formatString, params object?[] args);
 
         /// <summary>
-        /// This method guards against <c>false</c>. When <paramref name="boolean"/> is <c>false</c> a exception message
+        /// This method guards against <see langword="false"/>. When <paramref name="boolean"/> is <see langword="false"/> a exception message
         /// is generated using the <paramref name="formatString"/> and the provided <paramref name="args"/>. A new
         /// instance of <typeparamref name="TOut"/> is created using the exception message as a constructor argument.
         /// </summary>
@@ -94,7 +94,7 @@ namespace MyKitchen.Common.Guard
         public TOut? AgainstRegex<TOut>(string text, string pattern, string formatString, params object?[] args);
 
         /// <summary>
-        /// This method guards against a <c>null</c> or empty values. When <paramref name="text"/> is <c>null</c> or
+        /// This method guards against a <see langword="null"/> or empty values. When <paramref name="text"/> is <see langword="null"/> or
         /// is empty a exception message is generated using the <paramref name="formatString"/>
         /// and the provided <paramref name="args"/>. A new instance of <typeparamref name="TOut"/> is created
         /// using the exception message as a constructor argument.
@@ -110,7 +110,7 @@ namespace MyKitchen.Common.Guard
         public TOut? AgainstNullOrEmpty<TOut>(string text, string formatString, params object?[] args);
 
         /// <summary>
-        /// This method guards against a <c>null</c> or white space values. When <paramref name="text"/> is <c>null</c> or
+        /// This method guards against a <see langword="null"/> or white space values. When <paramref name="text"/> is <see langword="null"/> or
         /// contains only white space a exception message is generated using the <paramref name="formatString"/>
         /// and the provided <paramref name="args"/>. A new instance of <typeparamref name="TOut"/> is created
         /// using the exception message as a constructor argument.

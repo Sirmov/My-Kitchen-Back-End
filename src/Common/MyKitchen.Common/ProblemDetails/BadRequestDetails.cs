@@ -12,8 +12,8 @@ namespace MyKitchen.Common.ProblemDetails
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
-    /// This class inherits the <see cref="ProblemDetails"/> class. It is a machine-readable format for
-    /// specifying bad request errors in HTTP API responses based on https://datatracker.ietf.org/doc/html/rfc7807/.
+    /// This class is a machine-readable format for specifying bad request errors in HTTP API responses based
+    /// on https://datatracker.ietf.org/doc/html/rfc7807/. It inherits the <see cref="ProblemDetails"/> class.
     /// </summary>
     public class BadRequestDetails : ProblemDetails
     {

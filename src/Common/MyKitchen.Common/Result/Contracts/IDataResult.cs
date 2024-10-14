@@ -8,8 +8,8 @@
 namespace MyKitchen.Common.Result.Contracts
 {
     /// <summary>
-    /// This interfaces inherits the <see cref="IResult{TFailure}"/> interface. It defines the functionality
-    /// of a generic result class containing data.
+    /// This interfaces defines the functionality of a generic result class containing data.
+    /// It inherits the <see cref="IResult{TFailure}"/> interface.
     /// </summary>
     /// <typeparam name="TData">The type of the data carried by the result.</typeparam>
     /// <typeparam name="TFailure"><inheritdoc cref="IResult{TFailure}"/></typeparam>
