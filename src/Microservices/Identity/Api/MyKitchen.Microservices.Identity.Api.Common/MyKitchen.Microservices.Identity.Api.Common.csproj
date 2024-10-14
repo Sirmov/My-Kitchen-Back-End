@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>
+      ../../../../Documentation/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Common.xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>

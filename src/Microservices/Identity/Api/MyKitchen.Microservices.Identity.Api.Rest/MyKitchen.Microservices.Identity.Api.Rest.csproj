@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>
+      ../../../../Documentation/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Rest.xml</DocumentationFile>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <UserSecretsId>b7f11d78-bc06-44c7-bf13-8023ceaaec7f</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.Identity.Mongo" />
+    <PackageReference Include="AutoMapper" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="MongoDB.Driver" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference
+      Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
+    <ProjectReference
+      Include="..\..\..\..\Common\MyKitchen.Common\MyKitchen.Common.csproj" />
+    <ProjectReference
+      Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj" />
+    <ProjectReference
+      Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Tokens\MyKitchen.Microservices.Identity.Services.Tokens.csproj" />
+    <ProjectReference
+      Include="..\..\MyKitchen.Microservices.Identity.Common\MyKitchen.Microservices.Identity.Common.csproj" />
+    <ProjectReference
+      Include="..\MyKitchen.Microservices.Identity.Api.Common\MyKitchen.Microservices.Identity.Api.Common.csproj" />
+    <ProjectReference
+      Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Users\MyKitchen.Microservices.Identity.Services.Users.csproj" />
+  </ItemGroup>
+
+</Project>
