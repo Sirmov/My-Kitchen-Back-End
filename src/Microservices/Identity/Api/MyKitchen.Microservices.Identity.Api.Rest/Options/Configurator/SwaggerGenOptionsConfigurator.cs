@@ -10,6 +10,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator
     using Microsoft.Extensions.Options;
     using Microsoft.OpenApi.Models;
 
+    using MyKitchen.Common.Constants;
+
     using Swashbuckle.AspNetCore.SwaggerGen;
 
     /// <summary>
@@ -24,8 +26,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Version = "v1",
-                Title = "MyKitchen",
-                Description = "Open source recipes manager.",
+                Title = ApplicationConstants.Title,
+                Description = ApplicationConstants.Description,
                 TermsOfService = new Uri("https://example.com/terms"),
                 Contact = new OpenApiContact
                 {
