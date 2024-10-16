@@ -13,7 +13,9 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.DataProtection;
 
+    using MyKitchen.Common.Constants;
     using MyKitchen.Common.Guard;
     using MyKitchen.Microservices.Identity.Api.Common.Constants;
     using MyKitchen.Microservices.Identity.Api.Rest.Extensions;
@@ -35,6 +37,10 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDataProtection()
+                // .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys")
+                .SetApplicationName(ApplicationConstants.Title);
+
             services.AddControllers();
 
             services.AddCors(options =>
