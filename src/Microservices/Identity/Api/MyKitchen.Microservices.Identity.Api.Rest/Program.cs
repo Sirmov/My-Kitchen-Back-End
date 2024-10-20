@@ -25,20 +25,24 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
 
     internal static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            ConfigureServices(builder.Services, builder.Configuration);
+            await ConfigureServicesAsync(builder.Services, builder.Configuration);
 
             var app = builder.Build();
             ConfigurePipelineAsync(app);
             app.Run();
         }
 
-        private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        private static async Task ConfigureServicesAsync(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddApplicationOptions();
+
+            var connectionMultiplexer = await services.AddRedisCacheAsync(configuration);
+
             services.AddDataProtection()
-                // .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys")
+                .PersistKeysToStackExchangeRedis(connectionMultiplexer, "DataProtection-Keys")
                 .SetApplicationName(ApplicationConstants.Title);
 
             services.AddControllers();
@@ -53,7 +57,6 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
                 });
             });
 
-            services.AddApplicationOptions();
             services.AddApplicationServices();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -65,11 +68,11 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
             services.AddMongoDbIdentity(configuration);
 
             // Automapper configuration
-            var asseblies = new Assembly[]
+            var assemblies = new Assembly[]
             {
                 typeof(UserDto).GetTypeInfo().Assembly,
             };
-            AutoMapperConfig.RegisterMappings(asseblies);
+            AutoMapperConfig.RegisterMappings(assemblies);
             IMapper mapper = AutoMapperConfig.MapperInstance;
             services.AddSingleton<IMapper>(mapper);
 
