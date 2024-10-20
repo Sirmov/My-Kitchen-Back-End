@@ -37,7 +37,7 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
         /// <summary>
         /// Gets a new successful <see cref="ServiceResult"/>.
         /// </summary>
-        public static new ServiceResult Successful => new ();
+        public static ServiceResult Successful => new ();
 
         /// <summary>
         /// Implicit conversion from a <see cref="ProblemDetails"/> to a failed <see cref="ServiceResult"/>.

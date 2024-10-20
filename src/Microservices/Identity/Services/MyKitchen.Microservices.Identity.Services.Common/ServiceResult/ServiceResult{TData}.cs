@@ -60,7 +60,7 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
         /// </summary>
         /// <param name="data"><inheritdoc cref="ServiceResult{TData}.ServiceResult(TData)"/></param>
         /// <returns>Returns a new successful <see cref="ServiceResult{TData}"/> containing <paramref name="data"/>.</returns>
-        public static new ServiceResult<TData> Successful(TData data) => new (data);
+        public static ServiceResult<TData> Successful(TData data) => new (data);
 
         /// <summary>
         /// This method transforms the <see cref="ServiceResult{TData}"/> to a <see cref="IActionResult"/> using

@@ -35,7 +35,7 @@ namespace MyKitchen.Microservices.Identity.Data.Common.QueryResult
         /// <summary>
         /// Gets a new successful <see cref="QueryResult"/>.
         /// </summary>
-        public static new QueryResult Successful => new ();
+        public static QueryResult Successful => new ();
 
         /// <summary>
         /// Implicit conversion from a <see cref="Exception"/> to a failed <see cref="QueryResult"/>.

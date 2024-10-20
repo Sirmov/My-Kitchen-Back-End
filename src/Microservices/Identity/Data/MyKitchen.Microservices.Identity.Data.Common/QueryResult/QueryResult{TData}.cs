@@ -58,6 +58,6 @@ namespace MyKitchen.Microservices.Identity.Data.Common.QueryResult
         /// </summary>
         /// <param name="data"><inheritdoc cref="QueryResult{TData}.QueryResult(TData)"/></param>
         /// <returns>Returns a new successful <see cref="QueryResult{TData}"/> containing <paramref name="data"/>.</returns>
-        public static new QueryResult<TData> Successful(TData data) => new (data);
+        public static QueryResult<TData> Successful(TData data) => new (data);
     }
 }
