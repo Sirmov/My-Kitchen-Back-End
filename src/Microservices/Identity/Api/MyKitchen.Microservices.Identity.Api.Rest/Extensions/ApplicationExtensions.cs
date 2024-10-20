@@ -13,6 +13,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Caching.StackExchangeRedis;
 
+    using MyKitchen.Microservices.Identity.Api.Rest.Middlewares;
     using MyKitchen.Microservices.Identity.Api.Rest.Options;
     using MyKitchen.Microservices.Identity.Services.Tokens;
     using MyKitchen.Microservices.Identity.Services.Tokens.Contracts;
@@ -75,6 +76,18 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             services.AddScoped(typeof(ITokensService<,>), typeof(TokensService<,>));
             services.AddScoped(typeof(IUsersService<,>), typeof(UsersService<,>));
             services.AddScoped(typeof(IUserRolesService<,>), typeof(UserRolesService<,>));
+
+            return services;
+        }
+
+        /// <summary>
+        /// This method registers all application middlewares.
+        /// </summary>
+        /// <param name="services">The service collection where the application middlewares should be registered.</param>
+        /// <returns>Returns the service collection with all application middlewares registered.</returns>
+        public static IServiceCollection AddApplicationMiddlewares(this IServiceCollection services)
+        {
+            services.AddSingleton<AccessTokenInvalidationMiddleware>();
 
             return services;
         }

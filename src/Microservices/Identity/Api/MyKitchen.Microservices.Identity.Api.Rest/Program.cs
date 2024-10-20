@@ -38,6 +38,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
         private static async Task ConfigureServicesAsync(IServiceCollection services, IConfiguration configuration)
         {
             services.AddApplicationOptions();
+            services.AddApplicationMiddlewares();
+            services.AddApplicationServices();
 
             var connectionMultiplexer = await services.AddRedisCacheAsync(configuration);
 
@@ -56,8 +58,6 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
                         .AllowAnyMethod();
                 });
             });
-
-            services.AddApplicationServices();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer();
@@ -97,6 +97,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
+            app.UseAccessTokenInvalidation();
             app.UseAuthorization();
 
             app.MapControllers();
