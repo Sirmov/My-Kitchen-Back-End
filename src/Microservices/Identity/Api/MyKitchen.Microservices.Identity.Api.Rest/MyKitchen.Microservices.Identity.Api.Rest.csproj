@@ -15,25 +15,20 @@
     <PackageReference Include="AspNetCore.Identity.Mongo" />
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
     <PackageReference Include="MongoDB.Driver" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference
-      Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
-    <ProjectReference
-      Include="..\..\..\..\Common\MyKitchen.Common\MyKitchen.Common.csproj" />
-    <ProjectReference
-      Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj" />
-    <ProjectReference
-      Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Tokens\MyKitchen.Microservices.Identity.Services.Tokens.csproj" />
-    <ProjectReference
-      Include="..\..\MyKitchen.Microservices.Identity.Common\MyKitchen.Microservices.Identity.Common.csproj" />
-    <ProjectReference
-      Include="..\MyKitchen.Microservices.Identity.Api.Common\MyKitchen.Microservices.Identity.Api.Common.csproj" />
-    <ProjectReference
-      Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Users\MyKitchen.Microservices.Identity.Services.Users.csproj" />
+    <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
+    <ProjectReference Include="..\..\..\..\Common\MyKitchen.Common\MyKitchen.Common.csproj" />
+    <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Tokens\MyKitchen.Microservices.Identity.Services.Tokens.csproj" />
+    <ProjectReference Include="..\..\MyKitchen.Microservices.Identity.Common\MyKitchen.Microservices.Identity.Common.csproj" />
+    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Api.Common\MyKitchen.Microservices.Identity.Api.Common.csproj" />
+    <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Identity.Services.Users\MyKitchen.Microservices.Identity.Services.Users.csproj" />
   </ItemGroup>
 
 </Project>
