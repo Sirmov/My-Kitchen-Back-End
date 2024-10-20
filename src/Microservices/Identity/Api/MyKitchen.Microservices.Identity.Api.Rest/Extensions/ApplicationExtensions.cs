@@ -1,5 +1,5 @@
 // |-----------------------------------------------------------------------------------------------------|
-// <copyright file="ApplicationServiceCollectionExtensions.cs" company="MyKitchen">
+// <copyright file="ApplicationExtensions.cs" company="MyKitchen">
 // Copyright (c) MyKitchen. All Rights Reserved.
 // Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,6 +11,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.Extensions.Caching.StackExchangeRedis;
 
     using MyKitchen.Microservices.Identity.Api.Rest.Options;
     using MyKitchen.Microservices.Identity.Services.Tokens;
@@ -24,7 +25,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
     /// This static class contains <see cref="IServiceCollection"/> extension methods used for
     /// registering application dependencies.
     /// </summary>
-    public static class ApplicationServiceCollectionExtensions
+    public static class ApplicationExtensions
     {
         /// <summary>
         /// This method registers all application options configuration.
@@ -36,6 +37,10 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             services
                 .AddOptions<IdentityOptions>()
                 .BindConfiguration(nameof(IdentityOptions));
+
+            services
+                .AddOptions<RedisCacheOptions>()
+                .BindConfiguration(nameof(RedisCacheOptions));
 
             services
                 .AddOptionsWithValidateOnStart<TokenOptions>()

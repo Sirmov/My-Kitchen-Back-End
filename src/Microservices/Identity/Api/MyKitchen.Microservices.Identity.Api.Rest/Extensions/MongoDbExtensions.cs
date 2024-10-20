@@ -1,5 +1,5 @@
 // |-----------------------------------------------------------------------------------------------------|
-// <copyright file="MongoDbServiceCollectionExtensions.cs" company="MyKitchen">
+// <copyright file="MongoDbExtensions.cs" company="MyKitchen">
 // Copyright (c) MyKitchen. All Rights Reserved.
 // Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,7 +18,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
     /// This static class contains <see cref="IServiceCollection"/> extension methods used for
     /// registering and configuring mongoDB client and connection.
     /// </summary>
-    public static class MongoDbServiceCollectionExtensions
+    public static class MongoDbExtensions
     {
         /// <summary>
         /// This method registers the mongoDB client and configures it using a delegate action <paramref name="options"/>.

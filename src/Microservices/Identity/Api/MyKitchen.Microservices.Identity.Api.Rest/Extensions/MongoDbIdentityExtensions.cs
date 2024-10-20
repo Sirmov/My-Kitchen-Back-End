@@ -1,5 +1,5 @@
 // |-----------------------------------------------------------------------------------------------------|
-// <copyright file="MongoDbIdentityServiceCollectionExtensions.cs" company="MyKitchen">
+// <copyright file="MongoDbIdentityExtensions.cs" company="MyKitchen">
 // Copyright (c) MyKitchen. All Rights Reserved.
 // Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -24,7 +24,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
     /// This static class contains <see cref="IServiceCollection"/> extension methods used for
     /// registering and configuring mongoDB identity.
     /// </summary>
-    public static class MongoDbIdentityServiceCollectionExtensions
+    public static class MongoDbIdentityExtensions
     {
         /// <summary>
         /// This method registers the mongoDB identity provider and configures it using 2 delegate actions:
