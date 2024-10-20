@@ -133,6 +133,11 @@ namespace MyKitchen.Common.Constants
         public const string Unauthorized = "Access is denied due to invalid credentials.";
 
         /// <summary>
+        /// A error message indicating that the request is not authorized because a revoked access token was used.
+        /// </summary>
+        public const string AccessTokenRevoked = "Access is denied due to revoked access token.";
+
+        /// <summary>
         /// A error message indicating that something is already in some state.
         /// </summary>
         public const string ObjectIsAlready = "{0} is already {1}.";
