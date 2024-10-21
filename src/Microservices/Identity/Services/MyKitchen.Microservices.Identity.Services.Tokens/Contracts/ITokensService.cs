@@ -19,10 +19,18 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens.Contracts
         where TRole : ApplicationRole, new()
     {
         /// <summary>
-        /// This method generates a JWT bearer access token based on a identity <paramref name="user"/>.
+        /// This method asynchronously generates a JWT bearer access token based on a identity <paramref name="user"/>.
         /// </summary>
         /// <param name="user">The <typeparamref name="TUser"/> containing the user claims.</param>
-        /// <returns>Returns a <see langword="string"/>.</returns>
+        /// <returns>Returns a <see langword="string"/> representation of the access token.</returns>
         public Task<string> GenerateAccessTokenAsync(TUser user);
+
+        /// <summary>
+        /// This method generates a JWT refresh token based on a identity <paramref name="user"/>
+        /// used for generating new access tokens.
+        /// </summary>
+        /// <param name="user">The <typeparamref name="TUser"/> containing the user claims.</param>
+        /// <returns>Returns a <see langword="string"/> representation of the refresh token. </returns>
+        public string GenerateRefreshToken(TUser user);
     }
 }

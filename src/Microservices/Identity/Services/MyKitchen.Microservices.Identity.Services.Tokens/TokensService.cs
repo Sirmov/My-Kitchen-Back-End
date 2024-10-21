@@ -17,7 +17,6 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
     using MyKitchen.Microservices.Identity.Common.Options;
     using MyKitchen.Microservices.Identity.Data.Models;
     using MyKitchen.Microservices.Identity.Services.Tokens.Contracts;
-    // using MyKitchen.Microservices.Identity.Services.Users;
     using MyKitchen.Microservices.Identity.Services.Users.Contracts;
 
     /// <summary>
@@ -29,9 +28,9 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
         where TUser : ApplicationUser, new()
         where TRole : ApplicationRole, new()
     {
+        private readonly JwtSecurityTokenHandler tokenHandler;
         private readonly TokenOptions tokenOptions;
         private readonly IDataProtector userIdProtector;
-        // private readonly IUsersService<TUser, TRole> usersService;
         private readonly IUserRolesService<TUser, TRole> userRolesService;
 
         /// <summary>
@@ -43,12 +42,12 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
         public TokensService(
             IOptions<TokenOptions> tokenOptions,
             IDataProtectionProvider dataProtectionProvider,
-            // UsersService<TUser, TRole> usersService,
             IUserRolesService<TUser, TRole> userRolesService)
         {
+            this.tokenHandler = new JwtSecurityTokenHandler();
+
             this.tokenOptions = tokenOptions.Value;
             this.userIdProtector = dataProtectionProvider.CreateProtector(this.GetType().Namespace!, nameof(this.userIdProtector), "v1");
-            // this.usersService = usersService;
             this.userRolesService = userRolesService;
         }
 
@@ -70,8 +69,23 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
                 authClaims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+            return this.GenerateToken(authClaims, this.tokenOptions.AccessTokenLifetime);
+        }
 
+        /// <inheritdoc/>
+        public string GenerateRefreshToken(TUser user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, this.userIdProtector.Protect(user.Id.ToString())),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+
+            return this.GenerateToken(claims, this.tokenOptions.RefreshTokenLifetime);
+        }
+
+        private string GenerateToken(IEnumerable<Claim> claims, TimeSpan expiresAfter)
+        {
             var jwtBearerOptions = this.tokenOptions.JwtBearerOptions;
             var tokenValidationParameters = jwtBearerOptions.TokenValidationParameters;
             SigningCredentials signingCredentials = new (this.tokenOptions.IssuerSigningKey, SecurityAlgorithms.HmacSha256);
@@ -79,16 +93,11 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
             var token = new JwtSecurityToken(
                 issuer: tokenValidationParameters.ValidIssuer,
                 audience: tokenValidationParameters.ValidAudience,
-                expires: DateTime.Now.Add(this.tokenOptions.AccessTokenLifetime),
-                claims: authClaims,
+                expires: DateTime.Now.Add(expiresAfter),
+                claims: claims,
                 signingCredentials: signingCredentials);
 
-            // user.AccessToken = tokenHandler.WriteToken(token);
-
-            // return user.AccessToken;
-
-            string accessToken = tokenHandler.WriteToken(token);
-            return accessToken;
+            return this.tokenHandler.WriteToken(token);
         }
     }
 }

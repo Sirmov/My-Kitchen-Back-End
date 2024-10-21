@@ -43,6 +43,11 @@ namespace MyKitchen.Microservices.Identity.Common.Options
         public TimeSpan AccessTokenLifetime { get; set; } = TimeSpan.FromMinutes(15);
 
         /// <summary>
+        /// Gets or sets the lifetime of a refresh token.
+        /// </summary>
+        public TimeSpan RefreshTokenLifetime { get; set; } = TimeSpan.FromDays(15);
+
+        /// <summary>
         /// Gets or sets the jwt bearer options.
         /// </summary>
         public JwtBearerOptions JwtBearerOptions { get; set; } = new ();
