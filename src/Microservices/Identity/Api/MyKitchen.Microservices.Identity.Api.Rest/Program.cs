@@ -7,8 +7,6 @@
 
 namespace MyKitchen.Microservices.Identity.Api.Rest
 {
-    using System.Reflection;
-
     using AutoMapper;
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,7 +19,6 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
     using MyKitchen.Microservices.Identity.Api.Rest.Extensions;
     using MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator;
     using MyKitchen.Microservices.Identity.Services.Mapping;
-    using MyKitchen.Microservices.Identity.Services.Users.Dtos.User;
 
     internal static class Program
     {
@@ -68,11 +65,11 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
             services.AddMongoDbIdentity(configuration);
 
             // Automapper configuration
-            var assemblies = new Assembly[]
-            {
-                typeof(UserDto).GetTypeInfo().Assembly,
-            };
-            AutoMapperConfig.RegisterMappings(assemblies);
+            // var assemblies = new Assembly[]
+            // {
+            //     typeof(UserDto).GetTypeInfo().Assembly,
+            // };
+            AutoMapperConfig.RegisterMappings(AppDomain.CurrentDomain.GetAssemblies());
             IMapper mapper = AutoMapperConfig.MapperInstance;
             services.AddSingleton<IMapper>(mapper);
 
