@@ -73,7 +73,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
         /// <returns>Returns the service collection with all application services registered.</returns>
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped(typeof(ITokensService<,>), typeof(TokensService<,>));
+            services.AddScoped(typeof(ITokensService), typeof(TokensService));
             services.AddScoped(typeof(IUsersService<,>), typeof(UsersService<,>));
             services.AddScoped(typeof(IUserRolesService<,>), typeof(UserRolesService<,>));
 
