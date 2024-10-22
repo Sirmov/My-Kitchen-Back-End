@@ -11,9 +11,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Common\MyKitchen.Common\MyKitchen.Common.csproj" />
+    <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Common\MyKitchen.Microservices.Identity.Data.Common.csproj" />
+    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />
   </ItemGroup>
 

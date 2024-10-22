@@ -5,7 +5,7 @@
 // </copyright>
 // |-----------------------------------------------------------------------------------------------------|
 
-namespace MyKitchen.Microservices.Identity.Services.Users.Dtos.User
+namespace MyKitchen.Microservices.Identity.Services.Common.Dtos.User
 {
     using System.ComponentModel.DataAnnotations;
 
