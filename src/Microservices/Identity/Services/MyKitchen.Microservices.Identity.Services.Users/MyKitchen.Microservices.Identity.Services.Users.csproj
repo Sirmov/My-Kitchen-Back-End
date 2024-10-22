@@ -10,14 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference
-      Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
-    <ProjectReference
-      Include="..\MyKitchen.Microservices.Identity.Services.Common\MyKitchen.Microservices.Identity.Services.Common.csproj" />
-    <ProjectReference
-      Include="..\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj" />
-    <ProjectReference
-      Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Common\MyKitchen.Microservices.Identity.Data.Common.csproj" />
+    <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Common\MyKitchen.Microservices.Identity.Data.Common.csproj" />
+    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Services.Common\MyKitchen.Microservices.Identity.Services.Common.csproj" />
+    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj" />
+    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Services.Tokens\MyKitchen.Microservices.Identity.Services.Tokens.csproj" />
   </ItemGroup>
 
   <ItemGroup>

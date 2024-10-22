@@ -15,11 +15,14 @@ namespace MyKitchen.Microservices.Identity.Services.Users
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Caching.Distributed;
 
     using MyKitchen.Common.Constants;
     using MyKitchen.Common.ProblemDetails;
     using MyKitchen.Microservices.Identity.Data.Models;
+    using MyKitchen.Microservices.Identity.Services.Common.Dtos.User;
     using MyKitchen.Microservices.Identity.Services.Common.ServiceResult;
+    using MyKitchen.Microservices.Identity.Services.Tokens.Contracts;
     using MyKitchen.Microservices.Identity.Services.Users.Contracts;
     using MyKitchen.Microservices.Identity.Services.Users.Dtos.User;
 
@@ -32,27 +35,35 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         where TRole : ApplicationRole, new()
     {
         private readonly IMapper mapper;
+        private readonly IDistributedCache cache;
         private readonly UserManager<TUser> userManager;
         private readonly SignInManager<TUser> signInManager;
         private readonly IUserRolesService<TUser, TRole> userRolesService;
+        private readonly ITokensService tokensService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersService{TUser, TRole}"/> class.
         /// </summary>
         /// <param name="mapper">The implementation of <see cref="IMapper"/>.</param>
+        /// <param name="cache">The implementation of <see cref="IDistributedCache"/>.</param>
         /// <param name="userManager">The identity user manager.</param>
         /// <param name="signInManager">The identity sign in manager.</param>
         /// <param name="userRolesService">The implementation of <see cref="IUserRolesService{TUser, TRole}"/>.</param>
+        /// <param name="tokensService">The implementation of <see cref="ITokensService"/>.</param>
         public UsersService(
             IMapper mapper,
+            IDistributedCache cache,
             UserManager<TUser> userManager,
             SignInManager<TUser> signInManager,
-            IUserRolesService<TUser, TRole> userRolesService)
+            IUserRolesService<TUser, TRole> userRolesService,
+            ITokensService tokensService)
         {
             this.mapper = mapper;
+            this.cache = cache;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.userRolesService = userRolesService;
+            this.tokensService = tokensService;
         }
 
         /// <inheritdoc/>
@@ -166,8 +177,9 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         }
 
         /// <inheritdoc/>
-        public async Task<ServiceResult> LogoutAsync()
+        public async Task<ServiceResult> LogoutAsync(string accessTokenId)
         {
+            await this.tokensService.RevokeTokenAsync(accessTokenId);
             await this.signInManager.SignOutAsync();
             return ServiceResult.Successful;
         }

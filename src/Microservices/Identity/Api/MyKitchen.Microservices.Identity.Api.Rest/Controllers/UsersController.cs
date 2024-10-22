@@ -17,6 +17,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
     using MyKitchen.Common.ProblemDetails;
     using MyKitchen.Microservices.Identity.Api.Common.Constants;
     using MyKitchen.Microservices.Identity.Data.Models;
+    using MyKitchen.Microservices.Identity.Services.Common.Dtos.User;
     using MyKitchen.Microservices.Identity.Services.Tokens.Contracts;
     using MyKitchen.Microservices.Identity.Services.Users.Contracts;
     using MyKitchen.Microservices.Identity.Services.Users.Dtos.User;
@@ -30,7 +31,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         private readonly IMapper mapper;
         private readonly IUsersService<ApplicationUser, ApplicationRole> usersService;
         private readonly IUserRolesService<ApplicationUser, ApplicationRole> userRolesService;
-        private readonly ITokensService<ApplicationUser, ApplicationRole> tokensService;
+        private readonly ITokensService tokensService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
@@ -38,12 +39,12 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         /// <param name="mapper">The implementation of <see cref="IMapper"/>.</param>
         /// <param name="usersService">The implementation of <see cref="IUsersService{TUser, TRole}"/>.</param>
         /// <param name="userRolesService">The implementation of <see cref="IUserRolesService{TUser, TRole}"/>.</param>
-        /// <param name="tokensService">The implementation of <see cref="ITokensService{TUser, TRole}"/>.</param>
+        /// <param name="tokensService">The implementation of <see cref="ITokensService"/>.</param>
         public UsersController(
             IMapper mapper,
             IUsersService<ApplicationUser, ApplicationRole> usersService,
             IUserRolesService<ApplicationUser, ApplicationRole> userRolesService,
-            ITokensService<ApplicationUser, ApplicationRole> tokensService)
+            ITokensService tokensService)
         {
             this.mapper = mapper;
             this.usersService = usersService;
@@ -83,9 +84,9 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         {
             var authenticationResult = await this.usersService.LoginWithEmailAsync(loginDto);
 
-            return await authenticationResult.ToActionResult(async user =>
+            return authenticationResult.ToActionResult(user =>
             {
-                var token = await this.tokensService.GenerateAccessTokenAsync(user);
+                var token = this.tokensService.GenerateAccessToken(this.mapper.Map<UserDto>(user));
 
                 return this.Ok(new { Token = token });
             });
@@ -100,7 +101,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Logout()
         {
-            var logoutResult = await this.usersService.LogoutAsync();
+            var accessToken = this.HttpContext.Items["AccessToken"].ToString();
+            var logoutResult = await this.usersService.LogoutAsync(accessToken!);
 
             return logoutResult.ToActionResult(_ => this.NoContent());
         }

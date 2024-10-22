@@ -10,6 +10,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users.Contracts
     using Microsoft.AspNetCore.Identity;
 
     using MyKitchen.Microservices.Identity.Data.Models;
+    using MyKitchen.Microservices.Identity.Services.Common.Dtos.User;
     using MyKitchen.Microservices.Identity.Services.Common.ServiceResult;
     using MyKitchen.Microservices.Identity.Services.Users.Dtos.User;
 
@@ -65,8 +66,9 @@ namespace MyKitchen.Microservices.Identity.Services.Users.Contracts
         /// <summary>
         /// This method asynchronously signs out a user.
         /// </summary>
+        /// <param name="accessTokenId">The id of the access token of the user.</param>
         /// <returns>Returns am empty <see cref="ServiceResult"/>.</returns>
-        public Task<ServiceResult> LogoutAsync();
+        public Task<ServiceResult> LogoutAsync(string accessTokenId);
 
         /// <summary>
         /// This method asynchronously checks whether a user is signed in.
