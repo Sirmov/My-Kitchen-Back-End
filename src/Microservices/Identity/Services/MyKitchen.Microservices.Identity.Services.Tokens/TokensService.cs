@@ -36,7 +36,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
         private readonly IDistributedCache cache;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TokensService{TUser, TRole}"/> class.
+        /// Initializes a new instance of the <see cref="TokensService"/> class.
         /// </summary>
         /// <param name="tokenOptions">The <see cref="TokenOptions"/>.</param>
         /// <param name="dataProtectionProvider">The implementation of <see cref="IDataProtectionProvider"/>.</param>
