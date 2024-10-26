@@ -2,6 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <RootDir Condition=" '$(RootDir)' == '' ">$(MSBuildThisFileDirectory)</RootDir>
+        <DefaultItemExcludes>$(MSBuildProjectName).Tests\**;%(DefaultItemExcludes)</DefaultItemExcludes>
     </PropertyGroup>
 
     <ItemGroup>
