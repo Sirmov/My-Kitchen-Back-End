@@ -9,6 +9,8 @@ namespace MyKitchen.Common.Guard
 {
     using System.Text.RegularExpressions;
 
+    using MyKitchen.Common.Constants;
+
     /// <summary>
     /// This class implements the <see cref="IGuard"/> interface.
     /// </summary>
@@ -96,7 +98,7 @@ namespace MyKitchen.Common.Guard
             var constructor = typeof(TOut).GetConstructor([typeof(string)]);
 
             return constructor == null
-                ? throw new InvalidOperationException($"Type {typeof(TOut)} does not have a constructor that takes a string.")
+                ? throw new InvalidOperationException(string.Format(ExceptionMessages.TypeDoesNotHaveStringConstructor, typeof(TOut).Name))
                 : (TOut)constructor.Invoke([message]);
         }
     }
