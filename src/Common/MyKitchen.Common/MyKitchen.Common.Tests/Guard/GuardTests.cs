@@ -5,7 +5,7 @@
 // </copyright>
 // |-----------------------------------------------------------------------------------------------------|
 
-namespace MyKitchen.Common.Tests
+namespace MyKitchen.Common.Tests.Guard
 {
     using System.Text.RegularExpressions;
 
