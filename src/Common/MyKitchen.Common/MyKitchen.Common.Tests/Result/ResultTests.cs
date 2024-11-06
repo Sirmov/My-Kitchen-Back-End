@@ -8,6 +8,7 @@
 namespace MyKitchen.Common.Tests.Result
 {
     using MyKitchen.Common.Result;
+    using MyKitchen.Common.Result.Contracts;
 
     /// <summary>
     /// This test fixture contains unit tests for the <see cref="Result{TFailure}"/> class.
@@ -17,15 +18,15 @@ namespace MyKitchen.Common.Tests.Result
     {
         private const string ResultShouldNotBeNullMessage = "Result should not be null.";
         private const string ResultShouldBeSuccessfulMessage = "Result should be successful.";
-
-        // private const string ResultShouldNotBeSuccessfulMessage = "Result should not be successful.";
+        private const string ResultShouldNotBeSuccessfulMessage = "Result should not be successful.";
         private const string ResultShouldBeFailedMessage = "Result should be failed.";
-
-        // private const string ResultShouldNotBeFailedMessage = "Result should not be failed.";
+        private const string ResultShouldNotBeFailedMessage = "Result should not be failed.";
         private const string ResultFailureMessageShouldBeMessage = "Result failure message should be \"{0}\"";
         private const string ResultFailureShouldBeNullMessage = "Result failure should be null.";
         private const string DependOnShouldReturnFalseMessage = "DependOn should return false.";
         private const string DependOnShouldReturnTrueMessage = "DependOn should return true.";
+        private const string MatchShouldReturnTrueMessage = "Match should return true.";
+        private const string MatchShouldReturnFalseMessage = "Match should return false.";
 
         /// <summary>
         /// This test checks whether <see cref="Result{TFailure}.Result()"/> creates result.
@@ -126,11 +127,90 @@ namespace MyKitchen.Common.Tests.Result
             Assert.That(result.IsFailed, Is.True, ResultShouldBeFailedMessage);
         }
 
-        // TODO: Succeed, Failed
-        public void Result_FailureIsNull_
+        /// <summary>
+        /// This test checks whether <see cref="Result{TFailure}.IsSuccessful"/>
+        /// is <see langword="true"/> when <see cref="Result{TFailure}.Failure"/> is <see langword="null"/>.
+        /// </summary>
+        [Test]
+        public void Result_FailureIsNull_IsSuccessfulIsTrue()
+        {
+            // Arrange
+            // Act
+            var result = new Result<Exception>();
+
+            // Assert
+            Assert.That(result.IsSuccessful, Is.True, ResultShouldBeSuccessfulMessage);
+        }
 
         /// <summary>
-        /// This test checks whether the <see cref="Result{TFailure}.DependOn(Common.Result.Contracts.IResult{TFailure})"/>
+        /// This test checks whether <see cref="Result{TFailure}.IsSuccessful"/>
+        /// is <see langword="false"/> when <see cref="Result{TFailure}.Failure"/> is not <see langword="null"/>.
+        /// </summary>
+        [Test]
+        public void Result_FailureIsNotNull_IsSuccessfulIsFalse()
+        {
+            // Arrange
+            var failedResult = new Result<Exception>
+            {
+                // Act
+                Failure = new Exception(),
+            };
+
+            // Assert
+            Assert.That(failedResult.IsSuccessful, Is.False, ResultShouldNotBeSuccessfulMessage);
+        }
+
+        /// <summary>
+        /// This test checks whether <see cref="Result{TFailure}.IsFailed"/>
+        /// is <see langword="false"/> when <see cref="Result{TFailure}.Failure"/> is <see langword="null"/>.
+        /// </summary>
+        [Test]
+        public void Result_FailureIsNull_IsFailedIsFalse()
+        {
+            // Arrange
+            // Act
+            var result = new Result<Exception>();
+
+            // Assert
+            Assert.That(result.IsFailed, Is.False, ResultShouldNotBeFailedMessage);
+        }
+
+        /// <summary>
+        /// This test checks whether <see cref="Result{TFailure}.IsFailed"/>
+        /// is <see langword="true"/> when <see cref="Result{TFailure}.Failure"/> is not <see langword="null"/>.
+        /// </summary>
+        [Test]
+        public void Result_FailureIsNotNull_IsFailedIsTrue()
+        {
+            // Arrange
+            var result = new Result<Exception>
+            {
+                // Act
+                Failure = new Exception(),
+            };
+
+            // Assert
+            Assert.That(result.IsFailed, Is.True, ResultShouldBeFailedMessage);
+        }
+
+        /// <summary>
+        /// This test checks whether <see cref="Result{TFailure}"/> has a
+        /// </summary>
+        [Test]
+        public void ImplicitOperator_TFailure_CreatesFailedResult()
+        {
+            // Arrange
+            var exception = new Exception();
+
+            // Act
+            Result<Exception> result = exception;
+
+            // Assert
+            Assert.That(result.IsFailed, Is.True, ResultShouldBeFailedMessage);
+        }
+
+        /// <summary>
+        /// This test checks whether the <see cref="Result{TFailure}.DependOn(IResult{TFailure})"/>
         /// sets the <see cref="Result{TFailure}.Failure"/> to the failure of the failed dependency result.
         /// </summary>
         /// <param name="exceptionMessage">The exception message used for creating the exception used to test the setter.</param>
@@ -150,7 +230,7 @@ namespace MyKitchen.Common.Tests.Result
         }
 
         /// <summary>
-        /// This test checks whether the <see cref="Result{TFailure}.DependOn(Common.Result.Contracts.IResult{TFailure})"/>
+        /// This test checks whether the <see cref="Result{TFailure}.DependOn(IResult{TFailure})"/>
         /// doesn't change the result failure if the dependency result is successful.
         /// </summary>
         [Test]
@@ -168,7 +248,7 @@ namespace MyKitchen.Common.Tests.Result
         }
 
         /// <summary>
-        /// This test checks whether the <see cref="Result{TFailure}.DependOn(Common.Result.Contracts.IResult{TFailure})"/>
+        /// This test checks whether the <see cref="Result{TFailure}.DependOn(IResult{TFailure})"/>
         /// returns false when the dependency result is failed.
         /// </summary>
         [Test]
@@ -186,7 +266,7 @@ namespace MyKitchen.Common.Tests.Result
         }
 
         /// <summary>
-        /// This test checks whether the <see cref="Result{TFailure}.DependOn(Common.Result.Contracts.IResult{TFailure})"/>
+        /// This test checks whether the <see cref="Result{TFailure}.DependOn(IResult{TFailure})"/>
         /// returns true when the dependency result is successful.
         /// </summary>
         [Test]
@@ -201,6 +281,46 @@ namespace MyKitchen.Common.Tests.Result
 
             // Assert
             Assert.That(isSuccessful, Is.True, DependOnShouldReturnTrueMessage);
+        }
+
+        /// <summary>
+        /// This test checks whether
+        /// <see cref="Result{TFailure}.Match{TMatch}(Func{IResult{TFailure}, TMatch}, Func{IResult{TFailure}, TMatch})"/>
+        /// calls onSuccess callback when the result is successful.
+        /// </summary>
+        [Test]
+        public void Match_ResultIsSuccessful_OnSuccessIsCalled()
+        {
+            // Arrange
+            var result = new Result<Exception>();
+            Func<IResult<Exception>, bool> onSuccess = (IResult<Exception> _) => true;
+            Func<IResult<Exception>, bool> onFailure = (IResult<Exception> _) => false;
+
+            // Act
+            var match = result.Match(onSuccess, onFailure);
+
+            // Assert
+            Assert.That(match, Is.True, MatchShouldReturnTrueMessage);
+        }
+
+        /// <summary>
+        /// This test checks whether
+        /// <see cref="Result{TFailure}.Match{TMatch}(Func{IResult{TFailure}, TMatch}, Func{IResult{TFailure}, TMatch})"/>
+        /// calls onFailure callback when the result is failed.
+        /// </summary>
+        [Test]
+        public void Match_ResultIsFailed_OnFailureIsCalled()
+        {
+             // Arrange
+            var failedResult = new Result<Exception>(new Exception());
+            Func<IResult<Exception>, bool> onSuccess = (IResult<Exception> _) => true;
+            Func<IResult<Exception>, bool> onFailure = (IResult<Exception> _) => false;
+
+            // Act
+            var match = failedResult.Match(onSuccess, onFailure);
+
+            // Assert
+            Assert.That(match, Is.False, MatchShouldReturnFalseMessage);
         }
     }
 }
