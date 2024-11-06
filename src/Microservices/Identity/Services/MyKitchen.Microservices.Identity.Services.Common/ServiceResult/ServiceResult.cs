@@ -54,7 +54,7 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
         /// <returns>Return a <see cref="IActionResult"/>.</returns>
         public IActionResult ToActionResult(Func<ServiceResult, IActionResult> onSuccess)
         {
-            if (this.Succeed)
+            if (this.IsSuccessful)
             {
                 return onSuccess(this);
             }
@@ -71,7 +71,7 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
         /// <returns>Return a <see cref="Task{TResult}"/> of <see cref="IActionResult"/>.</returns>
         public async Task<IActionResult> ToActionResult(Func<ServiceResult, Task<IActionResult>> onSuccess)
         {
-            if (this.Succeed)
+            if (this.IsSuccessful)
             {
                 return await onSuccess(this);
             }

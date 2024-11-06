@@ -52,7 +52,7 @@ namespace MyKitchen.Common.Tests.Result
             var result = new Result<Exception>();
 
             // Assert
-            Assert.That(result.Succeed, Is.True, ResultShouldBeSuccessfulMessage);
+            Assert.That(result.IsSuccessful, Is.True, ResultShouldBeSuccessfulMessage);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace MyKitchen.Common.Tests.Result
             var result = new Result<Exception>(exception);
 
             // Assert
-            Assert.That(result.Failed, Is.True, ResultShouldBeFailedMessage);
+            Assert.That(result.IsFailed, Is.True, ResultShouldBeFailedMessage);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace MyKitchen.Common.Tests.Result
 
         /// <summary>
         /// This test checks whether setting the <see cref="Result{TFailure}.Failure"/> to a
-        /// not <see langword="null"/> value changes the <see cref="Result{TFailure}.Failed"/>
+        /// not <see langword="null"/> value changes the <see cref="Result{TFailure}.IsFailed"/>
         /// flag to <see langword="true"/>.
         /// </summary>
         [Test]
@@ -123,7 +123,7 @@ namespace MyKitchen.Common.Tests.Result
             };
 
             // Assert
-            Assert.That(result.Failed, Is.True, ResultShouldBeFailedMessage);
+            Assert.That(result.IsFailed, Is.True, ResultShouldBeFailedMessage);
         }
 
         // TODO: Succeed, Failed

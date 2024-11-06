@@ -118,7 +118,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
 
             var findResult = await this.FindUserByIdAsync(userDto.Id.ToString());
 
-            if (!findResult.Succeed)
+            if (!findResult.IsSuccessful)
             {
                 return new (new NotFoundDetails(string.Format(ExceptionMessages.NoEntityWithPropertyFound, nameof(userDto), nameof(userDto.Id))));
             }

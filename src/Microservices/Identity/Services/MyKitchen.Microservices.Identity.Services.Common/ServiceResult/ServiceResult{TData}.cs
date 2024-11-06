@@ -70,7 +70,7 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
         /// <inheritdoc cref="ServiceResult.ToActionResult(Func{ServiceResult, IActionResult})"/>
         public IActionResult ToActionResult(Func<TData, IActionResult> onSuccess)
         {
-            if (this.Succeed && this.Data != null)
+            if (this.IsSuccessful && this.Data != null)
             {
                 return onSuccess(this.Data);
             }
@@ -86,7 +86,7 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
         /// <inheritdoc cref="ServiceResult.ToActionResult(Func{ServiceResult, Task{IActionResult}})"/>
         public async Task<IActionResult> ToActionResult(Func<TData, Task<IActionResult>> onSuccess)
         {
-            if (this.Succeed && this.Data != null)
+            if (this.IsSuccessful && this.Data != null)
             {
                 return await onSuccess(this.Data);
             }
