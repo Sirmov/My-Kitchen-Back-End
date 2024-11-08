@@ -194,7 +194,8 @@ namespace MyKitchen.Common.Tests.Result
         }
 
         /// <summary>
-        /// This test checks whether <see cref="Result{TFailure}"/> has a
+        /// This test checks whether <see cref="Result{TFailure}"/> has a implicit operator creating a
+        /// failed result from a TFailure variable.
         /// </summary>
         [Test]
         public void ImplicitOperator_TFailure_CreatesFailedResult()
