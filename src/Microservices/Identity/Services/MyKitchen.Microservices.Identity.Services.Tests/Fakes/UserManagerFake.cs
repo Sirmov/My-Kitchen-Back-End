@@ -9,6 +9,8 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
 {
     using Microsoft.AspNetCore.Identity;
 
+    using MockQueryable;
+
     using Moq;
 
     using MyKitchen.Microservices.Identity.Data.Models;
@@ -27,15 +29,8 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
         /// Initializes a new instance of the <see cref="UserManagerFake{TUser}"/> class.
         /// </summary>
         public UserManagerFake()
+            : this(new List<TUser>())
         {
-            var userStoreMock = new Mock<IUserStore<TUser>>();
-            this.Mock = new Mock<UserManager<TUser>>(userStoreMock.Object);
-            this.Mock.Object.UserValidators.Add(new UserValidator<TUser>());
-            this.Mock.Object.PasswordValidators.Add(new PasswordValidator<TUser>());
-
-            this.SetupBehavior(this.Mock);
-
-            this.Instance = this.Mock.Object;
         }
 
         /// <summary>
@@ -43,9 +38,17 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
         /// </summary>
         /// <param name="users">A list of users used to populate the <see cref="UserManagerFake{TUser}"/>.<</param>
         public UserManagerFake(List<TUser> users)
-            : this()
         {
             this.users = users;
+
+            var userStoreMock = new Mock<IUserStore<TUser>>();
+            this.Mock = new Mock<UserManager<TUser>>(userStoreMock.Object, null, null, null, null, null, null, null, null);
+            this.Mock.Object.UserValidators.Add(new UserValidator<TUser>());
+            this.Mock.Object.PasswordValidators.Add(new PasswordValidator<TUser>());
+
+            this.SetupBehavior(this.Mock);
+
+            this.Instance = this.Mock.Object;
         }
 
         /// <inheritdoc/>
@@ -57,8 +60,10 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
         /// <inheritdoc/>
         public void SetupBehavior(Mock<UserManager<TUser>> mock)
         {
+            mock.Setup(x => x.Users).Returns(this.users.BuildMock());
+
             mock.Setup(x => x.CreateAsync(It.IsAny<TUser>(), It.IsAny<string>()))
-                .Callback((TUser user) => this.users.Add(user))
+                .Callback((TUser user, string _) => this.users.Add(user))
                 .ReturnsAsync(IdentityResult.Success);
 
             mock.Setup(x => x.UpdateAsync(It.IsAny<TUser>()))
@@ -82,6 +87,10 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
 
             mock.Setup(x => x.IsInRoleAsync(It.IsAny<TUser>(), It.IsAny<string>()))
                 .ReturnsAsync((TUser user, string role) => user.Roles.Contains(role));
+
+            mock.Setup(x => x.AddToRoleAsync(It.IsAny<TUser>(), It.IsAny<string>()))
+                .Callback((TUser user, string role) => user.Roles.Add(role))
+                .ReturnsAsync(IdentityResult.Success);
 
             mock.Setup(x => x.RemoveFromRoleAsync(It.IsAny<TUser>(), It.IsAny<string>()))
                 .Callback((TUser user, string role) => user.Roles.Remove(role))

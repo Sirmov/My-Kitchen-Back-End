@@ -9,6 +9,8 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
 {
     using Microsoft.AspNetCore.Identity;
 
+    using MockQueryable;
+
     using Moq;
 
     using MyKitchen.Microservices.Identity.Data.Models;
@@ -21,20 +23,14 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
     public class RoleManagerFake<TRole> : IFake<RoleManager<TRole>>
         where TRole : ApplicationRole
     {
-        private readonly List<TRole> roles = new List<TRole>();
+        private readonly List<TRole> roles;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoleManagerFake{TRole}"/> class.
         /// </summary>
         public RoleManagerFake()
+            : this(new List<TRole>())
         {
-            var roleStoreMock = new Mock<IRoleStore<TRole>>();
-            this.Mock = new Mock<RoleManager<TRole>>(roleStoreMock.Object);
-            this.Mock.Object.RoleValidators.Add(new RoleValidator<TRole>());
-
-            this.SetupBehavior(this.Mock);
-
-            this.Instance = this.Mock.Object;
         }
 
         /// <summary>
@@ -42,9 +38,16 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
         /// </summary>
         /// <param name="roles">A list of roles used to populate the <see cref="RoleManagerFake{TUser}"/>.<</param>
         public RoleManagerFake(List<TRole> roles)
-            : this()
         {
             this.roles = roles;
+
+            var roleStoreMock = new Mock<IRoleStore<TRole>>();
+            this.Mock = new Mock<RoleManager<TRole>>(roleStoreMock.Object, null, null, null, null);
+            this.Mock.Object.RoleValidators.Add(new RoleValidator<TRole>());
+
+            this.SetupBehavior(this.Mock);
+
+            this.Instance = this.Mock.Object;
         }
 
         /// <inheritdoc/>
@@ -56,7 +59,8 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
         /// <inheritdoc/>
         public void SetupBehavior(Mock<RoleManager<TRole>> mock)
         {
-            mock.Setup(x => x.Roles).Returns(this.roles.AsQueryable());
+            var rolesMock = this.roles.BuildMock();
+            mock.Setup(x => x.Roles).Returns(rolesMock);
 
             mock.Setup(x => x.RoleExistsAsync(It.IsAny<string>()))
                 .ReturnsAsync((string roleName) => this.roles.Exists(r => r.Name == roleName));
