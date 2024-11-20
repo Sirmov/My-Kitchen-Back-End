@@ -92,10 +92,11 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
 
             bool isRefreshTokenValid = await this.ValidateTokenAsync(refreshToken);
             bool isAccessTokenValid = await this.ValidateTokenAsync(accessToken, false);
-            bool isRevoked = (await this.cache.GetAsync(accessTokenJwt.Id)) is not null;
+            bool isAccessTokenRevoked = (await this.cache.GetAsync(accessTokenJwt.Id)) is not null;
+            bool isRefreshTokenRevoked = (await this.cache.GetAsync(refreshTokenJwt.Id)) is not null;
             bool areUserIdsEqual = refreshTokenJwt.Subject == accessTokenJwt.Subject;
 
-            if ((!isRefreshTokenValid || !isAccessTokenValid) && areUserIdsEqual && !isRevoked)
+            if (!isRefreshTokenValid || !isAccessTokenValid || !areUserIdsEqual || isAccessTokenRevoked || isRefreshTokenRevoked)
             {
                 new UnauthorizedDetails(ExceptionMessages.Unauthorized);
             }
@@ -131,7 +132,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
             var token = new JwtSecurityToken(
                 issuer: this.tokenValidationParameters.ValidIssuer,
                 audience: this.tokenValidationParameters.ValidAudience,
-                expires: DateTime.Now.Add(expiresAfter),
+                expires: DateTime.UtcNow.Add(expiresAfter),
                 claims: claims,
                 signingCredentials: signingCredentials);
 
