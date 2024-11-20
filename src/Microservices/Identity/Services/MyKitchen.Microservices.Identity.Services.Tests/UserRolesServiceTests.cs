@@ -23,7 +23,6 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         private const string ObjectNotOfTypeMessage = "{0} type is not correct. Expected: {1}.";
         private const string UserNotInRoleMessage = "User should be in role: {0}.";
         private const string ResultShouldBeSuccessful = "Result should be successful.";
-        private const string ResultShouldNotBeSuccessful = "Result should not be successful.";
         private const string ResultShouldBeTrue = "Result data should be true.";
         private const string ResultShouldBeFalse = "Result data should be false.";
 
@@ -33,6 +32,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         /// </summary>
         /// <param name="roleNames">The names of the roles to be used for testing.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous method.</returns>
+        [Test]
         [TestCase("", "     ", "Admin", null)]
         public async Task GetAllRolesAsync_WhitespaceRoles_ReturnsAllNonWhiteSpaceRoles(params string?[] roleNames)
         {
@@ -66,6 +66,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         /// </summary>
         /// <param name="userRoleNames">The names of the roles of the user to be used for testing.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous method.</returns>
+        [Test]
         [TestCase("User", "Admin")]
         public async Task GetUserRolesAsync_UserRoles_ReturnsAllUserRoles(params string[] userRoleNames)
         {
@@ -103,7 +104,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
                 userManagerFake.Instance, roleManagerFake.Instance);
 
             // Act
-            var addResult = await userRolesService.AddToRoleAsync(null, "role");
+            var addResult = await userRolesService.AddToRoleAsync(null!, "role");
 
             // Assert
             Assert.That(
@@ -172,6 +173,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         /// </summary>
         /// <param name="userRole">The role the user to be added to.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous method.</returns>
+        [Test]
         [TestCase("Admin")]
         public async Task AddToRoleAsync_AddsUserToRole_ReturnsSuccessfulResult(string userRole)
         {
@@ -212,7 +214,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
                 userManagerFake.Instance, roleManagerFake.Instance);
 
             // Act
-            var removeResult = await userRolesService.RemoveFromRoleAsync(null, "role");
+            var removeResult = await userRolesService.RemoveFromRoleAsync(null!, "role");
 
             // Assert
             Assert.That(
@@ -281,6 +283,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         /// </summary>
         /// <param name="userRole">The role the user to be removed from.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous method.</returns>
+        [Test]
         [TestCase("Admin")]
         public async Task RemoveFromRoleAsync_RemovesUserFromRole_ReturnsSuccessfulResult(string userRole)
         {
