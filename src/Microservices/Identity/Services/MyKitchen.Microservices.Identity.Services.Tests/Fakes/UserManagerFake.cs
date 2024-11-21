@@ -42,7 +42,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
             this.users = users;
 
             var userStoreMock = new Mock<IUserStore<TUser>>();
-            this.Mock = new Mock<UserManager<TUser>>(userStoreMock.Object, null, null, null, null, null, null, null, null);
+            this.Mock = new Mock<UserManager<TUser>>(userStoreMock.Object, null!, null!, null!, null!, null!, null!, null!, null!);
             this.Mock.Object.UserValidators.Add(new UserValidator<TUser>());
             this.Mock.Object.PasswordValidators.Add(new PasswordValidator<TUser>());
 

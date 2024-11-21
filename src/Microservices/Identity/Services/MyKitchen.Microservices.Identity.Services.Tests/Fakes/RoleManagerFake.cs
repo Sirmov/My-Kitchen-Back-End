@@ -42,7 +42,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
             this.roles = roles;
 
             var roleStoreMock = new Mock<IRoleStore<TRole>>();
-            this.Mock = new Mock<RoleManager<TRole>>(roleStoreMock.Object, null, null, null, null);
+            this.Mock = new Mock<RoleManager<TRole>>(roleStoreMock.Object, null!, null!, null!, null!);
             this.Mock.Object.RoleValidators.Add(new RoleValidator<TRole>());
 
             this.SetupBehavior(this.Mock);

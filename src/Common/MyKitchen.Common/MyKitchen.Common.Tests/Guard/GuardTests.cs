@@ -72,7 +72,7 @@ namespace MyKitchen.Common.Tests.Guard
 
             // Assert
             Assert.That(exception, Is.Not.Null, ExceptionShouldNotBeNullMessage);
-            Assert.That(exception.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
+            Assert.That(exception!.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace MyKitchen.Common.Tests.Guard
 
             // Assert
             Assert.That(exception, Is.Not.Null, ExceptionShouldNotBeNullMessage);
-            Assert.That(exception.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
+            Assert.That(exception!.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace MyKitchen.Common.Tests.Guard
 
             // Assert
             Assert.That(exception, Is.Not.Null, ExceptionShouldNotBeNullMessage);
-            Assert.That(exception.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
+            Assert.That(exception!.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace MyKitchen.Common.Tests.Guard
 
             // Assert
             Assert.That(exception, Is.Not.Null, ExceptionShouldNotBeNullMessage);
-            Assert.That(exception.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
+            Assert.That(exception!.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace MyKitchen.Common.Tests.Guard
 
             // Assert
             Assert.That(exception, Is.Not.Null, ExceptionShouldNotBeNullMessage);
-            Assert.That(exception.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
+            Assert.That(exception!.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace MyKitchen.Common.Tests.Guard
 
             // Assert
             Assert.That(exception, Is.Not.Null, ExceptionShouldNotBeNullMessage);
-            Assert.That(exception.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
+            Assert.That(exception!.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace MyKitchen.Common.Tests.Guard
 
             // Assert
             Assert.That(exception, Is.Not.Null, ExceptionShouldNotBeNullMessage);
-            Assert.That(exception.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
+            Assert.That(exception!.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace MyKitchen.Common.Tests.Guard
 
             // Assert
             Assert.That(exception, Is.Not.Null, ExceptionShouldNotBeNullMessage);
-            Assert.That(exception.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
+            Assert.That(exception!.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
         }
 
         /// <summary>
@@ -391,7 +391,7 @@ namespace MyKitchen.Common.Tests.Guard
 
             // Assert
             Assert.That(exception, Is.Not.Null, ExceptionShouldNotBeNullMessage);
-            Assert.That(exception.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
+            Assert.That(exception!.Message, Is.EqualTo(exceptionMessage), ExceptionMessageIsNotCorrect);
         }
 
         /// <summary>
