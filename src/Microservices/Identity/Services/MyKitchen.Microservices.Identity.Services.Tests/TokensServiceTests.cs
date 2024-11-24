@@ -29,7 +29,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
     using MyKitchen.Microservices.Identity.Services.Tokens;
 
     /// <summary>
-    /// This test fixture contains unit tests for the <see cref="TokensService}"/> class.
+    /// This test fixture contains unit tests for the <see cref="TokensService"/> class.
     /// </summary>
     [TestFixture]
     public class TokensServiceTests
