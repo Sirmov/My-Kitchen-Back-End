@@ -15,7 +15,6 @@ namespace MyKitchen.Microservices.Identity.Services.Users
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Caching.Distributed;
 
     using MyKitchen.Common.Constants;
     using MyKitchen.Common.ProblemDetails;
@@ -35,7 +34,6 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         where TRole : ApplicationRole, new()
     {
         private readonly IMapper mapper;
-        private readonly IDistributedCache cache;
         private readonly UserManager<TUser> userManager;
         private readonly SignInManager<TUser> signInManager;
         private readonly IUserRolesService<TUser, TRole> userRolesService;
@@ -45,21 +43,18 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         /// Initializes a new instance of the <see cref="UsersService{TUser, TRole}"/> class.
         /// </summary>
         /// <param name="mapper">The implementation of <see cref="IMapper"/>.</param>
-        /// <param name="cache">The implementation of <see cref="IDistributedCache"/>.</param>
         /// <param name="userManager">The identity user manager.</param>
         /// <param name="signInManager">The identity sign in manager.</param>
         /// <param name="userRolesService">The implementation of <see cref="IUserRolesService{TUser, TRole}"/>.</param>
         /// <param name="tokensService">The implementation of <see cref="ITokensService"/>.</param>
         public UsersService(
             IMapper mapper,
-            IDistributedCache cache,
             UserManager<TUser> userManager,
             SignInManager<TUser> signInManager,
             IUserRolesService<TUser, TRole> userRolesService,
             ITokensService tokensService)
         {
             this.mapper = mapper;
-            this.cache = cache;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.userRolesService = userRolesService;
@@ -75,7 +70,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         }
 
         /// <inheritdoc/>
-        public async Task<ServiceResult<TUser>> RegisterWithEmailAndUsernameAsync(UserRegisterDto userRegisterDto, IEnumerable<string>? roles = null)
+        public async Task<ServiceResult<UserDto>> RegisterWithEmailAndUsernameAsync(UserRegisterDto userRegisterDto, IEnumerable<string>? roles = null)
         {
             var isUserValid = this.ValidateDto(userRegisterDto);
 
@@ -95,15 +90,18 @@ namespace MyKitchen.Microservices.Identity.Services.Users
 
             if (roles != null)
             {
-                user = (await this.FindUserByEmailAsync(userRegisterDto.Email)).Data!;
-
                 foreach (var role in roles)
                 {
-                    await this.userRolesService.AddToRoleAsync(user, role);
+                    var addToRoleResult = await this.userRolesService.AddToRoleAsync(user, role);
+
+                    if (addToRoleResult.IsSuccessful)
+                    {
+                        user.Roles.Add(role);
+                    }
                 }
             }
 
-            return user;
+            return this.mapper.Map<UserDto>(user);
         }
 
         /// <inheritdoc/>
@@ -123,7 +121,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
                 return new (new NotFoundDetails(string.Format(ExceptionMessages.NoEntityWithPropertyFound, nameof(userDto), nameof(userDto.Id))));
             }
 
-            var user = findResult.Data!;
+            var user = this.mapper.Map<TUser>(findResult.Data!);
 
             foreach (var role in userDto.Roles)
             {
@@ -145,13 +143,14 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         }
 
         /// <inheritdoc/>
-        public async Task<ServiceResult<TUser>> LoginWithEmailAsync(UserLoginDto userLoginDto, bool isPersistant = false, bool isLockout = true)
+        public async Task<ServiceResult<UserDto>> LoginWithEmailAsync(UserLoginDto userLoginDto, bool isPersistant = false, bool isLockout = true)
         {
             var findResult = await this.FindUserByEmailAsync(userLoginDto.Email);
 
             var signInResult = await findResult.BindAsync<ServiceResult<SignInResult>, SignInResult>(async user =>
             {
-                var signInResult = await this.signInManager.PasswordSignInAsync(user, userLoginDto.Password, isPersistant, isLockout);
+                var applicationUser = this.mapper.Map<TUser>(user);
+                var signInResult = await this.signInManager.PasswordSignInAsync(applicationUser, userLoginDto.Password, isPersistant, isLockout);
 
                 return signInResult.Succeeded ? signInResult : new UnauthorizedDetails(string.Format(ExceptionMessages.Unauthorized));
             });
@@ -161,13 +160,14 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         }
 
         /// <inheritdoc/>
-        public async Task<ServiceResult<TUser>> LoginWithUsernameAsync(string username, string password, bool isPersistent = false, bool isLockout = true)
+        public async Task<ServiceResult<UserDto>> LoginWithUsernameAsync(string username, string password, bool isPersistent = false, bool isLockout = true)
         {
             var findResult = await this.FindUserByUsernameAsync(username);
 
             var signInResult = await findResult.BindAsync<ServiceResult<SignInResult>, SignInResult>(async user =>
             {
-                var signInResult = await this.signInManager.PasswordSignInAsync(user, password, isPersistent, isLockout);
+                var applicationUser = this.mapper.Map<TUser>(user);
+                var signInResult = await this.signInManager.PasswordSignInAsync(applicationUser, password, isPersistent, isLockout);
 
                 return signInResult.Succeeded ? signInResult : new UnauthorizedDetails(string.Format(ExceptionMessages.Unauthorized));
             });
@@ -198,7 +198,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         }
 
         /// <inheritdoc/>
-        public async Task<ServiceResult<TUser>> FindUserByEmailAsync(string email)
+        public async Task<ServiceResult<UserDto>> FindUserByEmailAsync(string email)
         {
             var user = await this.userManager.FindByEmailAsync(email);
 
@@ -207,11 +207,11 @@ namespace MyKitchen.Microservices.Identity.Services.Users
                 return new NotFoundDetails(string.Format(ExceptionMessages.EntityNotFound, nameof(user)));
             }
 
-            return user;
+            return this.mapper.Map<UserDto>(user);
         }
 
         /// <inheritdoc/>
-        public async Task<ServiceResult<TUser>> FindUserByUsernameAsync(string username)
+        public async Task<ServiceResult<UserDto>> FindUserByUsernameAsync(string username)
         {
             var user = await this.userManager.FindByNameAsync(username);
 
@@ -220,11 +220,11 @@ namespace MyKitchen.Microservices.Identity.Services.Users
                 return new NotFoundDetails(string.Format(ExceptionMessages.EntityNotFound, nameof(user)));
             }
 
-            return user;
+            return this.mapper.Map<UserDto>(user);
         }
 
         /// <inheritdoc/>
-        public async Task<ServiceResult<TUser>> FindUserByIdAsync(string id)
+        public async Task<ServiceResult<UserDto>> FindUserByIdAsync(string id)
         {
             var user = await this.userManager.FindByIdAsync(id);
 
@@ -233,7 +233,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
                 return new NotFoundDetails(string.Format(ExceptionMessages.EntityNotFound, nameof(user)));
             }
 
-            return user;
+            return this.mapper.Map<UserDto>(user);
         }
 
         /// <inheritdoc/>
