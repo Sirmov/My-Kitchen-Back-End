@@ -7,10 +7,14 @@
 
 namespace MyKitchen.Microservices.Identity.Services.Tests
 {
+    using System.Security.Claims;
+
     using AutoMapper;
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
+
+    using MongoDB.Bson;
 
     using Moq;
 
@@ -32,15 +36,18 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
     /// </summary>
     public class UsersServiceTests
     {
-        private List<ApplicationUser> users = new List<ApplicationUser>()
+        private readonly List<ApplicationUser> users = new List<ApplicationUser>()
         {
             new ApplicationUser()
             {
+                Id = ObjectId.GenerateNewId(),
                 UserName = "andrey",
                 Email = "andrey@mail.com",
+                Roles = [ "Admin "],
             },
             new ApplicationUser()
             {
+                Id = ObjectId.GenerateNewId(),
                 UserName = "helen",
                 Email = "helen@mail.com",
             },
@@ -79,6 +86,14 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
             this.userRolesServiceMock
                 .Setup(userRolesService => userRolesService.AddToRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
                 .ReturnsAsync(ServiceResult.Successful);
+
+            this.userRolesServiceMock
+                .Setup(userRolesService => userRolesService.RemoveFromRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ReturnsAsync(ServiceResult.Successful);
+
+            this.userRolesServiceMock
+                .Setup(userRolesService => userRolesService.GetUserRolesAsync(It.IsAny<ApplicationUser>()))
+                .ReturnsAsync((ApplicationUser user) => new List<string>(user.Roles));
 
             this.tokensServiceMock = new Mock<ITokensService>();
 
@@ -138,7 +153,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
 
             // Assert
             this.AssertResultIsFailed(registerResult);
-            Assert.That(registerResult.Failure, Is.InstanceOf<BadRequestDetails>());
+            Assert.That(registerResult.Failure, Is.TypeOf<BadRequestDetails>());
             Assert.That(registerResult.Data, Is.Null);
         }
 
@@ -167,12 +182,12 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
 
             // Assert
             this.AssertResultIsFailed(registerResult);
-            Assert.That(registerResult.Failure, Is.InstanceOf<BadRequestDetails>());
+            Assert.That(registerResult.Failure, Is.TypeOf<BadRequestDetails>());
             Assert.That(registerResult.Data, Is.Null);
         }
 
         /// <summary>
-        /// This testh checks whether <see cref="UsersService{TUser, TRole}.RegisterWithEmailAndUsernameAsync(UserRegisterDto, IEnumerable{string}?)"/>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.RegisterWithEmailAndUsernameAsync(UserRegisterDto, IEnumerable{string}?)"/>
         /// calls the <see cref="UserRolesService{TUser, TRole}.AddToRoleAsync(TUser, string)"/> with the correct arguments.
         /// </summary>
         /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
@@ -187,7 +202,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
                 Password = "Ton1Rules!",
             };
 
-            string[] roles = [ "Admin", "Owner"];
+            string [] roles = ["Admin", "Owner"];
 
             // Act
             _ = await this.usersService.RegisterWithEmailAndUsernameAsync(userRegisterDto, roles);
@@ -218,7 +233,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
                 Password = "Ton1Rules!",
             };
 
-            string[] roles = [ "Admnin" ];
+            string [] roles = ["Admin"];
 
             // Act
             var registerResult = await this.usersService.RegisterWithEmailAndUsernameAsync(userRegisterDto, roles);
@@ -229,147 +244,447 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
             this.userManagerFake.Mock
                 .Verify(userManager => userManager.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Once);
 
-            Assert.That(registerResult.Data!.UserName, Is.EqualTo(userRegisterDto.Username));
+            Assert.That(registerResult.Data!.Username, Is.EqualTo(userRegisterDto.Username));
             Assert.That(registerResult.Data!.Email, Is.EqualTo(userRegisterDto.Email));
             Assert.That(registerResult.Data!.Roles, Is.EquivalentTo(roles));
         }
 
-        public async Task UpdateUserAsync_UserDtoIsNotValid_ReturnsBadRequestDetails()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.UpdateUserAsync(UserDto)"/>
+        /// returns <see cref="BadRequestDetails"/> whenever the user dto is not valid.
+        /// </summary>
+        /// <param name="username">The username of the user dto.</param>
+        /// <param name="email">The email of the  user dto.</param>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Test]
+        [TestCase("", "tony@mail.com")] // Username is not valid
+        [TestCase("tony", "")] // Email is not valid
+        public async Task UpdateUserAsync_UserDtoIsNotValid_ReturnsBadRequestDetails(string username, string email)
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            var userDto = new UserDto()
+            {
+                Username = username,
+                Email = email,
+            };
+
+            // Act
+            var updateResult = await this.usersService.UpdateUserAsync(userDto);
+
+            // Assert
+            this.AssertResultIsFailed(updateResult);
+            Assert.That(updateResult.Failure, Is.TypeOf<BadRequestDetails>());
         }
 
+        /// <summary>
+        /// This test checks whether the <see cref="UsersService{TUser, TRole}.UpdateUserAsync(UserDto)"/>
+        /// returns a <see cref="NotFoundDetails"/> whenever the user is not found.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Test]
         public async Task UpdateUserAsync_UserDoesNotExist_ReturnsNotFoundDetails()
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            var userDto = new UserDto()
+            {
+                Username = "tony",
+                Email = "tony@mail.com",
+            };
+
+            // Act
+            var updateResult = await this.usersService.UpdateUserAsync(userDto);
+
+            // Assert
+            this.AssertResultIsFailed(updateResult);
+            Assert.That(updateResult.Failure, Is.TypeOf<NotFoundDetails>());
         }
 
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.UpdateUserAsync(UserDto)"/>
+        /// correctly updates the roles of the user. Removing those that are missing from the updated dto
+        /// and adding those that are missing from the user.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Test]
         public async Task UpdateUserAsync_UserDtoHasDifferentRoles_UpdatesUserRoles()
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            var user = this.users [0];
+            string [] updatedRoles = ["Administrator"];
+            var userDto = this.mapper.Map<UserDto>(user);
+
+            this.userRolesServiceMock
+                .Setup(userRolesService => userRolesService.AddToRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Callback((ApplicationUser user, string role) => user.Roles.Add(role))
+                .ReturnsAsync(ServiceResult.Successful);
+
+            this.userRolesServiceMock
+                .Setup(userRolesService => userRolesService.RemoveFromRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Callback((ApplicationUser user, string role) => user.Roles.Remove(role))
+                .ReturnsAsync(ServiceResult.Successful);
+
+            // Act
+            userDto.Roles = updatedRoles;
+            var updateResult = await this.usersService.UpdateUserAsync(userDto);
+
+            // Assert
+            this.AssertResultIsSuccessful(updateResult);
+
+            var updatedUser = await this.userManagerFake.Instance.FindByIdAsync(userDto.Id.ToString());
+            Assert.That(updatedUser!.Roles, Is.EquivalentTo(updatedRoles));
         }
 
-        public async Task UpdateUserAsync_UserDtoIsValid_UpdatesAndReturnsUpdatedUser()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.UpdateUserAsync(UserDto)"/>
+        /// updates the user successfully.
+        /// </summary>
+        /// <param name="username">The updated username.</param>
+        /// <param name="email">The updated email.</param>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Test]
+        [TestCase("george", "george@mail.com")]
+        public async Task UpdateUserAsync_UserDtoIsValid_UpdatesUserSuccessfully(string username, string email)
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            var user = this.users [0];
+            var userDto = this.mapper.Map<UserDto>(user);
+
+            // Act
+            userDto.Username = username;
+            userDto.Email = email;
+            var updateResult = await this.usersService.UpdateUserAsync(userDto);
+
+            // Assert
+            this.AssertResultIsSuccessful(updateResult);
+
+            var updatedUser = await this.userManagerFake.Instance.FindByIdAsync(userDto.Id.ToString());
+            Assert.That(updatedUser!.UserName, Is.EquivalentTo(username));
+            Assert.That(updatedUser!.Email, Is.EquivalentTo(email));
         }
 
-        public async Task LoginWithEmailAsync_UserDoesNotExist_ReturnsNotFoundDetails()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.LoginWithEmailAsync(string, string, bool, bool)"/>
+        /// and <see cref="UsersService{TUser, TRole}.LoginWithUsernameAsync(string, string, bool, bool)"/> return
+        /// <see cref="NotFoundDetails"/> whenever no user with the provided identificator exist.
+        /// </summary>
+        /// <param name="withEmail">A boolean indicating whether to test login with email.</param>
+        /// <param name="withUsername">A boolean indicating whether to test login with username.</param>
+        /// <returns>Returns a <see cref="Task"/> indicating the asynchronous operation.</returns>
+        [Test]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        public async Task LoginWithEmailAsync_LoginWithUsernameAsync_UserDoesNotExist_ReturnsNotFoundDetails(bool withEmail, bool withUsername)
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            Func<string, string, bool, bool, Task<ServiceResult<(string, string)>>> loginMethodAsync = null!;
+
+            loginMethodAsync = withEmail ? this.usersService.LoginWithEmailAsync : loginMethodAsync;
+            loginMethodAsync = withUsername ? this.usersService.LoginWithUsernameAsync : loginMethodAsync;
+
+            Assert.That(loginMethodAsync, Is.Not.Null, "No login method selected for testing.");
+
+            // Act
+            var loginResult = await loginMethodAsync(string.Empty, string.Empty, false, false);
+
+            // Assert
+            this.AssertResultIsFailed(loginResult);
+            Assert.That(loginResult.Failure, Is.TypeOf<NotFoundDetails>());
         }
 
-        public async Task LoginWithEmailAsync_PasswordIsNotCorrect_ReturnsUnauthorizedDetails()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.LoginWithEmailAsync(string, string, bool, bool)"/>
+        /// and <see cref="UsersService{TUser, TRole}.LoginWithUsernameAsync(string, string, bool, bool)"/> return
+        /// <see cref="UnauthorizedDetails"/> whenever the login credential are not correct.
+        /// </summary>
+        /// <param name="withEmail">A boolean indicating whether to test login with email.</param>
+        /// <param name="withUsername">A boolean indicating whether to test login with username.</param>
+        /// <returns>Returns a <see cref="Task"/> indicating the asynchronous operation.</returns>
+        [Test]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        public async Task LoginWithEmailAsync_LoginWithUsernameAsync_PasswordIsNotCorrect_ReturnsUnauthorizedDetails(bool withEmail, bool withUsername)
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            Func<string, string, bool, bool, Task<ServiceResult<(string, string)>>> loginMethodAsync = null!;
+            string userIdentificator = string.Empty;
+
+            if (withEmail)
+            {
+                loginMethodAsync = this.usersService.LoginWithEmailAsync;
+                userIdentificator = this.users.First().Email!;
+            }
+            else if (withUsername)
+            {
+                loginMethodAsync = this.usersService.LoginWithUsernameAsync;
+                userIdentificator = this.users.First().UserName!;
+            }
+
+            Assert.That(loginMethodAsync, Is.Not.Null, "No login method selected for testing.");
+
+            this.signInManagerMock
+                .Setup(signInManger => signInManger.PasswordSignInAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .ReturnsAsync(SignInResult.Failed);
+
+            // Act
+            var loginResult = await loginMethodAsync(userIdentificator, string.Empty, false, false);
+
+            // Assert
+            this.AssertResultIsFailed(loginResult);
+            Assert.That(loginResult.Failure, Is.TypeOf<UnauthorizedDetails>());
         }
 
-        public async Task LoginWithEmailAsync_CredentialAreCorrect_SignsAndReturnsUser()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.LoginWithEmailAsync(string, string, bool, bool)"/>
+        /// and <see cref="UsersService{TUser, TRole}.LoginWithUsernameAsync(string, string, bool, bool)"/> return
+        /// a tuple with the access and refresh tokens when the credential are correct..
+        /// </summary>
+        /// <param name="withEmail">A boolean indicating whether to test login with email.</param>
+        /// <param name="withUsername">A boolean indicating whether to test login with username.</param>
+        /// <returns>Returns a <see cref="Task"/> indicating the asynchronous operation.</returns>
+        [Test]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        public async Task LoginWithEmailAsync_LoginWithUsernameAsync_CredentialAreCorrect_SignsAndReturnsAccessAndRefreshTokens(bool withEmail, bool withUsername)
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            Func<string, string, bool, bool, Task<ServiceResult<(string, string)>>> loginMethodAsync = null!;
+            string userIdentificator = string.Empty;
+
+            if (withEmail)
+            {
+                loginMethodAsync = this.usersService.LoginWithEmailAsync;
+                userIdentificator = this.users.First().Email!;
+            }
+            else if (withUsername)
+            {
+                loginMethodAsync = this.usersService.LoginWithUsernameAsync;
+                userIdentificator = this.users.First().UserName!;
+            }
+
+            Assert.That(loginMethodAsync, Is.Not.Null, "No login method selected for testing.");
+
+            this.signInManagerMock
+                .Setup(signInManger => signInManger.PasswordSignInAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .ReturnsAsync(SignInResult.Success);
+
+            string accessToken = nameof(accessToken);
+            this.tokensServiceMock
+                .Setup(tokensService => tokensService.GenerateAccessToken(It.IsAny<UserDto>()))
+                .Returns(accessToken);
+
+            string refreshToken = nameof(refreshToken);
+            this.tokensServiceMock
+                .Setup(tokensService => tokensService.GenerateRefreshToken(It.IsAny<UserDto>()))
+                .Returns(refreshToken);
+
+            // Act
+            var loginResult = await loginMethodAsync(userIdentificator, string.Empty, false, false);
+
+            // Assert
+            this.AssertResultIsSuccessful(loginResult);
+
+            Assert.That(loginResult.Data.Item1, Is.EqualTo(accessToken));
+            Assert.That(loginResult.Data.Item2, Is.EqualTo(refreshToken));
         }
 
-        public async Task LoginWithUsernameAsync_UserDoesNotExist_ReturnsNotFoundDetails()
-        {
-            // TODO
-            Assert.Pass();
-        }
-
-        public async Task LoginWithUsernameAsync_PasswordIsNotCorrect_ReturnsUnauthorizedDetails()
-        {
-            // TODO
-            Assert.Pass();
-        }
-
-        public async Task LoginWithUsernameAsync_CredentialAreCorrect_SignsAndReturnsUser()
-        {
-            // TODO
-            Assert.Pass();
-        }
-
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.LogoutAsync(string)"/>
+        /// revokes the access token of the user trying to logout and signs him out.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Test]
         public async Task LogoutAsync_AccessTokenIsNotNull_RevokesTokenAndSignsOut()
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            string accessToken = nameof(accessToken);
+
+            // Act
+            var logoutResult = await this.usersService.LogoutAsync(accessToken);
+
+            // Assert
+            this.AssertResultIsSuccessful(logoutResult);
+            this.tokensServiceMock.Verify(tokensService => tokensService.RevokeTokenAsync(accessToken), Times.Once);
+            this.signInManagerMock.Verify(signInManager => signInManager.SignOutAsync(), Times.Once);
         }
 
-        public async Task IsSignedIn_UserIsSignedIn_ReturnsTrue()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.IsSignedIn(TUser)"/>
+        /// returns <see langword="true"/> whenever the provided user is signed in and
+        /// <see cref="false"/> whenever he is not.
+        /// </summary>
+        /// <param name="isUserSignedIn">A boolean indicating whether the user is signed in or not.</param>
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void IsSignedIn_IsUserSignedInFlag_ReturnsFlag(bool isUserSignedIn)
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            this.signInManagerMock
+                .Setup(signInManager => signInManager.IsSignedIn(It.IsAny<ClaimsPrincipal>()))
+                .Returns(isUserSignedIn);
+
+            // Act
+            var isSignedInResult = this.usersService.IsSignedIn(this.users.First());
+
+            // Assert
+            this.AssertResultIsSuccessful(isSignedInResult);
+            Assert.That(isSignedInResult.Data, Is.EqualTo(isUserSignedIn));
         }
 
-        public async Task IsSignedIn_UserIsNotSignedIn_ReturnsFalse()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.IsSignedIn(TUser)"/>
+        /// returns <see cref="NotFoundDetails"/> when the provided user is <see langword="null"/>.
+        /// </summary>
+        [Test]
+        public void IsSignedIn_UserIsNull_ReturnsNotFoundDetails()
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            // Act
+            var isSignedInResult = this.usersService.IsSignedIn(null!);
+
+            // Assert
+            this.AssertResultIsFailed(isSignedInResult);
+            Assert.That(isSignedInResult.Failure, Is.TypeOf<NotFoundDetails>());
         }
 
-        public async Task FindUserByEmailAsync_UserDoesNotExist_ReturnsNotFoundDetails()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.FindUserByEmailAsync(string)"/>,
+        /// <see cref="UsersService{TUser, TRole}.FindUserByUsernameAsync(string)"/> and
+        /// <see cref="UsersService{TUser, TRole}.FindUserByIdAsync(string)"/> return <see cref="NotFoundDetails"/>
+        /// whenever no user with the provided identifier exists.
+        /// </summary>
+        /// <param name="byEmail">A boolean indicating whether to test finding by email.</param>
+        /// <param name="byUsername">A boolean indicating whether to test finding by username.</param>
+        /// <param name="byId">A boolean indicating whether to test finding by id.</param>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Test]
+        [TestCase(true, false, false)]
+        [TestCase(false, true, false)]
+        [TestCase(false, false, true)]
+        public async Task FindUserByEmailAsync_FindUserByUsernameAsync_FindUserByIdAsync_UserDoesNotExist_ReturnsNotFoundDetails(bool byEmail, bool byUsername, bool byId)
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            Func<string, Task<ServiceResult<UserDto>>> findMethodAsync = null!;
+
+            findMethodAsync = byEmail ? this.usersService.FindUserByEmailAsync : findMethodAsync;
+            findMethodAsync = byUsername ? this.usersService.FindUserByUsernameAsync : findMethodAsync;
+            findMethodAsync = byId ? this.usersService.FindUserByIdAsync : findMethodAsync;
+
+            Assert.That(findMethodAsync, Is.Not.Null, "No find method selected for testing.");
+
+            // Act
+            var findResult = await findMethodAsync(string.Empty);
+
+            // Assert
+            this.AssertResultIsFailed(findResult);
+            Assert.That(findResult.Failure, Is.TypeOf<NotFoundDetails>());
+            Assert.That(findResult.Data, Is.Null);
         }
 
-        public async Task FindUserByEmailAsync_UserExist_ReturnsUserAsDto()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.FindUserByEmailAsync(string)"/>,
+        /// <see cref="UsersService{TUser, TRole}.FindUserByUsernameAsync(string)"/> and
+        /// <see cref="UsersService{TUser, TRole}.FindUserByIdAsync(string)"/> return the user dto
+        /// of the existing user.
+        /// </summary>
+        /// <param name="byEmail">A boolean indicating whether to test finding by email.</param>
+        /// <param name="byUsername">A boolean indicating whether to test finding by username.</param>
+        /// <param name="byId">A boolean indicating whether to test finding by id.</param>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Test]
+        [TestCase(true, false, false)]
+        [TestCase(false, true, false)]
+        [TestCase(false, false, true)]
+        public async Task FindUserByEmailAsync_UserExist_ReturnsUserAsDto(bool byEmail, bool byUsername, bool byId)
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            Func<string, Task<ServiceResult<UserDto>>> findMethodAsync = null!;
+            string userIdentificator = string.Empty;
+
+            if (byEmail)
+            {
+                findMethodAsync = this.usersService.FindUserByEmailAsync;
+                userIdentificator = this.users.First().Email!;
+            }
+            else if (byUsername)
+            {
+                findMethodAsync = this.usersService.FindUserByUsernameAsync;
+                userIdentificator = this.users.First().UserName!;
+            }
+            else if (byId)
+            {
+                findMethodAsync = this.usersService.FindUserByIdAsync;
+                userIdentificator = this.users.First().Id.ToString();
+            }
+
+            Assert.That(findMethodAsync, Is.Not.Null, "No find method selected for testing.");
+
+            // Act
+            var findResult = await findMethodAsync(userIdentificator);
+
+            // Assert
+            this.AssertResultIsSuccessful(findResult);
+            Assert.That(findResult.Data!.Id, Is.EqualTo(this.users.First().Id));
+            Assert.That(findResult.Data.Email, Is.EqualTo(this.users.First().Email));
+            Assert.That(findResult.Data.Username, Is.EqualTo(this.users.First().UserName));
         }
 
-        public async Task FindUserByUsernameAsync_UserDoesNotExist_ReturnsNotFoundDetails()
-        {
-            // TODO
-            Assert.Pass();
-        }
-
-        public async Task FindUserByUsernameAsync_UserExist_ReturnsUserAsDto()
-        {
-            // TODO
-            Assert.Pass();
-        }
-
-        public async Task FindUserByIdAsync_UserDoesNotExist_ReturnsNotFoundDetails()
-        {
-            // TODO
-            Assert.Pass();
-        }
-
-        public async Task FindUserByIdAsync_UserExist_ReturnsUserAsDto()
-        {
-            // TODO
-            Assert.Pass();
-        }
-
-        public async Task DeleteUserWithId_UserDoesNotExist_ReturnsNotFoundDetails()
-        {
-            // TODO
-            Assert.Pass();
-        }
-
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.DeleteUserWithIdAsync(string)"/>
+        /// returns a successful result when a user with the provided identificator exists.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Test]
         public async Task DeleteUserWithId_UserExist_ReturnsSuccessfulResult()
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            var userIdentificator = this.users.First().Id.ToString();
+
+            // Act
+            var deleteResult = await this.usersService.DeleteUserWithIdAsync(userIdentificator);
+
+            // Assert
+            this.AssertResultIsSuccessful(deleteResult);
         }
 
-        public async Task ExistsAsync_UserExists_ReturnsTrue()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.DeleteUserWithIdAsync(string)"/>
+        /// returns <see cref="NotFoundDetails"/> whenever no user with the provided identificator was found.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Test]
+        public async Task DeleteUserWithId_UserDoesNotExist_ReturnsNotFoundDetails()
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            // Act
+            var deleteResult = await this.usersService.DeleteUserWithIdAsync(string.Empty);
+
+            // Assert
+            this.AssertResultIsFailed(deleteResult);
+            Assert.That(deleteResult.Failure, Is.TypeOf<NotFoundDetails>());
         }
 
-        public async Task ExistsAsync_UserDoesntExists_ReturnsFalse()
+        /// <summary>
+        /// This test checks whether <see cref="UsersService{TUser, TRole}.ExistsAsync(string)"/>
+        /// returns <see langword="true"/> whenever a user with the provided id exists and
+        /// <see langword="false"/> otherwise.
+        /// </summary>
+        /// <param name="doesUserExist">A boolean indicating whether the user exists.</param>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ExistsAsync_DoesUserExistFlag_ReturnsFlag(bool doesUserExist)
         {
-            // TODO
-            Assert.Pass();
+            // Arrange
+            var userIdentificator = doesUserExist ? this.users.First().Id.ToString() : string.Empty;
+
+            // Act
+            var existsResult = await this.usersService.ExistsAsync(userIdentificator);
+
+            // Assert
+            this.AssertResultIsSuccessful(existsResult);
+            Assert.That(existsResult.Data, Is.EqualTo(doesUserExist));
         }
 
         private void AssertResultIsSuccessful<TFailure>(IResult<TFailure> result)
