@@ -138,42 +138,34 @@ namespace MyKitchen.Microservices.Identity.Services.Users
                 }
             }
 
-            await this.userManager.UpdateAsync(user);
+            await this.userManager.UpdateAsync(this.mapper.Map<TUser>(userDto));
             return ServiceResult.Successful;
         }
 
         /// <inheritdoc/>
-        public async Task<ServiceResult<UserDto>> LoginWithEmailAsync(UserLoginDto userLoginDto, bool isPersistant = false, bool isLockout = true)
+        public async Task<ServiceResult<(string accessToken, string refreshToken)>> LoginWithEmailAsync(string email, string password, bool isPersistent = false, bool isLockout = true)
         {
-            var findResult = await this.FindUserByEmailAsync(userLoginDto.Email);
+            var findResult = await this.FindUserByEmailAsync(email);
 
-            var signInResult = await findResult.BindAsync<ServiceResult<SignInResult>, SignInResult>(async user =>
+            if (findResult.IsFailed)
             {
-                var applicationUser = this.mapper.Map<TUser>(user);
-                var signInResult = await this.signInManager.PasswordSignInAsync(applicationUser, userLoginDto.Password, isPersistant, isLockout);
+                return findResult.Failure!;
+            }
 
-                return signInResult.Succeeded ? signInResult : new UnauthorizedDetails(string.Format(ExceptionMessages.Unauthorized));
-            });
-
-            findResult.DependOn(signInResult);
-            return findResult;
+            return await this.LoginUserWithPasswordAsync(findResult.Data!, password, isPersistent, isLockout);
         }
 
         /// <inheritdoc/>
-        public async Task<ServiceResult<UserDto>> LoginWithUsernameAsync(string username, string password, bool isPersistent = false, bool isLockout = true)
+        public async Task<ServiceResult<(string accessToken, string refreshToken)>> LoginWithUsernameAsync(string username, string password, bool isPersistent = false, bool isLockout = true)
         {
             var findResult = await this.FindUserByUsernameAsync(username);
 
-            var signInResult = await findResult.BindAsync<ServiceResult<SignInResult>, SignInResult>(async user =>
+            if (findResult.IsFailed)
             {
-                var applicationUser = this.mapper.Map<TUser>(user);
-                var signInResult = await this.signInManager.PasswordSignInAsync(applicationUser, password, isPersistent, isLockout);
+                return findResult.Failure!;
+            }
 
-                return signInResult.Succeeded ? signInResult : new UnauthorizedDetails(string.Format(ExceptionMessages.Unauthorized));
-            });
-
-            findResult.DependOn(signInResult);
-            return findResult;
+            return await this.LoginUserWithPasswordAsync(findResult.Data!, password, isPersistent, isLockout);
         }
 
         /// <inheritdoc/>
@@ -237,9 +229,20 @@ namespace MyKitchen.Microservices.Identity.Services.Users
         }
 
         /// <inheritdoc/>
-        public Task<ServiceResult<IdentityResult>> DeleteUserWithId(string id)
+        public async Task<ServiceResult> DeleteUserWithIdAsync(string userId)
         {
-            throw new NotImplementedException();
+            var findResult = await this.FindUserByIdAsync(userId);
+
+            if (findResult.IsFailed)
+            {
+                return findResult.Failure!;
+            }
+
+            // TODO:
+            // 1. Mark user as deleted and anonymize
+            // 2. Set changed password timestamp to utc now
+
+            return ServiceResult.Successful;
         }
 
         /// <inheritdoc/>
@@ -279,6 +282,27 @@ namespace MyKitchen.Microservices.Identity.Services.Users
             bool isValid = Validator.TryValidateObject(dto, context, validationResults, true);
 
             return isValid;
+        }
+
+        private async Task<ServiceResult<(string accessToken, string refreshToken)>> LoginUserWithPasswordAsync(UserDto userDto, string password, bool isPersistent, bool isLockout)
+        {
+            var user = this.mapper.Map<TUser>(userDto);
+            var signInResult = await this.signInManager.PasswordSignInAsync(user, password, isPersistent, isLockout);
+
+            if (!signInResult.Succeeded)
+            {
+                return new UnauthorizedDetails(string.Format(ExceptionMessages.Unauthorized));
+            }
+
+            var accessTokenResult = this.tokensService.GenerateAccessToken(userDto);
+            var refreshTokenResult = this.tokensService.GenerateRefreshToken(userDto);
+
+            if (!accessTokenResult.IsSuccessful || !refreshTokenResult.IsSuccessful)
+            {
+                return new InternalServerErrorDetails(ExceptionMessages.InternalServerError);
+            }
+
+            return (accessTokenResult.Data!, refreshTokenResult.Data!);
         }
     }
 }

@@ -7,8 +7,6 @@
 
 namespace MyKitchen.Microservices.Identity.Services.Users.Contracts
 {
-    using Microsoft.AspNetCore.Identity;
-
     using MyKitchen.Microservices.Identity.Data.Models;
     using MyKitchen.Microservices.Identity.Services.Common.Dtos.User;
     using MyKitchen.Microservices.Identity.Services.Common.ServiceResult;
@@ -47,11 +45,15 @@ namespace MyKitchen.Microservices.Identity.Services.Users.Contracts
         /// <summary>
         /// This method asynchronously signs in a user in with an email and password.
         /// </summary>
-        /// <param name="userLoginDto">The <see cref="UserLoginDto"/> containing the login credentials.</param>
+        /// <param name="email">The email of the user trying to login.</param>
+        /// <param name="password">The password of the user trying to login.</param>
         /// <param name="isPersistent">Flag indicating whether the sign-in cookie should persist after the browser is closed.</param>
         /// <param name="isLockout">Flag indicating if the user account should be locked if the sign in fails.</param>
-        /// <returns>Returns the signed in user.</returns>
-        public Task<ServiceResult<UserDto>> LoginWithEmailAsync(UserLoginDto userLoginDto, bool isPersistent = false, bool isLockout = true);
+        /// <returns>
+        /// Returns a tuple of string the first one of which containing
+        /// the access token and the second one the refresh token.
+        /// </returns>
+        public Task<ServiceResult<(string accessToken, string refreshToken)>> LoginWithEmailAsync(string email, string password, bool isPersistent = false, bool isLockout = true);
 
         /// <summary>
         /// This method asynchronously signs in a user in with an username and password.
@@ -60,8 +62,11 @@ namespace MyKitchen.Microservices.Identity.Services.Users.Contracts
         /// <param name="password">The password of the user trying to login.</param>
         /// <param name="isPersistent">Flag indicating whether the sign-in cookie should persist after the browser is closed.</param>
         /// <param name="isLockout">Flag indicating if the user account should be locked if the sign in fails.</param>
-        /// <returns>Returns the signed in user.</returns>
-        public Task<ServiceResult<UserDto>> LoginWithUsernameAsync(string username, string password, bool isPersistent = false, bool isLockout = true);
+        /// <returns>
+        /// Returns a tuple of string the first one of which containing
+        /// the access token and the second one the refresh token.
+        /// </returns>
+        public Task<ServiceResult<(string accessToken, string refreshToken)>> LoginWithUsernameAsync(string username, string password, bool isPersistent = false, bool isLockout = true);
 
         /// <summary>
         /// This method asynchronously signs out a user.
@@ -102,8 +107,8 @@ namespace MyKitchen.Microservices.Identity.Services.Users.Contracts
         /// This method asynchronously deletes the user with the specified <paramref name="id"/>.
         /// </summary>
         /// <param name="id">The id of the user to be deleted.</param>
-        /// <returns>Returns an <see cref="IdentityResult"/>.</returns>
-        public Task<ServiceResult<IdentityResult>> DeleteUserWithId(string id);
+        /// <returns>Returns am empty <see cref="ServiceResult"/>.</returns>
+        public Task<ServiceResult> DeleteUserWithIdAsync(string id);
 
         /// <summary>
         /// This method asynchronously checks whether a user with the specified <paramref name="id"/> exists.
