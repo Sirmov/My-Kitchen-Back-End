@@ -23,7 +23,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
     public class UserManagerFake<TUser> : IFake<UserManager<TUser>>
         where TUser : ApplicationUser
     {
-        private readonly List<TUser> users = new List<TUser>();
+        private readonly List<TUser> users;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserManagerFake{TUser}"/> class.
@@ -39,7 +39,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests.Fakes
         /// <param name="users">A list of users used to populate the <see cref="UserManagerFake{TUser}"/>.<</param>
         public UserManagerFake(List<TUser> users)
         {
-            this.users = users;
+            this.users = new List<TUser>(users);
 
             var userStoreMock = new Mock<IUserStore<TUser>>();
             this.Mock = new Mock<UserManager<TUser>>(userStoreMock.Object, null!, null!, null!, null!, null!, null!, null!, null!);
