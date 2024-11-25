@@ -59,7 +59,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
             var authClaims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, this.userIdProtector.Protect(user.Id.ToString())),
-                new Claim(JwtRegisteredClaimNames.Name, user.UserName!),
+                new Claim(JwtRegisteredClaimNames.Name, user.Username!),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };

@@ -103,13 +103,13 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         /// generates a valid access token and sets the correct claims.
         /// </summary>
         [Test]
-        public void GenerateAccessToken_ValidUserDto_GeneretesValidAccessTokenWithCorrectPayload()
+        public void GenerateAccessToken_ValidUserDto_GeneratesValidAccessTokenWithCorrectPayload()
         {
             // Arrange
             var userDto = new UserDto()
             {
                 Id = ObjectId.GenerateNewId(),
-                UserName = "test",
+                Username = "test",
                 Email = "test@mail.com",
                 Roles = ["Admin", "Owner", "User"],
             };
@@ -138,7 +138,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
                 "Access token user id is not correct.");
             Assert.That(
                 jwtToken.Claims.First(c => c.Type == JwtRegisteredClaimNames.Name).Value,
-                Is.EqualTo(userDto.UserName),
+                Is.EqualTo(userDto.Username),
                 "Access token username claim is not correct.");
             Assert.That(
                 jwtToken.Claims.First(c => c.Type == JwtRegisteredClaimNames.Email).Value,
@@ -157,7 +157,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         }
 
         /// <summary>
-        /// This test checks wheter <see cref="TokensService.GenerateRefreshToken(UserDto)"/>
+        /// This test checks whether <see cref="TokensService.GenerateRefreshToken(UserDto)"/>
         /// generates a valid refresh token with correct claims.
         /// </summary>
         [Test]
@@ -194,7 +194,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         /// <param name="issuer">The issuer of the refresh token.</param>
         /// <param name="audience">The audience of the refresh token.</param>
         /// <param name="lifetime">The lifetime of the refresh token.</param>
-        /// <param name="securityKey">The sercurity key used to sign the refresh token.</param>
+        /// <param name="securityKey">The security key used to sign the refresh token.</param>
         /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         [TestCase("Invalid issuer", ValidAudience, RefreshTokenLifetime, SecurityKey)]
@@ -231,7 +231,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         /// </summary>
         /// <param name="issuer">The issuer of the access token.</param>
         /// <param name="audience">The audience of the access token.</param>
-        /// <param name="securityKey">The sercurity key used to sign the access token.</param>
+        /// <param name="securityKey">The security key used to sign the access token.</param>
         /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         [TestCase("Invalid issuer", ValidAudience, SecurityKey)]
@@ -350,7 +350,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         /// This test checks whether <see cref="TokensService.RefreshAccessTokenAsync(string, string)"/>
         /// returns a new access token with correct payload when both of the token are valid.
         /// </summary>
-        /// <returns>Returns a <see cref="Task"/> representing the asyncrhonous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task RefreshAccessTokenAsync_BothTokensAreValid_ReturnsNewAccessTokenWithCorrectPayload()
         {
@@ -358,7 +358,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
             var userDto = new UserDto()
             {
                 Id = ObjectId.GenerateNewId(),
-                UserName = "test",
+                Username = "test",
                 Email = "test@mail.com",
                 Roles = ["Admin", "Owner", "User"],
             };
@@ -372,7 +372,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
             Claim[] accessTokenClaims =
             [
                 new Claim(JwtRegisteredClaimNames.Sub, userDto.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Name, userDto.UserName),
+                new Claim(JwtRegisteredClaimNames.Name, userDto.Username),
                 new Claim(JwtRegisteredClaimNames.Email, userDto.Email),
                 ..userDto.Roles.Select(r => new Claim(ClaimTypes.Role, r)),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -412,7 +412,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
                 "Access token user id is not correct.");
             Assert.That(
                 jwtToken.Claims.First(c => c.Type == JwtRegisteredClaimNames.Name).Value,
-                Is.EqualTo(userDto.UserName),
+                Is.EqualTo(userDto.Username),
                 "Access token username claim is not correct.");
             Assert.That(
                 jwtToken.Claims.First(c => c.Type == JwtRegisteredClaimNames.Email).Value,
