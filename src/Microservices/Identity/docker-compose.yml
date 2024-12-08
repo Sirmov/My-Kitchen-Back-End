@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  mykitchen.microservices.identity.api.rest:
+    container_name: mykitchen.microservices.identity.api.rest
+    image: sirmov/mykitchen-identity-service
+    build:
+      context: ../../..
+      dockerfile: src/Microservices/Identity/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5000
+      - ASPNETCORE_HTTPS_PORTS=5001
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  mykitchen.microservices.identity.mongodb:
+    container_name: mykitchen.microservices.identity.mongodb
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mykitchen-identity-mongodb:/data/db
+
+  mykitchen.microservices.identity.redis:
+    container_name: mykitchen.microservices.identity.redis
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - mykitchen-identity-redis:/data
+
+volumes:
+  mykitchen-identity-mongodb: 
+  mykitchen-identity-redis:
