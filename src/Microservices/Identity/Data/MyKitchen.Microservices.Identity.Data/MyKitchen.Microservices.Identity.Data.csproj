@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>
+      ../../../../Documentation/Microservices/Identity/Data/MyKitchen.Microservices.Identity.Data.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.Identity.Mongo" />
+    <PackageReference Include="MongoDB.Analyzer" />
+    <PackageReference Include="MongoDB.Driver" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Common\MyKitchen.Common\MyKitchen.Common.csproj" />
+    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
+    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Data.Common\MyKitchen.Microservices.Identity.Data.Common.csproj" />
+  </ItemGroup>
+
+</Project>

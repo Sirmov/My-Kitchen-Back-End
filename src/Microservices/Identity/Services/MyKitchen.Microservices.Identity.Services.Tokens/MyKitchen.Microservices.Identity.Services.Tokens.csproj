@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>
+      ../../../../Documentation/Microservices/Identity/Services/MyKitchen.Microservices.Identity.Services.Tokens.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj" />
+    <ProjectReference Include="..\..\..\..\Common\MyKitchen.Common\MyKitchen.Common.csproj" />
+    <ProjectReference Include="..\..\MyKitchen.Microservices.Identity.Common\MyKitchen.Microservices.Identity.Common.csproj" />
+    <ProjectReference Include="..\MyKitchen.Microservices.Identity.Services.Common\MyKitchen.Microservices.Identity.Services.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+  </ItemGroup>
+
+</Project>
