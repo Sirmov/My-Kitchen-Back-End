@@ -3,9 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Common", "MyKitchen.Microservices.Identity.Common\MyKitchen.Microservices.Identity.Common.csproj", "{13AACC98-856C-43E7-8D4D-4493E9428702}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{E28E67D1-D5A5-4C33-9EAA-D7611ED0F2FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Api.Common", "Api\MyKitchen.Microservices.Identity.Api.Common\MyKitchen.Microservices.Identity.Api.Common.csproj", "{6EA782CB-9209-4E61-988E-FA9748071F34}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Api.Rest", "Api\MyKitchen.Microservices.Identity.Api.Rest\MyKitchen.Microservices.Identity.Api.Rest.csproj", "{F3DEFBF0-10D1-4337-881D-4B7EE22FCB33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{3EDA80C6-506F-4ED1-BC92-38B030983056}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Mapping", "Services\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj", "{3410A40E-96BC-42D9-836C-34492AF3FB71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Tokens", "Services\MyKitchen.Microservices.Identity.Services.Tokens\MyKitchen.Microservices.Identity.Services.Tokens.csproj", "{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Common", "Services\MyKitchen.Microservices.Identity.Services.Common\MyKitchen.Microservices.Identity.Services.Common.csproj", "{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Users", "Services\MyKitchen.Microservices.Identity.Services.Users\MyKitchen.Microservices.Identity.Services.Users.csproj", "{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Tests", "Services\MyKitchen.Microservices.Identity.Services.Tests\MyKitchen.Microservices.Identity.Services.Tests.csproj", "{7112C528-B8AA-49C5-A9BE-F2E0AC46D09D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{A5935308-DCD4-4FCC-A166-01D8FBC582CE}"
 EndProject
@@ -15,33 +31,48 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Ide
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Data.Models", "Data\MyKitchen.Microservices.Identity.Data.Models\MyKitchen.Microservices.Identity.Data.Models.csproj", "{BE567138-5A76-4CB5-B804-7D5297130B46}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{3EDA80C6-506F-4ED1-BC92-38B030983056}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Common", "..\..\Common\MyKitchen.Common\MyKitchen.Common.csproj", "{FD02A5DE-46C1-4F44-8BA9-98A1CE76D432}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Mapping", "Services\MyKitchen.Microservices.Identity.Services.Mapping\MyKitchen.Microservices.Identity.Services.Mapping.csproj", "{3410A40E-96BC-42D9-836C-34492AF3FB71}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Tokens", "Services\MyKitchen.Microservices.Identity.Services.Tokens\MyKitchen.Microservices.Identity.Services.Tokens.csproj", "{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Common", "MyKitchen.Microservices.Identity.Common\MyKitchen.Microservices.Identity.Common.csproj", "{13AACC98-856C-43E7-8D4D-4493E9428702}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Common", "Services\MyKitchen.Microservices.Identity.Services.Common\MyKitchen.Microservices.Identity.Services.Common.csproj", "{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Services.Users", "Services\MyKitchen.Microservices.Identity.Services.Users\MyKitchen.Microservices.Identity.Services.Users.csproj", "{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Identity.Api.Common", "Api\MyKitchen.Microservices.Identity.Api.Common\MyKitchen.Microservices.Identity.Api.Common.csproj", "{6EA782CB-9209-4E61-988E-FA9748071F34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Common.Tests", "..\..\Common\MyKitchen.Common\MyKitchen.Common.Tests\MyKitchen.Common.Tests.csproj", "{D6968E05-24E4-424F-A625-3E76F352E80F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13AACC98-856C-43E7-8D4D-4493E9428702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13AACC98-856C-43E7-8D4D-4493E9428702}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13AACC98-856C-43E7-8D4D-4493E9428702}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13AACC98-856C-43E7-8D4D-4493E9428702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EA782CB-9209-4E61-988E-FA9748071F34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EA782CB-9209-4E61-988E-FA9748071F34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EA782CB-9209-4E61-988E-FA9748071F34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EA782CB-9209-4E61-988E-FA9748071F34}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3DEFBF0-10D1-4337-881D-4B7EE22FCB33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F3DEFBF0-10D1-4337-881D-4B7EE22FCB33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3DEFBF0-10D1-4337-881D-4B7EE22FCB33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3DEFBF0-10D1-4337-881D-4B7EE22FCB33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7112C528-B8AA-49C5-A9BE-F2E0AC46D09D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7112C528-B8AA-49C5-A9BE-F2E0AC46D09D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7112C528-B8AA-49C5-A9BE-F2E0AC46D09D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7112C528-B8AA-49C5-A9BE-F2E0AC46D09D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9832CC93-97E8-4B46-9D40-CA634B4889FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9832CC93-97E8-4B46-9D40-CA634B4889FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9832CC93-97E8-4B46-9D40-CA634B4889FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -54,40 +85,28 @@ Global
 		{BE567138-5A76-4CB5-B804-7D5297130B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE567138-5A76-4CB5-B804-7D5297130B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE567138-5A76-4CB5-B804-7D5297130B46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3410A40E-96BC-42D9-836C-34492AF3FB71}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13AACC98-856C-43E7-8D4D-4493E9428702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13AACC98-856C-43E7-8D4D-4493E9428702}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13AACC98-856C-43E7-8D4D-4493E9428702}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13AACC98-856C-43E7-8D4D-4493E9428702}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6EA782CB-9209-4E61-988E-FA9748071F34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EA782CB-9209-4E61-988E-FA9748071F34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EA782CB-9209-4E61-988E-FA9748071F34}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EA782CB-9209-4E61-988E-FA9748071F34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD02A5DE-46C1-4F44-8BA9-98A1CE76D432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD02A5DE-46C1-4F44-8BA9-98A1CE76D432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD02A5DE-46C1-4F44-8BA9-98A1CE76D432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD02A5DE-46C1-4F44-8BA9-98A1CE76D432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6968E05-24E4-424F-A625-3E76F352E80F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6968E05-24E4-424F-A625-3E76F352E80F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6968E05-24E4-424F-A625-3E76F352E80F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6968E05-24E4-424F-A625-3E76F352E80F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{6EA782CB-9209-4E61-988E-FA9748071F34} = {E28E67D1-D5A5-4C33-9EAA-D7611ED0F2FD}
 		{F3DEFBF0-10D1-4337-881D-4B7EE22FCB33} = {E28E67D1-D5A5-4C33-9EAA-D7611ED0F2FD}
-		{9832CC93-97E8-4B46-9D40-CA634B4889FB} = {A5935308-DCD4-4FCC-A166-01D8FBC582CE}
-		{7B501955-F020-4AB7-BBA7-2BF72DDF45EA} = {A5935308-DCD4-4FCC-A166-01D8FBC582CE}
-		{BE567138-5A76-4CB5-B804-7D5297130B46} = {A5935308-DCD4-4FCC-A166-01D8FBC582CE}
 		{3410A40E-96BC-42D9-836C-34492AF3FB71} = {3EDA80C6-506F-4ED1-BC92-38B030983056}
 		{4CA5B5DC-183B-452B-8BC5-40A1DD4C5FC5} = {3EDA80C6-506F-4ED1-BC92-38B030983056}
 		{50DEDD91-8B1A-49D5-A434-4A1CC07AD8EC} = {3EDA80C6-506F-4ED1-BC92-38B030983056}
 		{5E31D04A-AF5D-4D5D-BDD4-A01FDF707B65} = {3EDA80C6-506F-4ED1-BC92-38B030983056}
-		{6EA782CB-9209-4E61-988E-FA9748071F34} = {E28E67D1-D5A5-4C33-9EAA-D7611ED0F2FD}
+		{7112C528-B8AA-49C5-A9BE-F2E0AC46D09D} = {3EDA80C6-506F-4ED1-BC92-38B030983056}
+		{9832CC93-97E8-4B46-9D40-CA634B4889FB} = {A5935308-DCD4-4FCC-A166-01D8FBC582CE}
+		{7B501955-F020-4AB7-BBA7-2BF72DDF45EA} = {A5935308-DCD4-4FCC-A166-01D8FBC582CE}
+		{BE567138-5A76-4CB5-B804-7D5297130B46} = {A5935308-DCD4-4FCC-A166-01D8FBC582CE}
 	EndGlobalSection
 EndGlobal

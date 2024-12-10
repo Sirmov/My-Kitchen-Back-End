@@ -3,9 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>
-      ../../../../Documentation/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Rest.xml</DocumentationFile>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
     <UserSecretsId>b7f11d78-bc06-44c7-bf13-8023ceaaec7f</UserSecretsId>
