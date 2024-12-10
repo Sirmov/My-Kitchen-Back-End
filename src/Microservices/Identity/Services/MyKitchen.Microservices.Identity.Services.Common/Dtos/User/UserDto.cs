@@ -39,7 +39,7 @@ namespace MyKitchen.Microservices.Identity.Services.Common.Dtos.User
         /// </summary>
         [Required(AllowEmptyStrings = false)]
         [StringLength(UsernameMaxLength, MinimumLength = UsernameMinLength)]
-        public string UserName { get; set; } = null!;
+        public string Username { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the roles of the user.

@@ -22,12 +22,12 @@ namespace MyKitchen.Common.Result.Contracts
         /// <summary>
         /// Gets a value indicating whether the result succeeded.
         /// </summary>
-        public bool Succeed { get; }
+        public bool IsSuccessful { get; }
 
         /// <summary>
         /// Gets a value indicating whether the result failed.
         /// </summary>
-        public bool Failed { get; }
+        public bool IsFailed { get; }
 
         /// <summary>
         /// Gets a empty successful result.

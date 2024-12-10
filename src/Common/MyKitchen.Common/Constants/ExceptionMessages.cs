@@ -190,5 +190,11 @@ namespace MyKitchen.Common.Constants
         /// 1 Parameter - The type of the object.
         /// </summary>
         public const string PropertyNotFound = "Property '{0}' not found in object of type '{1}'.";
+
+        /// <summary>
+        /// A error message indicating that a type doesn't have a string constructor.
+        /// 0 Parameter - The name of the type.
+        /// </summary>
+        public const string TypeDoesNotHaveStringConstructor = "Type {0} does not have a constructor that takes a string.";
     }
 }

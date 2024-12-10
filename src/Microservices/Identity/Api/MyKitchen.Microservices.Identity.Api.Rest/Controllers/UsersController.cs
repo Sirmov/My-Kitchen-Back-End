@@ -82,14 +82,10 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         [ProducesResponseType(typeof(UnauthorizedDetails), StatusCodes.Status401Unauthorized, MediaTypeNames.Application.Json)]
         public async Task<IActionResult> Login([FromBody] UserLoginDto loginDto)
         {
-            var authenticationResult = await this.usersService.LoginWithEmailAsync(loginDto);
+            var authenticationResult = await this.usersService.LoginWithEmailAsync(loginDto.Email, loginDto.Password);
 
-            return authenticationResult.ToActionResult(user =>
-            {
-                var token = this.tokensService.GenerateAccessToken(this.mapper.Map<UserDto>(user));
-
-                return this.Ok(new { Token = token });
-            });
+            return authenticationResult.ToActionResult((tokensTuple) =>
+                this.Ok(new { AccessToken = tokensTuple.accessToken, RefreshToken = tokensTuple.refreshToken }));
         }
 
         /// <summary>
@@ -101,7 +97,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Logout()
         {
-            var accessToken = this.HttpContext.Items["AccessToken"].ToString();
+            var accessToken = this.HttpContext.Items ["AccessToken"].ToString();
             var logoutResult = await this.usersService.LogoutAsync(accessToken!);
 
             return logoutResult.ToActionResult(_ => this.NoContent());

@@ -38,10 +38,10 @@ namespace MyKitchen.Common.Result
         public TFailure? Failure { get; set; }
 
         /// <inheritdoc/>
-        public bool Succeed => this.Failure == null;
+        public bool IsSuccessful => this.Failure == null;
 
         /// <inheritdoc/>
-        public bool Failed => this.Failure != null;
+        public bool IsFailed => this.Failure != null;
 
         /// <summary>
         /// Implicit conversion from a <typeparamref name="TFailure"/> to a failed <see cref="Result{TFailure}"/>.
@@ -52,18 +52,18 @@ namespace MyKitchen.Common.Result
         /// <inheritdoc/>
         public bool DependOn(IResult<TFailure> result)
         {
-            if (result.Failed)
+            if (result.IsFailed)
             {
                 this.Failure = result.Failure;
             }
 
-            return result.Succeed;
+            return result.IsSuccessful;
         }
 
         /// <inheritdoc/>
         public TMatch Match<TMatch>(Func<IResult<TFailure>, TMatch> onSuccess, Func<IResult<TFailure>, TMatch> onFailure)
         {
-            if (this.Succeed)
+            if (this.IsSuccessful)
             {
                 return onSuccess(this);
             }

@@ -123,7 +123,7 @@ csharp_style_pattern_local_over_anonymous_function = true:suggestion
 csharp_style_prefer_index_operator = true:suggestion
 csharp_style_prefer_range_operator = true:suggestion
 csharp_style_prefer_tuple_swap = true:suggestion
-csharp_style_prefer_local_over_anonymous_function = true:warning
+csharp_style_prefer_local_over_anonymous_function = true:silent
 csharp_style_throw_expression = true:warning
 csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 csharp_style_unused_value_expression_statement_preference = discard_variable:suggestion
@@ -183,7 +183,6 @@ csharp_preserve_single_line_statements = true
 [*.{cs,vb}]
 
 # Naming rules
-
 dotnet_naming_rule.types_and_namespaces_should_be_pascalcase.severity = suggestion
 dotnet_naming_rule.types_and_namespaces_should_be_pascalcase.symbols = types_and_namespaces
 dotnet_naming_rule.types_and_namespaces_should_be_pascalcase.style = pascalcase
@@ -226,11 +225,11 @@ dotnet_naming_rule.public_fields_should_be_pascalcase.style = pascalcase
 
 dotnet_naming_rule.private_fields_should_be__camelcase.severity = suggestion
 dotnet_naming_rule.private_fields_should_be__camelcase.symbols = private_fields
-dotnet_naming_rule.private_fields_should_be__camelcase.style = _camelcase
+dotnet_naming_rule.private_fields_should_be__camelcase.style = camelcase
 
 dotnet_naming_rule.private_static_fields_should_be_s_camelcase.severity = suggestion
 dotnet_naming_rule.private_static_fields_should_be_s_camelcase.symbols = private_static_fields
-dotnet_naming_rule.private_static_fields_should_be_s_camelcase.style = s_camelcase
+dotnet_naming_rule.private_static_fields_should_be_s_camelcase.style = camelcase
 
 dotnet_naming_rule.public_constant_fields_should_be_pascalcase.severity = suggestion
 dotnet_naming_rule.public_constant_fields_should_be_pascalcase.symbols = public_constant_fields
@@ -261,7 +260,6 @@ dotnet_naming_rule.non_field_members_should_be_pascalcase.symbols = non_field_me
 dotnet_naming_rule.non_field_members_should_be_pascalcase.style = pascalcase
 
 # Symbol specifications
-
 dotnet_naming_symbols.interfaces.applicable_kinds = interface
 dotnet_naming_symbols.interfaces.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
 dotnet_naming_symbols.interfaces.required_modifiers = 
@@ -339,7 +337,6 @@ dotnet_naming_symbols.local_functions.applicable_accessibilities = *
 dotnet_naming_symbols.local_functions.required_modifiers = 
 
 # Naming styles
-
 dotnet_naming_style.pascalcase.required_prefix = 
 dotnet_naming_style.pascalcase.required_suffix = 
 dotnet_naming_style.pascalcase.word_separator = 
@@ -387,6 +384,9 @@ dotnet_diagnostic.IDE0005.severity = warning
 # Remove unreachable code 
 dotnet_diagnostic.IDE0035.severity = error
 
+# IDE0039: Use local function
+dotnet_diagnostic.IDE0039.severity = silent
+
 # Remove unused private member
 dotnet_diagnostic.IDE0051.severity = error
 
@@ -416,8 +416,8 @@ dotnet_diagnostic.SA1006.severity = warning          # Preprocessor keywords sho
 dotnet_diagnostic.SA1007.severity = warning          # Operator keyword should be followed by space
 dotnet_diagnostic.SA1008.severity = warning          # Opening parenthesis should be spaced correctly
 dotnet_diagnostic.SA1009.severity = suggestion       # Closing parenthesis should be spaced correctly
-dotnet_diagnostic.SA1010.severity = warning          # Opening square brackets should be spaced correctly
-dotnet_diagnostic.SA1011.severity = warning          # Closing square brackets should be spaced correctly
+dotnet_diagnostic.SA1010.severity = suggestion       # Opening square brackets should be spaced correctly
+dotnet_diagnostic.SA1011.severity = suggestion       # Closing square brackets should be spaced correctly
 dotnet_diagnostic.SA1012.severity = warning          # Opening braces should be spaced correctly
 dotnet_diagnostic.SA1013.severity = warning          # Closing braces should be spaced correctly
 dotnet_diagnostic.SA1014.severity = warning          # Opening generic brackets should be spaced correctly

@@ -9,6 +9,8 @@ namespace MyKitchen.Common.Guard
 {
     using System.Text.RegularExpressions;
 
+    using MyKitchen.Common.Constants;
+
     /// <summary>
     /// This class implements the <see cref="IGuard"/> interface.
     /// </summary>
@@ -19,7 +21,7 @@ namespace MyKitchen.Common.Guard
         {
             if (variable == null)
             {
-                return this.GenereteReturnObject<TOut>(string.Format(formatString, args));
+                return this.GenerateReturnObject<TOut>(string.Format(formatString, args));
             }
 
             return default;
@@ -30,7 +32,7 @@ namespace MyKitchen.Common.Guard
         {
             if (boolean == true)
             {
-                return this.GenereteReturnObject<TOut>(string.Format(formatString, args));
+                return this.GenerateReturnObject<TOut>(string.Format(formatString, args));
             }
 
             return default;
@@ -41,7 +43,7 @@ namespace MyKitchen.Common.Guard
         {
             if (boolean == false)
             {
-                return this.GenereteReturnObject<TOut>(string.Format(formatString, args));
+                return this.GenerateReturnObject<TOut>(string.Format(formatString, args));
             }
 
             return default;
@@ -52,7 +54,7 @@ namespace MyKitchen.Common.Guard
         {
             if (string.IsNullOrEmpty(text))
             {
-                return this.GenereteReturnObject<TOut>(string.Format(formatString, args));
+                return this.GenerateReturnObject<TOut>(string.Format(formatString, args));
             }
 
             return default;
@@ -63,7 +65,7 @@ namespace MyKitchen.Common.Guard
         {
             if (string.IsNullOrWhiteSpace(text))
             {
-                return this.GenereteReturnObject<TOut>(string.Format(formatString, args));
+                return this.GenerateReturnObject<TOut>(string.Format(formatString, args));
             }
 
             return default;
@@ -74,7 +76,7 @@ namespace MyKitchen.Common.Guard
         {
             if (regex.IsMatch(text) == false)
             {
-                return this.GenereteReturnObject<TOut>(string.Format(formatString, args));
+                return this.GenerateReturnObject<TOut>(string.Format(formatString, args));
             }
 
             return default;
@@ -85,18 +87,18 @@ namespace MyKitchen.Common.Guard
         {
             if (Regex.IsMatch(text, pattern) == false)
             {
-                return this.GenereteReturnObject<TOut>(string.Format(formatString, args));
+                return this.GenerateReturnObject<TOut>(string.Format(formatString, args));
             }
 
             return default;
         }
 
-        private TOut GenereteReturnObject<TOut>(string message)
+        private TOut GenerateReturnObject<TOut>(string message)
         {
             var constructor = typeof(TOut).GetConstructor([typeof(string)]);
 
             return constructor == null
-                ? throw new InvalidOperationException($"Type {typeof(TOut)} does not have a constructor that takes a string.")
+                ? throw new InvalidOperationException(string.Format(ExceptionMessages.TypeDoesNotHaveStringConstructor, typeof(TOut).Name))
                 : (TOut)constructor.Invoke([message]);
         }
     }

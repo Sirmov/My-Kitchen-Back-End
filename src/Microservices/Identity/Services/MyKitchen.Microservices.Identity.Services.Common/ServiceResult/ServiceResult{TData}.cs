@@ -17,7 +17,7 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
     /// for the type parameter TFailure. It implements the <see cref="IDataResult{TData, TFailure}"/>.
     /// </summary>
     /// <typeparam name="TData"><inheritdoc cref="Result{TData, TFailure}"/>.</typeparam>
-    public sealed class ServiceResult<TData> : Result<TData, ProblemDetails>, IDataResult<TData, ProblemDetails>
+    public sealed class ServiceResult<TData> : ServiceResultBase<TData>, IDataResult<TData, ProblemDetails>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceResult{TData}"/> class.
@@ -61,44 +61,5 @@ namespace MyKitchen.Microservices.Identity.Services.Common.ServiceResult
         /// <param name="data"><inheritdoc cref="ServiceResult{TData}.ServiceResult(TData)"/></param>
         /// <returns>Returns a new successful <see cref="ServiceResult{TData}"/> containing <paramref name="data"/>.</returns>
         public static ServiceResult<TData> Successful(TData data) => new (data);
-
-        /// <summary>
-        /// This method transforms the <see cref="ServiceResult{TData}"/> to a <see cref="IActionResult"/> using
-        /// the <paramref name="onSuccess"/> delegate. If the result is not successful
-        /// a <see cref="ProblemDetails"/> is returned.
-        /// </summary>
-        /// <inheritdoc cref="ServiceResult.ToActionResult(Func{ServiceResult, IActionResult})"/>
-        public IActionResult ToActionResult(Func<TData, IActionResult> onSuccess)
-        {
-            if (this.Succeed && this.Data != null)
-            {
-                return onSuccess(this.Data);
-            }
-
-            return this.ToErrorResponse();
-        }
-
-        /// <summary>
-        /// This method transforms the <see cref="ServiceResult{TData}"/> to a <see cref="IActionResult"/> using
-        /// the <paramref name="onSuccess"/> delegate. If the result is not successful
-        /// a <see cref="ProblemDetails"/> is returned.
-        /// </summary>
-        /// <inheritdoc cref="ServiceResult.ToActionResult(Func{ServiceResult, Task{IActionResult}})"/>
-        public async Task<IActionResult> ToActionResult(Func<TData, Task<IActionResult>> onSuccess)
-        {
-            if (this.Succeed && this.Data != null)
-            {
-                return await onSuccess(this.Data);
-            }
-
-            return this.ToErrorResponse();
-        }
-
-        private IActionResult ToErrorResponse()
-        {
-            var problemDetails = this.Failure;
-
-            return new ObjectResult(problemDetails);
-        }
     }
 }

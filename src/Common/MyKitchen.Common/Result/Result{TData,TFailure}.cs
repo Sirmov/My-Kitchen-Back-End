@@ -62,19 +62,19 @@ namespace MyKitchen.Common.Result
         /// <inheritdoc/>
         public bool DependOn(IDataResult<object, TFailure> result)
         {
-            if (result.Failed)
+            if (result.IsFailed)
             {
                 this.Failure = result.Failure;
             }
 
-            return result.Succeed;
+            return result.IsSuccessful;
         }
 
         /// <inheritdoc/>
         public virtual TResult Bind<TResult, TOutData>(Func<TData, TResult> function)
             where TResult : IDataResult<TOutData, TFailure>, IResult<TFailure>
         {
-            if (this.Succeed && this.Data != null)
+            if (this.IsSuccessful && this.Data != null)
             {
                 return function(this.Data);
             }
@@ -87,7 +87,7 @@ namespace MyKitchen.Common.Result
         public virtual async Task<TResult> BindAsync<TResult, TOutData>(Func<TData, Task<TResult>> function)
             where TResult : IDataResult<TOutData, TFailure>, IResult<TFailure>
         {
-            if (this.Succeed && this.Data != null)
+            if (this.IsSuccessful && this.Data != null)
             {
                 return await function(this.Data);
             }
@@ -99,7 +99,7 @@ namespace MyKitchen.Common.Result
         /// <inheritdoc/>
         public TMatch Match<TMatch>(Func<IDataResult<TData, TFailure>, TMatch> onSuccess, Func<IDataResult<TData, TFailure>, TMatch> onFailure)
         {
-            if (this.Succeed)
+            if (this.IsSuccessful)
             {
                 return onSuccess(this);
             }

@@ -59,7 +59,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
             var authClaims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, this.userIdProtector.Protect(user.Id.ToString())),
-                new Claim(JwtRegisteredClaimNames.Name, user.UserName!),
+                new Claim(JwtRegisteredClaimNames.Name, user.Username!),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
@@ -90,14 +90,15 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
             var refreshTokenJwt = this.tokenHandler.ReadJwtToken(refreshToken);
             var accessTokenJwt = this.tokenHandler.ReadJwtToken(accessToken);
 
-            bool isRefreshTokenValid = await this.ValidateTokenAsync(refreshToken);
-            bool isAccessTokenValid = await this.ValidateTokenAsync(accessToken, false);
-            bool isRevoked = (await this.cache.GetAsync(accessTokenJwt.Id)) is not null;
+            bool isRefreshTokenValid = this.ValidateToken(refreshToken);
+            bool isAccessTokenValid = this.ValidateToken(accessToken, false);
+            bool isAccessTokenRevoked = (await this.cache.GetAsync(accessTokenJwt.Id)) is not null;
+            bool isRefreshTokenRevoked = (await this.cache.GetAsync(refreshTokenJwt.Id)) is not null;
             bool areUserIdsEqual = refreshTokenJwt.Subject == accessTokenJwt.Subject;
 
-            if ((!isRefreshTokenValid || !isAccessTokenValid) && areUserIdsEqual && !isRevoked)
+            if (!isRefreshTokenValid || !isAccessTokenValid || !areUserIdsEqual || isAccessTokenRevoked || isRefreshTokenRevoked)
             {
-                new UnauthorizedDetails(ExceptionMessages.Unauthorized);
+                return new UnauthorizedDetails(ExceptionMessages.Unauthorized);
             }
 
             var oldAccessTokenJwt = this.tokenHandler.ReadJwtToken(accessToken);
@@ -109,7 +110,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
         public async Task<ServiceResult> RevokeTokenAsync(string token)
         {
             var tokenJwt = this.tokenHandler.ReadJwtToken(token);
-            var isTokenValid = await this.ValidateTokenAsync(token);
+            var isTokenValid = this.ValidateToken(token);
 
             if (isTokenValid)
             {
@@ -131,26 +132,30 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
             var token = new JwtSecurityToken(
                 issuer: this.tokenValidationParameters.ValidIssuer,
                 audience: this.tokenValidationParameters.ValidAudience,
-                expires: DateTime.Now.Add(expiresAfter),
+                expires: DateTime.UtcNow.Add(expiresAfter),
                 claims: claims,
                 signingCredentials: signingCredentials);
 
             return this.tokenHandler.WriteToken(token);
         }
 
-        private async Task<bool> ValidateTokenAsync(string token, bool validateLifetime = true)
-        {
-            var jwtToken = this.tokenHandler.ReadJwtToken(token);
-            return await this.ValidateToken(jwtToken, validateLifetime);
-        }
-
-        private async Task<bool> ValidateToken(JwtSecurityToken jwtToken, bool validateLifetime = true)
+        private bool ValidateToken(string token, bool validateLifetime = true)
         {
             var validateParameters = this.tokenValidationParameters.Clone();
             validateParameters.ValidateLifetime = validateLifetime;
+            validateParameters.IssuerSigningKey = this.tokenOptions.IssuerSigningKey;
+            validateParameters.ClockSkew = TimeSpan.Zero;
 
-            var validationResult = await this.tokenHandler.ValidateTokenAsync(jwtToken, validateParameters);
-            return validationResult.IsValid;
+            try
+            {
+                this.tokenHandler.ValidateToken(token, validateParameters, out _);
+
+                return true;
+            }
+            catch (SecurityTokenValidationException ex)
+            {
+                return false;
+            }
         }
     }
 }
