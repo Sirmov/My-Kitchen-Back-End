@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    </PropertyGroup>
+
+
+    <PropertyGroup Condition="'$(Configuration)' != 'Release' AND $(MSBuildProjectName.Contains('.Tests')) == false" >
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <RelativeProjectPath>$(MSBuildProjectDirectory.Replace($(RootDir), '').TrimStart('\'))</RelativeProjectPath>
+        <ParentDirectoryPath>$([System.IO.Path]::GetDirectoryName($(RelativeProjectPath)))</ParentDirectoryPath>
+        <DocumentationFile>$(RootDir)/Documentation/$(ParentDirectoryPath)/$(MSBuildProjectName).xml</DocumentationFile>
+    </PropertyGroup>
+
+</Project>
