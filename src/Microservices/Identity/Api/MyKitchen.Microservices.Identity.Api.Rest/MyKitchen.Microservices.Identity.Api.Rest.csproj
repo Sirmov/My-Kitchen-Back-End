@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+  <None Include="appsettings*.json">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.Mongo" />
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
