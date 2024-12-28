@@ -60,6 +60,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
                 .AddJwtBearer();
             services.ConfigureOptions<JwtBearerOptionsConfigurator>();
 
+            services.AddAuthorization();
+
             services.AddSingleton<IGuard>(new Guard());
             services.AddMongoDbClient(configuration);
             services.AddMongoDbIdentity(configuration);
