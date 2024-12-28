@@ -404,3 +404,5 @@ src/Documentation/
 # Secrets and environment files
 secrets
 *.env
+*secrets.yaml
+*secret.yaml
