@@ -86,8 +86,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
 
             if (app.Environment.IsDevelopment())
             {
-                // IConfigurationRoot configurationRoot = (IConfigurationRoot)app.Configuration;
-                // Console.WriteLine(configurationRoot.GetDebugView());
+                IConfigurationRoot configurationRoot = (IConfigurationRoot)app.Configuration;
+                Console.WriteLine(configurationRoot.GetDebugView());
                 app.UseSwagger();
                 app.UseSwaggerUI();
                 app.UseCors("DevelopmentCors");
