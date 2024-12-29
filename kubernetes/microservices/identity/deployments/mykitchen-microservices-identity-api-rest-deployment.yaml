@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mykitchen-microservices-identity-api-rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mykitchen-microservices-identity-api-rest
+  template:
+    metadata:
+      labels:
+        app: mykitchen-microservices-identity-api-rest
+    spec:
+      containers:
+        - name: mykitchen-microservices-identity-api-rest
+          image: sirmov/mykitchen-identity-service:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5000
+            - containerPort: 5001
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
+            - name: ASPNETCORE_HTTP_PORTS
+              value: "5000"
+            - name: ASPNETCORE_HTTPS_PORTS
+              value: "5001"
+          envFrom:
+            - secretRef:
+                name: mykitchen-microservices-identity-api-rest
+                optional: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mykitchen-microservices-identity-api-rest-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: mykitchen-microservices-identity-api-rest
+  ports:
+  - name: http
+    protocol: TCP
+    port: 5000
+    targetPort: 5000
+  - name: https
+    protocol: TCP
+    port: 5001
+    targetPort: 5001

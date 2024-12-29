@@ -1,4 +1,5 @@
 **/.classpath
+**/docker
 **/.dockerignore
 **/.env
 **/.git
@@ -28,6 +29,9 @@
 !.git/config
 !.git/packed-refs
 !.git/refs/heads/**
+
+**/secrets
+**/*.env
 
 # **/*.editorconfig
 # **/*.roslynatorconfig
