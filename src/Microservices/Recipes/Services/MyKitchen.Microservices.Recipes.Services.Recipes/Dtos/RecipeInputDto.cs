@@ -1,5 +1,5 @@
 // |-----------------------------------------------------------------------------------------------------|
-// <copyright file="RecipeCreateDto.cs" company="MyKitchen">
+// <copyright file="RecipeInputDto.cs" company="MyKitchen">
 // Copyright (c) MyKitchen. All Rights Reserved.
 // Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,7 +18,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
     /// <summary>
     /// This class is a data transfer object for the <see cref="Recipe"/> model.
     /// </summary>
-    public class RecipeCreateDto
+    public class RecipeInputDto
     {
         /// <summary>
         /// Gets or sets the id of the user to whom the recipe belongs.

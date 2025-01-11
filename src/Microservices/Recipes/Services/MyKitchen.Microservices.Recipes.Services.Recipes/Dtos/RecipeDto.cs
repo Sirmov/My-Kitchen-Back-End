@@ -14,27 +14,12 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
     /// <summary>
     /// This class is a data transfer object for the <see cref="Recipe"/> model.
     /// </summary>
-    public class RecipeDto
+    public class RecipeDto : RecipeInputDto
     {
         /// <summary>
         /// Gets or sets the id of the recipe.
         /// </summary>
         public ObjectId Id { get; set; } = ObjectId.Empty;
-
-        /// <summary>
-        /// Gets or sets the id of the user to whom the recipe belongs.
-        /// </summary>
-        public ObjectId UserId { get; set; } = ObjectId.Empty;
-
-        /// <summary>
-        /// Gets or sets the title of the recipe.
-        /// </summary>
-        public string Title { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the description of the recipe.
-        /// </summary>
-        public string Description { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the date time when the recipe was created.
