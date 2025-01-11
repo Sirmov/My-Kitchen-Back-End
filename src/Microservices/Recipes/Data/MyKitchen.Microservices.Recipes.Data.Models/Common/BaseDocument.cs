@@ -30,7 +30,7 @@ namespace MyKitchen.Microservices.Recipes.Data.Models.Common
         public DateTime? ModifiedOn { get; set; }
 
         /// <inheritdoc/>
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         /// <inheritdoc/>
         public DateTime? DeletedOn { get; set; }
