@@ -16,13 +16,13 @@ namespace MyKitchen.Microservices.Recipes.Data
     using MyKitchen.Microservices.Recipes.Data.Models.Common;
 
     /// <summary>
-    /// This class represents a MongoDB repository. It implements the <see cref="IMongoDbRepository{TDocument, TKey}"/>
+    /// This class represents a MongoDB repository. It implements the <see cref="IRepository{TDocument, TKey}"/>
     /// interface.
     /// </summary>
     /// <typeparam name="TDocument">The type of documents that the collection holds.</typeparam>
     /// <typeparam name="TKey">The type of the id of the <typeparamref name="TDocument"/>.</typeparam>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1503:Braces should not be omitted", Justification = "Cleaner visibility")]
-    public class MongoDbRepository<TDocument, TKey> : IMongoDbRepository<TDocument, TKey>
+    public class MongoDbRepository<TDocument, TKey> : IRepository<TDocument, TKey>
             where TDocument : BaseDocument<TKey>
             where TKey : notnull
     {

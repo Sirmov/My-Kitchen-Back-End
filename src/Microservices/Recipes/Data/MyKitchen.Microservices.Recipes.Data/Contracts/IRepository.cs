@@ -16,7 +16,7 @@ namespace MyKitchen.Microservices.Recipes.Data.Contracts
     /// </summary>
     /// <typeparam name="TDocument">The type of the documents in the collection.</typeparam>
     /// <typeparam name="TKey">The type of the primary key of the document.</typeparam>
-    public interface IMongoDbRepository<TDocument, TKey>
+    public interface IRepository<TDocument, TKey>
     {
         /// <summary>
         /// This method generates a non materialized query
