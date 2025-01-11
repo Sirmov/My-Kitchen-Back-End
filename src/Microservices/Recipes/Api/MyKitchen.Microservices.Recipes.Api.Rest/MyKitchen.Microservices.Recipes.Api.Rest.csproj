@@ -1,13 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>e1e97acc-e2e5-48e4-a045-790d64ae4897</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings*.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Recipes.Services.Mapping\MyKitchen.Microservices.Recipes.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Recipes.Services.Recipes\MyKitchen.Microservices.Recipes.Services.Recipes.csproj" />
   </ItemGroup>
 
 </Project>
