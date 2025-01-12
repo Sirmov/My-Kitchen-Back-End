@@ -9,6 +9,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Recipes.Data.Common\MyKitchen.Microservices.Recipes.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Recipes.Data.Models\MyKitchen.Microservices.Recipes.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\MyKitchen.Microservices.Recipes.Data\MyKitchen.Microservices.Recipes.Data.csproj" />
+    <ProjectReference Include="..\MyKitchen.Microservices.Recipes.Services.Common\MyKitchen.Microservices.Recipes.Services.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" />
   </ItemGroup>
 
 </Project>
