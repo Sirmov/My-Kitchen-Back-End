@@ -7,6 +7,8 @@
 
 namespace MyKitchen.Microservices.Recipes.Api.Rest.Extensions
 {
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+
     using MyKitchen.Microservices.Recipes.Api.Rest.Options;
     using MyKitchen.Microservices.Recipes.Services.Recipes;
     using MyKitchen.Microservices.Recipes.Services.Recipes.Contracts;
@@ -27,6 +29,11 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Extensions
             services
                 .AddOptionsWithValidateOnStart<MongoDbOptions>()
                 .BindConfiguration(nameof(MongoDbOptions))
+                .ValidateDataAnnotations();
+
+            services
+                .AddOptionsWithValidateOnStart<JwtBearerOptions>()
+                .BindConfiguration(nameof(JwtBearerOptions))
                 .ValidateDataAnnotations();
 
             return services;
