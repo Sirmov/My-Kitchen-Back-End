@@ -39,5 +39,19 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the ingredients text for the recipe.
+        /// </summary>
+        [Required]
+        [StringLength(IngredientsMaxLength, MinimumLength = IngredientsMinLength)]
+        public string Ingredients { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the directions text for the recipe.
+        /// </summary>
+        [Required]
+        [StringLength(DirectionsMaxLength, MinimumLength = DirectionsMinLength)]
+        public string Directions { get; set; } = string.Empty;
     }
 }

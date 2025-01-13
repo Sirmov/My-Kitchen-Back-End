@@ -36,6 +36,26 @@ namespace MyKitchen.Microservices.Recipes.Data.Common
             /// An integer defining the description maximum length.
             /// </summary>
             public const int DescriptionMaxLength = 300;
+
+            /// <summary>
+            /// An integer defining the ingredients text minimum length.
+            /// </summary>
+            public const int IngredientsMinLength = 5;
+
+            /// <summary>
+            /// An integer defining the ingredients text maximum length.
+            /// </summary>
+            public const int IngredientsMaxLength = 200;
+
+            /// <summary>
+            /// An integer defining the directions text minimum length.
+            /// </summary>
+            public const int DirectionsMinLength = 10;
+
+            /// <summary>
+            /// An integer defining the directions text maximum length.
+            /// </summary>
+            public const int DirectionsMaxLength = 500;
         }
     }
 }

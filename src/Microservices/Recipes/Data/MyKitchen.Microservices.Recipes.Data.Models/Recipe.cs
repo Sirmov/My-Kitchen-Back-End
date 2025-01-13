@@ -33,5 +33,17 @@ namespace MyKitchen.Microservices.Recipes.Data.Models
         /// </summary>
         [BsonRequired]
         public string Description { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the ingredients text for the recipe.
+        /// </summary>
+        [BsonRequired]
+        public string Ingredients { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the directions text for the recipe.
+        /// </summary>
+        [BsonRequired]
+        public string Directions { get; set; } = string.Empty;
     }
 }
