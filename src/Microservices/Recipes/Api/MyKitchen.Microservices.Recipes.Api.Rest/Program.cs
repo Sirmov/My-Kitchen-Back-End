@@ -82,6 +82,11 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
 
             app.UseAuthorization();
 
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapControllers().AllowAnonymous();
+            }
+
             app.MapControllers();
         }
     }
