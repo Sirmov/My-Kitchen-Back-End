@@ -9,9 +9,12 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
 {
     using AutoMapper;
 
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+
     using MyKitchen.Common.Guard;
     using MyKitchen.Microservices.Recipes.Api.Rest.Constants;
     using MyKitchen.Microservices.Recipes.Api.Rest.Extensions;
+    using MyKitchen.Microservices.Recipes.Api.Rest.Options.Configurators;
     using MyKitchen.Microservices.Recipes.Services.Mapping;
 
     internal static class Program
@@ -35,6 +38,12 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
             services.AddMongoDbClient(configuration);
             services.AddMongoRepository();
 
+            services.AddSingleton<IGuard>(new Guard());
+
+            AutoMapperConfig.RegisterMappings(AppDomain.CurrentDomain.GetAssemblies());
+            IMapper mapper = AutoMapperConfig.MapperInstance;
+            services.AddSingleton<IMapper>(mapper);
+
             services.AddCors(options =>
             {
                 options.AddPolicy("DevelopmentCors", policy =>
@@ -45,13 +54,13 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
                 });
             });
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer();
+            services.ConfigureOptions<JwtBearerOptionsConfigurator>();
+
             services.AddControllers();
-            services.AddSingleton<IGuard>(new Guard());
 
-            AutoMapperConfig.RegisterMappings(AppDomain.CurrentDomain.GetAssemblies());
-            IMapper mapper = AutoMapperConfig.MapperInstance;
-            services.AddSingleton<IMapper>(mapper);
-
+            services.ConfigureOptions<SwaggerGenOptionsConfigurator>();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
         }
