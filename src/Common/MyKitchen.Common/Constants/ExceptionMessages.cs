@@ -133,6 +133,11 @@ namespace MyKitchen.Common.Constants
         public const string Unauthorized = "Access is denied due to invalid credentials.";
 
         /// <summary>
+        /// A error message indicating that the request is not authorized because the user is not the owner of the resource.
+        /// </summary>
+        public const string NotOwner = "Access is denied due to lack of ownership of the resource.";
+
+        /// <summary>
         /// A error message indicating that the request is not authorized because a revoked access token was used.
         /// </summary>
         public const string AccessTokenRevoked = "Access is denied due to revoked access token.";
@@ -196,5 +201,11 @@ namespace MyKitchen.Common.Constants
         /// 0 Parameter - The name of the type.
         /// </summary>
         public const string TypeDoesNotHaveStringConstructor = "Type {0} does not have a constructor that takes a string.";
+
+        /// <summary>
+        /// A error message indicating that something has invalid format.
+        /// 0 Parameter - the name of the object with invalid format.
+        /// </summary>
+        public const string InvalidFormat = "The {} has invalid format.";
     }
 }
