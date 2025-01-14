@@ -107,7 +107,7 @@ namespace MyKitchen.Microservices.Recipes.Data
         }
 
         /// <inheritdoc/>
-        public Result<Exception> Add(TDocument document)
+        public Result<TDocument, Exception> Add(TDocument document)
         {
             Exception? exception = this.guard
                 .AgainstNull<ArgumentNullException>(document, ExceptionMessages.ArgumentIsNull, nameof(document));
@@ -116,11 +116,11 @@ namespace MyKitchen.Microservices.Recipes.Data
             document.CreatedOn = DateTime.UtcNow;
             this.mongoCollection.InsertOne(document);
 
-            return Result<Exception>.Success;
+            return document;
         }
 
         /// <inheritdoc/>
-        public async Task<Result<Exception>> AddAsync(TDocument document)
+        public async Task<Result<TDocument, Exception>> AddAsync(TDocument document)
         {
             Exception? exception = this.guard
                 .AgainstNull<ArgumentNullException>(document, ExceptionMessages.ArgumentIsNull, nameof(document));
@@ -129,7 +129,7 @@ namespace MyKitchen.Microservices.Recipes.Data
             document.CreatedOn = DateTime.UtcNow;
             await this.mongoCollection.InsertOneAsync(document);
 
-            return Result<Exception>.Success;
+            return document;
         }
 
         /// <inheritdoc/>

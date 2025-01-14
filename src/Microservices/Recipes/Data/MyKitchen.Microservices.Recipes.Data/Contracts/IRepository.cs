@@ -1,5 +1,5 @@
 // |-----------------------------------------------------------------------------------------------------|
-// <copyright file="IMongoDbRepository.cs" company="MyKitchen">
+// <copyright file="IRepository.cs" company="MyKitchen">
 // Copyright (c) MyKitchen. All Rights Reserved.
 // Licensed under the GPLv3 license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -55,15 +55,15 @@ namespace MyKitchen.Microservices.Recipes.Data.Contracts
         /// This method adds a document to the collection.
         /// </summary>
         /// <param name="document">The document to be added.</param>
-        /// <returns>Returns an empty <see cref="Result{Exception}"/>.</returns>
-        public Result<Exception> Add(TDocument document);
+        /// <returns>Returns the created document.</returns>
+        public Result<TDocument, Exception> Add(TDocument document);
 
         /// <summary>
         /// This method asynchronously adds a document to the collection.
         /// </summary>
         /// <param name="document">The document to be added.</param>
-        /// <returns>Returns an empty <see cref="Result{Exception}"/>.</returns>
-        public Task<Result<Exception>> AddAsync(TDocument document);
+        /// <returns>Returns the created document.</returns>
+        public Task<Result<TDocument, Exception>> AddAsync(TDocument document);
 
         /// <summary>
         /// This method add a range of documents to the collection.
