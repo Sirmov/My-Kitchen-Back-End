@@ -10,11 +10,12 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
     using MongoDB.Bson;
 
     using MyKitchen.Microservices.Recipes.Data.Models;
+    using MyKitchen.Microservices.Recipes.Services.Mapping;
 
     /// <summary>
     /// This class is a data transfer object for the <see cref="Recipe"/> model.
     /// </summary>
-    public class RecipeDto : RecipeInputDto
+    public class RecipeDto : RecipeInputDto, IMapFrom<Recipe>, IMapTo<Recipe>
     {
         /// <summary>
         /// Gets or sets the id of the recipe.
