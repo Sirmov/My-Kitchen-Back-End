@@ -18,21 +18,6 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Contracts
     public interface IRecipesService
     {
         /// <summary>
-        /// This method asynchronously creates a new recipe.
-        /// </summary>
-        /// <param name="recipeInputDto">The recipe input dto.</param>
-        /// <returns>Returns a dto of the newly created recipe.</returns>
-        public Task<ServiceResult<RecipeDto>> CreateRecipeAsync(RecipeInputDto recipeInputDto);
-
-        /// <summary>
-        /// This method asynchronously updates a existing recipe.
-        /// </summary>
-        /// <param name="recipeId">The id of the recipe to be updated.</param>
-        /// <param name="recipeInputDto">The recipe input dto.</param>
-        /// <returns>Returns a dto of the updated recipe.</returns>
-        public Task<ServiceResult<RecipeDto>> UpdateRecipeAsync(string recipeId, RecipeInputDto recipeInputDto);
-
-        /// <summary>
         /// This method asynchronously returns all recipes async.
         /// </summary>
         /// <param name="queryOptions">The query options.</param>
@@ -48,10 +33,28 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Contracts
         public Task<ServiceResult<RecipeDto>> GetRecipeAsync(string recipeId, QueryOptions<Recipe>? queryOptions = null);
 
         /// <summary>
+        /// This method asynchronously creates a new recipe.
+        /// </summary>
+        /// <param name="userId">The id of the current user.</param>
+        /// <param name="recipeInputDto">The recipe input dto.</param>
+        /// <returns>Returns a dto of the newly created recipe.</returns>
+        public Task<ServiceResult<RecipeDto>> CreateRecipeAsync(string userId, RecipeInputDto recipeInputDto);
+
+        /// <summary>
+        /// This method asynchronously updates a existing recipe.
+        /// </summary>
+        /// <param name="userId">The id of the current user.</param>
+        /// <param name="recipeId">The id of the recipe to be updated.</param>
+        /// <param name="recipeInputDto">The recipe input dto.</param>
+        /// <returns>Returns a dto of the updated recipe.</returns>
+        public Task<ServiceResult<RecipeDto>> UpdateRecipeAsync(string userId, string recipeId, RecipeInputDto recipeInputDto);
+
+        /// <summary>
         /// This method asynchronously marks a recipe with <paramref name="recipeId"/> as deleted.
         /// </summary>
+        /// <param name="userId">The id of the current user.</param>
         /// <param name="recipeId">The id of the recipe to be marked as deleted.</param>
         /// <returns>Returns a empty <see cref="ServiceResult"/>.</returns>
-        public Task<ServiceResult> DeleteRecipeAsync(string recipeId);
+        public Task<ServiceResult> DeleteRecipeAsync(string userId, string recipeId);
     }
 }
