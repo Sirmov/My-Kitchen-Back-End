@@ -13,8 +13,10 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
     using AutoMapper;
 
     using MongoDB.Bson;
+    using MongoDB.Driver;
 
-    using MyKitchen.Microservices.Recipes.Data;
+    using MyKitchen.Common.Constants;
+    using MyKitchen.Common.ProblemDetails;
     using MyKitchen.Microservices.Recipes.Data.Contracts;
     using MyKitchen.Microservices.Recipes.Data.Models;
     using MyKitchen.Microservices.Recipes.Services.Common.QueryOptions;
@@ -36,42 +38,140 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
         /// <param name="recipesRepository">The <see cref="Recipe"/> repository.</param>
         /// <param name="mapper">The global automapper instance.</param>
         public RecipesService(IRepository<Recipe, ObjectId> recipesRepository, IMapper mapper)
-            : base(recipesRepository, mapper)
         {
             this.recipesRepository = recipesRepository;
             this.mapper = mapper;
         }
 
         /// <inheritdoc/>
-        public async Task<ServiceResult<RecipeDto>> CreateRecipeAsync(RecipeInputDto recipeInputDto)
+        public async Task<ServiceResult<IEnumerable<RecipeDto>>> GetAllRecipesAsync(QueryOptions<Recipe>? queryOptions = null)
         {
-            var result = await base.CreateAsync<RecipeDto, RecipeInputDto>(recipeInputDto);
+            queryOptions ??= new QueryOptions<Recipe>();
 
-            return result;
+            var query = this.recipesRepository.All(queryOptions.WithDeleted);
+
+            query = this.ModifyQuery(query, queryOptions);
+
+            return (await query.ToListAsync()).Select(r => this.mapper.Map<RecipeDto>(r)).ToArray();
         }
 
         /// <inheritdoc/>
-        public Task<ServiceResult> DeleteRecipeAsync(string recipeId)
+        public async Task<ServiceResult<RecipeDto>> GetRecipeAsync(string recipeId, QueryOptions<Recipe>? queryOptions = null)
         {
-            throw new NotImplementedException();
+            queryOptions ??= new QueryOptions<Recipe>();
+
+            if (!ObjectId.TryParse(recipeId, out ObjectId recipeObjectId))
+            {
+                return new BadRequestDetails(string.Format(ExceptionMessages.InvalidFormat, nameof(recipeId)));
+            }
+
+            var findResult = await this.recipesRepository.FindAsync(recipeObjectId, queryOptions.WithDeleted);
+
+            if (findResult.IsFailed)
+            {
+                return new NotFoundDetails(string.Format(ExceptionMessages.EntityNotFound, "recipe"));
+            }
+
+            return this.mapper.Map<RecipeDto>(findResult.Data);
         }
 
         /// <inheritdoc/>
-        public Task<ServiceResult<IEnumerable<RecipeDto>>> GetAllRecipesAsync(QueryOptions<Recipe>? queryOptions = null)
+        public async Task<ServiceResult<RecipeDto>> CreateRecipeAsync(string userId, RecipeInputDto recipeInputDto)
         {
-            throw new NotImplementedException();
+            if (recipeInputDto.UserId.ToString() != userId)
+            {
+                return new UnauthorizedDetails(ExceptionMessages.NotOwner);
+            }
+
+            var validationResults = this.ValidateDto(recipeInputDto);
+
+            if (validationResults.Count > 0)
+            {
+                var errorMessages = string.Join(' ', validationResults.Select(vr => vr.ErrorMessage));
+                return new BadRequestDetails(errorMessages);
+            }
+
+            var addResult = await this.recipesRepository.AddAsync(this.mapper.Map<Recipe>(recipeInputDto));
+
+            if (addResult.IsFailed)
+            {
+                return new InternalServerErrorDetails(ExceptionMessages.InternalServerError);
+            }
+
+            return this.mapper.Map<RecipeDto>(addResult.Data);
         }
 
         /// <inheritdoc/>
-        public Task<ServiceResult<RecipeDto>> GetRecipeAsync(string recipeId, QueryOptions<Recipe>? queryOptions = null)
+        public async Task<ServiceResult<RecipeDto>> UpdateRecipeAsync(string userId, string recipeId, RecipeInputDto recipeInputDto)
         {
-            throw new NotImplementedException();
+            if (!ObjectId.TryParse(recipeId, out ObjectId recipeObjectId))
+            {
+                return new BadRequestDetails(string.Format(ExceptionMessages.InvalidFormat, nameof(recipeId)));
+            }
+
+            var findResult = await this.recipesRepository.FindAsync(recipeObjectId, false);
+
+            if (findResult.IsFailed)
+            {
+                return new NotFoundDetails(string.Format(ExceptionMessages.EntityNotFound, "recipe"));
+            }
+
+            var recipe = findResult.Data ?? throw new NullReferenceException(nameof(findResult.Data));
+
+            if (!(recipe.UserId.ToString() == userId && userId == recipeInputDto.UserId.ToString()))
+            {
+                return new UnauthorizedDetails(ExceptionMessages.NotOwner);
+            }
+
+            var validationResults = this.ValidateDto(recipeInputDto);
+
+            if (validationResults.Count > 0)
+            {
+                var errorMessages = string.Join(' ', validationResults.Select(vr => vr.ErrorMessage));
+                return new BadRequestDetails(errorMessages);
+            }
+
+            this.CopyProperties(recipeInputDto, recipe);
+            var updateResult = await this.recipesRepository.UpdateAsync(recipeObjectId, recipe);
+
+            if (updateResult.IsFailed)
+            {
+                return new InternalServerErrorDetails(ExceptionMessages.InternalServerError);
+            }
+
+            return this.mapper.Map<RecipeDto>(recipe);
         }
 
         /// <inheritdoc/>
-        public Task<ServiceResult<RecipeDto>> UpdateRecipeAsync(string recipeId, RecipeInputDto recipeInputDto)
+        public async Task<ServiceResult> DeleteRecipeAsync(string userId, string recipeId)
         {
-            throw new NotImplementedException();
+            if (!ObjectId.TryParse(recipeId, out ObjectId recipeObjectId))
+            {
+                return new BadRequestDetails(string.Format(ExceptionMessages.InvalidFormat, nameof(recipeId)));
+            }
+
+            var findResult = await this.recipesRepository.FindAsync(recipeObjectId, false);
+
+            if (findResult.IsFailed)
+            {
+                return new NotFoundDetails(string.Format(ExceptionMessages.EntityNotFound, "recipe"));
+            }
+
+            var recipe = findResult.Data ?? throw new NullReferenceException(nameof(findResult.Data));
+
+            if (recipe.UserId.ToString() != userId)
+            {
+                return new UnauthorizedDetails(ExceptionMessages.NotOwner);
+            }
+
+            var deleteResult = await this.recipesRepository.DeleteAsync(recipeObjectId);
+
+            if (deleteResult.IsFailed)
+            {
+                return new InternalServerErrorDetails(ExceptionMessages.InternalServerError);
+            }
+
+            return ServiceResult.Success;
         }
     }
 }
