@@ -36,12 +36,12 @@ namespace MyKitchen.Microservices.Recipes.Services.Common.ServiceResult
             this.Data = null;
         }
 
-        private new object? Data;
+        private readonly new object? Data;
 
         /// <summary>
         /// Gets a new successful <see cref="ServiceResult"/>.
         /// </summary>
-        public static ServiceResult Successful => new ();
+        public static new ServiceResult Success => new ();
 
         /// <summary>
         /// Implicit conversion from a <see cref="ProblemDetails"/> to a failed <see cref="ServiceResult"/>.

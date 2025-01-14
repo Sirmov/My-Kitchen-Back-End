@@ -60,6 +60,6 @@ namespace MyKitchen.Microservices.Recipes.Services.Common.ServiceResult
         /// </summary>
         /// <param name="data"><inheritdoc cref="ServiceResult{TData}.ServiceResult(TData)"/></param>
         /// <returns>Returns a new successful <see cref="ServiceResult{TData}"/> containing <paramref name="data"/>.</returns>
-        public static ServiceResult<TData> Successful(TData data) => new (data);
+        public static new ServiceResult<TData> Success(TData data) => new (data);
     }
 }
