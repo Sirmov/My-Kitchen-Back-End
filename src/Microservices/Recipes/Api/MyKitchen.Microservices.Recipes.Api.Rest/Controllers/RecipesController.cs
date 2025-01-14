@@ -9,7 +9,6 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Controllers
 {
     using System.Net.Mime;
 
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using MyKitchen.Common.ProblemDetails;
@@ -26,6 +25,10 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Controllers
     {
         private readonly IRecipesService recipeService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RecipesController"/> class.
+        /// </summary>
+        /// <param name="recipesService">The implementation of the <see cref="IRecipesService"/>.</param>
         public RecipesController(IRecipesService recipesService)
         {
             this.recipeService = recipesService;
@@ -61,6 +64,56 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Controllers
             var getResult = await this.recipeService.GetRecipeAsync(recipeId, queryOptions);
 
             return getResult.ToActionResult(recipes => this.Ok(recipes));
+        }
+
+        /// <summary>
+        /// This action is responsible for handling the request for creating a recipe.
+        /// </summary>
+        /// <param name="recipeInputDto">The recipe input dto.</param>
+        /// <returns>Returns a <see cref="RecipeDto"/> of the created recipe.</returns>
+        [HttpPost]
+        [Route(RouteConstants.Recipes.RecipesEndpoint)]
+        [ProducesResponseType(typeof(RecipeDto), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(BadRequestDetails), StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> CreateRecipe([FromBody] RecipeInputDto recipeInputDto)
+        {
+            var createResult = await this.recipeService.CreateRecipeAsync(this.UserId, recipeInputDto);
+
+            return createResult.ToActionResult(recipe => this.Created($"{RouteConstants.Recipes.RecipesEndpoint}/{recipe.Id}", recipe));
+        }
+
+        /// <summary>
+        /// This action is responsible for handling the request for updating a existing recipe.
+        /// </summary>
+        /// <param name="recipeId">The id of the recipe to be updated.</param>
+        /// <param name="recipeInputDto">The recipe input dto.</param>
+        /// <returns>Returns a <see cref="RecipeDto"/> of the updated recipe.</returns>
+        [HttpPut]
+        [Route(RouteConstants.Recipes.RecipeEndpoint)]
+        [ProducesResponseType(typeof(RecipeDto), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(NotFoundDetails), StatusCodes.Status404NotFound, MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(BadRequestDetails), StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> UpdateRecipeAsync([FromRoute] string recipeId, [FromBody] RecipeInputDto recipeInputDto)
+        {
+            var updateResult = await this.recipeService.UpdateRecipeAsync(this.UserId, recipeId, recipeInputDto);
+
+            return updateResult.ToActionResult(recipe => this.Ok(recipe));
+        }
+
+        /// <summary>
+        /// This action is responsible for handling the request for deleting a existing recipe.
+        /// </summary>
+        /// <param name="recipeId">The id of the recipe to be deleted.</param>
+        /// <returns>Returns a empty response.</returns>
+        [HttpDelete]
+        [Route(RouteConstants.Recipes.RecipeEndpoint)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(NotFoundDetails), StatusCodes.Status404NotFound, MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> DeleteRecipeAsync([FromRoute] string recipeId)
+        {
+            var deleteResult = await this.recipeService.DeleteRecipeAsync(this.UserId, recipeId);
+
+            return deleteResult.ToActionResult(_ => this.NoContent());
         }
     }
 }
