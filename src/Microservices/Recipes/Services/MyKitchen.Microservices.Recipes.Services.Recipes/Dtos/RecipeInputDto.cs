@@ -9,8 +9,6 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
 {
     using System.ComponentModel.DataAnnotations;
 
-    using MongoDB.Bson;
-
     using MyKitchen.Microservices.Recipes.Data.Models;
     using MyKitchen.Microservices.Recipes.Services.Mapping;
 
@@ -25,7 +23,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
         /// Gets or sets the id of the user to whom the recipe belongs.
         /// </summary>
         [Required]
-        public ObjectId UserId { get; set; } = ObjectId.Empty;
+        public string UserId { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the title of the recipe.

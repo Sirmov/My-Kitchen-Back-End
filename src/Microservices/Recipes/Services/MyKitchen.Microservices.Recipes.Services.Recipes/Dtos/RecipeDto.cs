@@ -7,8 +7,6 @@
 
 namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
 {
-    using MongoDB.Bson;
-
     using MyKitchen.Microservices.Recipes.Data.Models;
     using MyKitchen.Microservices.Recipes.Services.Mapping;
 
@@ -20,7 +18,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
         /// <summary>
         /// Gets or sets the id of the recipe.
         /// </summary>
-        public ObjectId Id { get; set; } = ObjectId.Empty;
+        public string Id { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the date time when the recipe was created.

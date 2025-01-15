@@ -15,12 +15,13 @@ namespace MyKitchen.Microservices.Recipes.Data.Models
     /// <summary>
     /// This class represents a recipe document model.
     /// </summary>
-    public class Recipe : BaseDocument<ObjectId>
+    public class Recipe : BaseDocument<string>
     {
         /// <summary>
         /// Gets or sets the id of the user to whom the recipe belongs.
         /// </summary>
-        public ObjectId UserId { get; set; } = ObjectId.Empty;
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string UserId { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the title of the recipe.

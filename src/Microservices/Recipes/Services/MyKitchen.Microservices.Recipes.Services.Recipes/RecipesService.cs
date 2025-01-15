@@ -27,9 +27,9 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
     /// <summary>
     /// This class encapsulates the business logic related to the <see cref="Recipe"/> model.
     /// </summary>
-    public class RecipesService : BaseService<Recipe, ObjectId>, IRecipesService
+    public class RecipesService : BaseService<Recipe, string>, IRecipesService
     {
-        private readonly IRepository<Recipe, ObjectId> recipesRepository;
+        private readonly IRepository<Recipe, string> recipesRepository;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
         /// </summary>
         /// <param name="recipesRepository">The <see cref="Recipe"/> repository.</param>
         /// <param name="mapper">The global automapper instance.</param>
-        public RecipesService(IRepository<Recipe, ObjectId> recipesRepository, IMapper mapper)
+        public RecipesService(IRepository<Recipe, string> recipesRepository, IMapper mapper)
         {
             this.recipesRepository = recipesRepository;
             this.mapper = mapper;
@@ -60,12 +60,12 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
         {
             queryOptions ??= new QueryOptions<Recipe>();
 
-            if (!ObjectId.TryParse(recipeId, out ObjectId recipeObjectId))
+            if (!ObjectId.TryParse(recipeId, out _))
             {
                 return new BadRequestDetails(string.Format(ExceptionMessages.InvalidFormat, nameof(recipeId)));
             }
 
-            var findResult = await this.recipesRepository.FindAsync(recipeObjectId, queryOptions.WithDeleted);
+            var findResult = await this.recipesRepository.FindAsync(recipeId, queryOptions.WithDeleted);
 
             if (findResult.IsFailed)
             {
@@ -104,12 +104,12 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
         /// <inheritdoc/>
         public async Task<ServiceResult<RecipeDto>> UpdateRecipeAsync(string userId, string recipeId, RecipeInputDto recipeInputDto)
         {
-            if (!ObjectId.TryParse(recipeId, out ObjectId recipeObjectId))
+            if (!ObjectId.TryParse(recipeId, out _))
             {
                 return new BadRequestDetails(string.Format(ExceptionMessages.InvalidFormat, nameof(recipeId)));
             }
 
-            var findResult = await this.recipesRepository.FindAsync(recipeObjectId, false);
+            var findResult = await this.recipesRepository.FindAsync(recipeId, false);
 
             if (findResult.IsFailed)
             {
@@ -132,7 +132,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
             }
 
             this.CopyProperties(recipeInputDto, recipe);
-            var updateResult = await this.recipesRepository.UpdateAsync(recipeObjectId, recipe);
+            var updateResult = await this.recipesRepository.UpdateAsync(recipeId, recipe);
 
             if (updateResult.IsFailed)
             {
@@ -145,12 +145,12 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
         /// <inheritdoc/>
         public async Task<ServiceResult> DeleteRecipeAsync(string userId, string recipeId)
         {
-            if (!ObjectId.TryParse(recipeId, out ObjectId recipeObjectId))
+            if (!ObjectId.TryParse(recipeId, out _))
             {
                 return new BadRequestDetails(string.Format(ExceptionMessages.InvalidFormat, nameof(recipeId)));
             }
 
-            var findResult = await this.recipesRepository.FindAsync(recipeObjectId, false);
+            var findResult = await this.recipesRepository.FindAsync(recipeId, false);
 
             if (findResult.IsFailed)
             {
@@ -164,7 +164,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
                 return new UnauthorizedDetails(ExceptionMessages.NotOwner);
             }
 
-            var deleteResult = await this.recipesRepository.DeleteAsync(recipeObjectId);
+            var deleteResult = await this.recipesRepository.DeleteAsync(recipeId);
 
             if (deleteResult.IsFailed)
             {
