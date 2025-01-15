@@ -25,7 +25,7 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Controllers
         /// </summary>
         public BaseController()
         {
-            this.UserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+            this.UserId = this.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
         }
 
         /// <summary>
