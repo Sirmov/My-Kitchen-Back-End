@@ -59,6 +59,7 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
             services.ConfigureOptions<JwtBearerOptionsConfigurator>();
 
             services.AddControllers();
+            services.ConfigureOptions<ApiBehaviorOptionsConfigurator>();
 
             services.ConfigureOptions<SwaggerGenOptionsConfigurator>();
             services.AddEndpointsApiExplorer();
