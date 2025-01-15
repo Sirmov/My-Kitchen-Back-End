@@ -94,7 +94,7 @@ namespace MyKitchen.Microservices.Recipes.Data
                 filter &= Builders<TDocument>.Filter.Eq(d => d.IsDeleted, false);
             }
 
-            var document = await this.mongoCollection.Find(filter).FirstAsync();
+            var document = await this.mongoCollection.Find(filter).FirstOrDefaultAsync();
 
             exception = this.guard.AgainstNull<NullReferenceException>(
                document,
