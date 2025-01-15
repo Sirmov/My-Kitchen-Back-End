@@ -78,17 +78,17 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
         /// <inheritdoc/>
         public async Task<ServiceResult<RecipeDto>> CreateRecipeAsync(string userId, RecipeInputDto recipeInputDto)
         {
-            if (recipeInputDto.UserId.ToString() != userId)
-            {
-                return new UnauthorizedDetails(ExceptionMessages.NotOwner);
-            }
-
             var validationResults = this.ValidateDto(recipeInputDto);
 
             if (validationResults.Count > 0)
             {
                 var errorMessages = string.Join(' ', validationResults.Select(vr => vr.ErrorMessage));
                 return new BadRequestDetails(errorMessages);
+            }
+
+            if (recipeInputDto.UserId.ToString() != userId)
+            {
+                return new UnauthorizedDetails(ExceptionMessages.NotOwner);
             }
 
             var addResult = await this.recipesRepository.AddAsync(this.mapper.Map<Recipe>(recipeInputDto));
@@ -116,19 +116,19 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
                 return new NotFoundDetails(string.Format(ExceptionMessages.EntityNotFound, "recipe"));
             }
 
-            var recipe = findResult.Data ?? throw new NullReferenceException(nameof(findResult.Data));
-
-            if (!(recipe.UserId.ToString() == userId && userId == recipeInputDto.UserId.ToString()))
-            {
-                return new UnauthorizedDetails(ExceptionMessages.NotOwner);
-            }
-
             var validationResults = this.ValidateDto(recipeInputDto);
 
             if (validationResults.Count > 0)
             {
                 var errorMessages = string.Join(' ', validationResults.Select(vr => vr.ErrorMessage));
                 return new BadRequestDetails(errorMessages);
+            }
+
+            var recipe = findResult.Data ?? throw new NullReferenceException(nameof(findResult.Data));
+
+            if (!(recipe.UserId.ToString() == userId && userId == recipeInputDto.UserId.ToString()))
+            {
+                return new UnauthorizedDetails(ExceptionMessages.NotOwner);
             }
 
             this.CopyProperties(recipeInputDto, recipe);
