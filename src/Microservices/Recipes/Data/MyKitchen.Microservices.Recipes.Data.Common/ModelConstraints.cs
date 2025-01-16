@@ -12,11 +12,34 @@ namespace MyKitchen.Microservices.Recipes.Data.Common
     /// </summary>
     public static class ModelConstraints
     {
+        private const uint Kilobyte = 1024;
+        private const uint Megabyte = Kilobyte * 1000;
+
         /// <summary>
         /// This static class contains all of the constraints for the recipe model.
         /// </summary>
         public static class Recipe
         {
+            /// <summary>
+            /// An integer defining the minimum image name length.
+            /// </summary>
+            public const int ImageNameMinSize = 3;
+
+            /// <summary>
+            /// An integer defining the maximum image name length.
+            /// </summary>
+            public const int ImageNameMaxSize = 30;
+
+            /// <summary>
+            /// An integer defining the minimum image size.
+            /// </summary>
+            public const uint ImageMinSize = Kilobyte * 100;
+
+            /// <summary>
+            /// An integer defining the maximum image size.
+            /// </summary>
+            public const uint ImageMaxSize = Megabyte * 200;
+
             /// <summary>
             /// An integer defining the title minimum length.
             /// </summary>
