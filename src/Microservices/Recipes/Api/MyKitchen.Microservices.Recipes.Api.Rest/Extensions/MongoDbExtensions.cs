@@ -11,6 +11,7 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Extensions
 
     using MongoDB.Bson.Serialization.Conventions;
     using MongoDB.Driver;
+    using MongoDB.Driver.GridFS;
 
     using MyKitchen.Microservices.Recipes.Api.Rest.Options;
     using MyKitchen.Microservices.Recipes.Data;
@@ -76,9 +77,11 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Extensions
             SetFieldNamingConvention();
             MongoClient client = new (options.ConnectionURI);
             IMongoDatabase database = client.GetDatabase(options.DatabaseName);
+            GridFSBucket bucket = new GridFSBucket(database);
 
             services.AddSingleton<IMongoClient>(client);
             services.AddSingleton<IMongoDatabase>(database);
+            services.AddSingleton<IGridFSBucket>(bucket);
 
             return services;
         }
