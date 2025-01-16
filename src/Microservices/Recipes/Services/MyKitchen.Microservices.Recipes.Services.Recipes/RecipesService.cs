@@ -29,16 +29,19 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
     /// </summary>
     public class RecipesService : BaseService<Recipe, string>, IRecipesService
     {
+        private readonly IRecipeImagesService recipeImagesService;
         private readonly IRepository<Recipe, string> recipesRepository;
         private readonly IMapper mapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecipesService"/> class.
         /// </summary>
+        /// <param name="recipeImagesService">The implementation of the <see cref="IRecipeImagesService"/>.</param>
         /// <param name="recipesRepository">The <see cref="Recipe"/> repository.</param>
         /// <param name="mapper">The global automapper instance.</param>
-        public RecipesService(IRepository<Recipe, string> recipesRepository, IMapper mapper)
+        public RecipesService(IRecipeImagesService recipeImagesService, IRepository<Recipe, string> recipesRepository, IMapper mapper)
         {
+            this.recipeImagesService = recipeImagesService;
             this.recipesRepository = recipesRepository;
             this.mapper = mapper;
         }
@@ -91,7 +94,17 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
                 return new UnauthorizedDetails(ExceptionMessages.NotOwner);
             }
 
-            var addResult = await this.recipesRepository.AddAsync(this.mapper.Map<Recipe>(recipeInputDto));
+            var uploadResult = await this.recipeImagesService.UploadRecipeImageAsync(recipeInputDto.Image);
+
+            if (uploadResult.IsFailed)
+            {
+                return uploadResult.Failure!;
+            }
+
+            var recipe = this.mapper.Map<Recipe>(recipeInputDto);
+            recipe.ImageId = uploadResult.Data!;
+
+            var addResult = await this.recipesRepository.AddAsync(recipe);
 
             if (addResult.IsFailed)
             {
@@ -131,7 +144,22 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
                 return new UnauthorizedDetails(ExceptionMessages.NotOwner);
             }
 
+            var deleteResult = await this.recipeImagesService.DeleteRecipeImageAsync(recipe.ImageId);
+
+            if (deleteResult.IsFailed)
+            {
+                return deleteResult.Failure!;
+            }
+
+            var uploadResult = await this.recipeImagesService.UploadRecipeImageAsync(recipeInputDto.Image);
+
+            if (uploadResult.IsFailed)
+            {
+                return uploadResult.Failure!;
+            }
+
             this.CopyProperties(recipeInputDto, recipe);
+            recipe.ImageId = uploadResult.Data!;
             var updateResult = await this.recipesRepository.UpdateAsync(recipeId, recipe);
 
             if (updateResult.IsFailed)
@@ -162,6 +190,13 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
             if (recipe.UserId.ToString() != userId)
             {
                 return new UnauthorizedDetails(ExceptionMessages.NotOwner);
+            }
+
+            var imageDeleteResult = await this.recipeImagesService.DeleteRecipeImageAsync(recipe.ImageId);
+
+            if (imageDeleteResult.IsFailed)
+            {
+                return imageDeleteResult.Failure!;
             }
 
             var deleteResult = await this.recipesRepository.DeleteAsync(recipeId);
