@@ -33,6 +33,11 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Constants
             /// The endpoint for a single recipe.
             /// </summary>
             public const string RecipeEndpoint = $"{BaseRoute}/{{recipeId}}";
+
+            /// <summary>
+            /// The endpoint for a single recipe image.
+            /// </summary>
+            public const string RecipeImageEndpoint = $"{BaseRoute}/images/{{imageId}}";
         }
     }
 }

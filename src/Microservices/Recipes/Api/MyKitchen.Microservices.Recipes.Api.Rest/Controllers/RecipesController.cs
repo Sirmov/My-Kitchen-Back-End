@@ -24,14 +24,17 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Controllers
     public class RecipesController : BaseController
     {
         private readonly IRecipesService recipeService;
+        private readonly IRecipeImagesService recipeImagesService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecipesController"/> class.
         /// </summary>
         /// <param name="recipesService">The implementation of the <see cref="IRecipesService"/>.</param>
-        public RecipesController(IRecipesService recipesService)
+        /// <param name="recipeImagesService">The implementation of the <see cref="IRecipeImagesService"/>.</param>
+        public RecipesController(IRecipesService recipesService, IRecipeImagesService recipeImagesService)
         {
             this.recipeService = recipesService;
+            this.recipeImagesService = recipeImagesService;
         }
 
         /// <summary>
@@ -75,7 +78,7 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Controllers
         [Route(RouteConstants.Recipes.RecipesEndpoint)]
         [ProducesResponseType(typeof(RecipeDto), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(BadRequestDetails), StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> CreateRecipe([FromBody] RecipeInputDto recipeInputDto)
+        public async Task<IActionResult> CreateRecipe([FromForm] RecipeInputDto recipeInputDto)
         {
             var createResult = await this.recipeService.CreateRecipeAsync(this.UserId, recipeInputDto);
 
@@ -93,7 +96,7 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Controllers
         [ProducesResponseType(typeof(RecipeDto), StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NotFoundDetails), StatusCodes.Status404NotFound, MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(BadRequestDetails), StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> UpdateRecipeAsync([FromRoute] string recipeId, [FromBody] RecipeInputDto recipeInputDto)
+        public async Task<IActionResult> UpdateRecipeAsync([FromRoute] string recipeId, [FromForm] RecipeInputDto recipeInputDto)
         {
             var updateResult = await this.recipeService.UpdateRecipeAsync(this.UserId, recipeId, recipeInputDto);
 
@@ -114,6 +117,22 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Controllers
             var deleteResult = await this.recipeService.DeleteRecipeAsync(this.UserId, recipeId);
 
             return deleteResult.ToActionResult(_ => this.NoContent());
+        }
+
+        /// <summary>
+        /// This action is responsible for handling the request for retrieving the recipe image.
+        /// </summary>
+        /// <param name="imageId">The id of the image.</param>
+        /// <returns>Returns a <see cref="FileStream"/>.</returns>
+        [HttpGet]
+        [Route(RouteConstants.Recipes.RecipeImageEndpoint)]
+        [ProducesResponseType(typeof(FileStream), StatusCodes.Status200OK, MediaTypeNames.Application.Octet)]
+        [ProducesResponseType(typeof(NotFoundDetails), StatusCodes.Status404NotFound, MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> GetRecipeImageAsync([FromRoute] string imageId)
+        {
+            var getResult = await this.recipeImagesService.GetRecipeImageAsync(imageId);
+
+            return getResult.ToActionResult(image => this.File(image.FileStream, image.ContentType, image.FileName));
         }
     }
 }
