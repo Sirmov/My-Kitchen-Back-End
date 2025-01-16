@@ -47,6 +47,7 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRecipesService), typeof(RecipesService));
+            services.AddScoped(typeof(IRecipeImagesService), typeof(RecipeImagesService));
 
             return services;
         }
