@@ -18,8 +18,16 @@ namespace MyKitchen.Microservices.Recipes.Data.Models
     public class Recipe : BaseDocument<string>
     {
         /// <summary>
+        /// Gets or sets the URL of the recipe image.
+        /// </summary>
+        [BsonRequired]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string ImageId { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets or sets the id of the user to whom the recipe belongs.
         /// </summary>
+        [BsonRequired]
         [BsonRepresentation(BsonType.ObjectId)]
         public string UserId { get; set; } = string.Empty;
 

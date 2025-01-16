@@ -9,6 +9,10 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
 {
     using System.ComponentModel.DataAnnotations;
 
+    using AutoMapper.Configuration.Annotations;
+
+    using Microsoft.AspNetCore.Http;
+
     using MyKitchen.Microservices.Recipes.Data.Models;
     using MyKitchen.Microservices.Recipes.Services.Mapping;
 
@@ -19,6 +23,13 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
     /// </summary>
     public class RecipeInputDto : IMapFrom<Recipe>, IMapTo<Recipe>
     {
+        /// <summary>
+        /// Gets or sets the image of the recipe.
+        /// </summary>
+        [Required]
+        [Ignore]
+        public IFormFile Image { get; set; } = default!;
+
         /// <summary>
         /// Gets or sets the id of the user to whom the recipe belongs.
         /// </summary>

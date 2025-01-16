@@ -21,6 +21,11 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes.Dtos
         public string Id { get; set; } = string.Empty;
 
         /// <summary>
+        /// Gets or sets the URL of the recipe image.
+        /// </summary>
+        public string ImageId { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets or sets the date time when the recipe was created.
         /// </summary>
         public DateTime CreatedOn { get; set; }
