@@ -90,7 +90,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
                 return new NotFoundDetails(string.Format(ExceptionMessages.EntityNotFound, nameof(image)));
             }
 
-            var contentType = image.Metadata.GetValue("ContentType", "application/octet-stream").AsString;
+            string contentType = image.Metadata.TryGetValue("ContentType", out var bsonValue) ? bsonValue.AsString : "application/octet-stream";
 
             var stream = await this.bucket.OpenDownloadStreamAsync(recipeImageObjectId);
 
