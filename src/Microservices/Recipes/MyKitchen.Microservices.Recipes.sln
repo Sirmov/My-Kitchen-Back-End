@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Rec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Recipes.Api.Rest", "Api\MyKitchen.Microservices.Recipes.Api.Rest\MyKitchen.Microservices.Recipes.Api.Rest.csproj", "{7ED784CF-E6AF-43FB-9B5C-3A3AAE84F583}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.Microservices.Recipes.Services.Tests", "Services\MyKitchen.Microservices.Recipes.Services.Tests\MyKitchen.Microservices.Recipes.Services.Tests.csproj", "{076AB794-91FD-4746-B96F-9C2234EAA661}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{7ED784CF-E6AF-43FB-9B5C-3A3AAE84F583}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ED784CF-E6AF-43FB-9B5C-3A3AAE84F583}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ED784CF-E6AF-43FB-9B5C-3A3AAE84F583}.Release|Any CPU.Build.0 = Release|Any CPU
+		{076AB794-91FD-4746-B96F-9C2234EAA661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{076AB794-91FD-4746-B96F-9C2234EAA661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{076AB794-91FD-4746-B96F-9C2234EAA661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{076AB794-91FD-4746-B96F-9C2234EAA661}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +87,6 @@ Global
 		{E4C4CFAC-C094-47ED-9B4A-EBE8ED109495} = {9AC27E04-6461-4BF3-AEDC-7DBA730F839C}
 		{8C62C1A9-EE02-4F2E-B32D-A8C04BC5A752} = {9AC27E04-6461-4BF3-AEDC-7DBA730F839C}
 		{7ED784CF-E6AF-43FB-9B5C-3A3AAE84F583} = {2D0FD8C0-43CD-4EAC-B665-DE04C2A1DA3A}
+		{076AB794-91FD-4746-B96F-9C2234EAA661} = {9AC27E04-6461-4BF3-AEDC-7DBA730F839C}
 	EndGlobalSection
 EndGlobal
