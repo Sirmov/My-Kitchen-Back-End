@@ -41,16 +41,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator
                 },
             });
 
-            var currentDirectory = Environment.CurrentDirectory;
-            var documentationsDirectory = Path.GetFullPath(Path.Combine(currentDirectory, @"..\..\..\..\Documentation"));
-            var files = Directory.EnumerateFiles(documentationsDirectory, "*.xml", SearchOption.AllDirectories);
-
-            if (!files.Any())
-            {
-                files = Directory.EnumerateFiles(currentDirectory, "*.xml", SearchOption.AllDirectories);
-            }
-
-            foreach (var file in files)
+            foreach (var file in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.xml", SearchOption.AllDirectories))
             {
                 options.IncludeXmlComments(file);
             }
