@@ -15,7 +15,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <RelativeProjectPath>$(MSBuildProjectDirectory.Replace($(RootDir), '').TrimStart('\'))</RelativeProjectPath>
         <ParentDirectoryPath>$([System.IO.Path]::GetDirectoryName($(RelativeProjectPath)))</ParentDirectoryPath>
-        <DocumentationFile>$(RootDir)/Documentation/$(ParentDirectoryPath)/$(MSBuildProjectName).xml</DocumentationFile>
+        <DocumentationFile>$(RootDir)\Documentation\$(ParentDirectoryPath)\$(MSBuildProjectName).xml</DocumentationFile>
     </PropertyGroup>
 
 </Project>
