@@ -175,7 +175,7 @@ namespace MyKitchen.Microservices.Recipes.Data
         }
 
         /// <inheritdoc/>
-        public Result<ReplaceOneResult, Exception> Update(TKey id, TDocument document)
+        public Result<Exception> Update(TKey id, TDocument document)
         {
             Exception? exception = this.guard
                 .AgainstNull<ArgumentNullException>(id, ExceptionMessages.ArgumentIsNull, nameof(id));
@@ -187,17 +187,19 @@ namespace MyKitchen.Microservices.Recipes.Data
 
             if (!EqualityComparer<TKey>.Default.Equals(id, document.Id))
             {
-                return new ReplaceOneResult.Acknowledged(0, 0, null);
+                return Result<Exception>.Success;
             }
 
             var filter = Builders<TDocument>.Filter.Eq(d => d.Id, id);
             document.ModifiedOn = DateTime.UtcNow;
 
-            return this.mongoCollection.ReplaceOne(filter, document);
+            this.mongoCollection.ReplaceOne(filter, document);
+
+            return Result<Exception>.Success;
         }
 
         /// <inheritdoc/>
-        public async Task<Result<ReplaceOneResult, Exception>> UpdateAsync(TKey id, TDocument document)
+        public async Task<Result<Exception>> UpdateAsync(TKey id, TDocument document)
         {
             Exception? exception = this.guard
                 .AgainstNull<ArgumentNullException>(id, ExceptionMessages.ArgumentIsNull, nameof(id));
@@ -209,17 +211,19 @@ namespace MyKitchen.Microservices.Recipes.Data
 
             if (!EqualityComparer<TKey>.Default.Equals(id, document.Id))
             {
-                return new ReplaceOneResult.Acknowledged(0, 0, null);
+                return Result<Exception>.Success;
             }
 
             var filter = Builders<TDocument>.Filter.Eq(d => d.Id, id);
             document.ModifiedOn = DateTime.UtcNow;
 
-            return await this.mongoCollection.ReplaceOneAsync(filter, document);
+            await this.mongoCollection.ReplaceOneAsync(filter, document);
+
+            return Result<Exception>.Success;
         }
 
         /// <inheritdoc/>
-        public Result<UpdateResult, Exception> Delete(TKey id)
+        public Result<Exception> Delete(TKey id)
         {
             Exception? exception = this.guard
                 .AgainstNull<ArgumentNullException>(id, ExceptionMessages.ArgumentIsNull, nameof(id));
@@ -230,11 +234,13 @@ namespace MyKitchen.Microservices.Recipes.Data
                 .Set(d => d.IsDeleted, true)
                 .Set(d => d.DeletedOn, DateTime.UtcNow);
 
-            return this.mongoCollection.UpdateOne(filter, update);
+            this.mongoCollection.UpdateOne(filter, update);
+
+            return Result<Exception>.Success;
         }
 
         /// <inheritdoc/>
-        public async Task<Result<UpdateResult, Exception>> DeleteAsync(TKey id)
+        public async Task<Result<Exception>> DeleteAsync(TKey id)
         {
             Exception? exception = this.guard
                 .AgainstNull<ArgumentNullException>(id, ExceptionMessages.ArgumentIsNull, nameof(id));
@@ -245,7 +251,9 @@ namespace MyKitchen.Microservices.Recipes.Data
                 .Set(d => d.IsDeleted, true)
                 .Set(d => d.DeletedOn, DateTime.UtcNow);
 
-            return await this.mongoCollection.UpdateOneAsync(filter, update);
+            await this.mongoCollection.UpdateOneAsync(filter, update);
+
+            return Result<Exception>.Success;
         }
 
         /// <inheritdoc/>
@@ -279,7 +287,7 @@ namespace MyKitchen.Microservices.Recipes.Data
         }
 
         /// <inheritdoc/>
-        public Result<DeleteResult, Exception> HardDelete(TKey id)
+        public Result<Exception> HardDelete(TKey id)
         {
             Exception? exception = this.guard
                 .AgainstNull<ArgumentNullException>(id, ExceptionMessages.ArgumentIsNull, nameof(id));
@@ -287,11 +295,13 @@ namespace MyKitchen.Microservices.Recipes.Data
 
             var filter = Builders<TDocument>.Filter.Eq(d => d.Id, id);
 
-            return this.mongoCollection.DeleteOne(filter);
+            this.mongoCollection.DeleteOne(filter);
+
+            return Result<Exception>.Success;
         }
 
         /// <inheritdoc/>
-        public async Task<Result<DeleteResult, Exception>> HardDeleteAsync(TKey id)
+        public async Task<Result<Exception>> HardDeleteAsync(TKey id)
         {
             Exception? exception = this.guard
                 .AgainstNull<ArgumentNullException>(id, ExceptionMessages.ArgumentIsNull, nameof(id));
@@ -299,7 +309,9 @@ namespace MyKitchen.Microservices.Recipes.Data
 
             var filter = Builders<TDocument>.Filter.Eq(d => d.Id, id);
 
-            return await this.mongoCollection.DeleteOneAsync(filter);
+            await this.mongoCollection.DeleteOneAsync(filter);
+
+            return Result<Exception>.Success;
         }
     }
 }

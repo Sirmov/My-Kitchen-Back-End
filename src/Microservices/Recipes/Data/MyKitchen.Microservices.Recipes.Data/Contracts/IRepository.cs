@@ -85,8 +85,8 @@ namespace MyKitchen.Microservices.Recipes.Data.Contracts
         /// </summary>
         /// <param name="id">The id of the document to be updated.</param>
         /// <param name="document">The document with the updated changes.</param>
-        /// <returns>Returns a <see cref="Result{TData, Exception}"/> containing a <see cref="ReplaceOneResult"/>.</returns>
-        public Result<ReplaceOneResult, Exception> Update(TKey id, TDocument document);
+        /// <returns>Returns an empty <see cref="Result{Exception}"/>.</returns>
+        public Result<Exception> Update(TKey id, TDocument document);
 
         /// <summary>
         /// This method updates a document with a given id.
@@ -94,22 +94,22 @@ namespace MyKitchen.Microservices.Recipes.Data.Contracts
         /// </summary>
         /// <param name="id">The id of the document to be updated.</param>
         /// <param name="document">The document with the updated changes.</param>
-        /// <returns>Returns a <see cref="Result{TData, Exception}"/> containing a <see cref="ReplaceOneResult"/>.</returns>
-        public Task<Result<ReplaceOneResult, Exception>> UpdateAsync(TKey id, TDocument document);
+        /// <returns>Returns an empty <see cref="Result{Exception}"/>.</returns>
+        public Task<Result<Exception>> UpdateAsync(TKey id, TDocument document);
 
         /// <summary>
         /// This method flags a document with a given id as deleted.
         /// </summary>
         /// <param name="id">The id of the document to be flagged as deleted.</param>
-        /// <returns>Returns a <see cref="Result{TData, Exception}"/> containing a <see cref="UpdateResult"/>.</returns>
-        public Result<UpdateResult, Exception> Delete(TKey id);
+        /// <returns>Returns an empty <see cref="Result{Exception}"/>.</returns>
+        public Result<Exception> Delete(TKey id);
 
         /// <summary>
         /// This method asynchronously flags a document with a given id as deleted.
         /// </summary>
         /// <param name="id">The id of the document to be flagged as deleted.</param>
-        /// <returns>Returns a <see cref="Result{TData, Exception}"/> containing a <see cref="UpdateResult"/>.</returns>
-        public Task<Result<UpdateResult, Exception>> DeleteAsync(TKey id);
+        /// <returns>Returns an empty <see cref="Result{Exception}"/>.</returns>
+        public Task<Result<Exception>> DeleteAsync(TKey id);
 
         /// <summary>
         /// This method marks a document previously flagged as deleted to active.
@@ -130,15 +130,15 @@ namespace MyKitchen.Microservices.Recipes.Data.Contracts
         /// This process cannot be undone.
         /// </summary>
         /// <param name="id">The id of the document to be deleted.</param>
-        /// <returns>Returns a <see cref="Result{TData, Exception}"/> containing a <see cref="DeleteResult"/>.</returns>
-        public Result<DeleteResult, Exception> HardDelete(TKey id);
+        /// <returns>Returns an empty <see cref="Result{Exception}"/>.</returns>
+        public Result<Exception> HardDelete(TKey id);
 
         /// <summary>
         /// This method asynchronously deletes the document with a given id.
         /// This process cannot be undone.
         /// </summary>
         /// <param name="id">The id of the document to be deleted.</param>
-        /// <returns>Returns a <see cref="Result{TData, Exception}"/> containing a <see cref="DeleteResult"/>.</returns>
-        public Task<Result<DeleteResult, Exception>> HardDeleteAsync(TKey id);
+        /// <returns>Returns an empty <see cref="Result{Exception}"/>.</returns>
+        public Task<Result<Exception>> HardDeleteAsync(TKey id);
     }
 }
