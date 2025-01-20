@@ -7,6 +7,8 @@
 
 namespace MyKitchen.Microservices.Recipes.Services.Tests.Fakes
 {
+    using MongoDB.Bson;
+
     using Moq;
 
     using MyKitchen.Common.Result;
@@ -67,7 +69,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests.Fakes
                 .ReturnsAsync((TKey id, bool withDeleted) =>
                 {
                     var items = withDeleted ? this.data : this.data.Where(x => x.IsDeleted == false);
-                    var item = items.FirstOrDefault(x => x.Id.Equals(id));
+                    var item = items.FirstOrDefault(x => x.Id?.Equals(id) ?? false);
 
                     return item is null ? new NullReferenceException() : item;
                 });
@@ -76,6 +78,8 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests.Fakes
                 .ReturnsAsync((TData item) =>
                 {
                     this.data.Add(item);
+                    item.CreatedOn = DateTime.UtcNow;
+                    item.Id = default!;
                     return item;
                 });
 
