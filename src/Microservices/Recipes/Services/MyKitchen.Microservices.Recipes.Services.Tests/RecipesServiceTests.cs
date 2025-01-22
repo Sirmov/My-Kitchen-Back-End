@@ -86,7 +86,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.GetAllRecipesAsync(Common.QueryOptions.QueryOptions{Recipe}?)"/>
         /// returns an empty collection when recipes exist.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task GetAllRecipesAsync_CollectionEmpty_ReturnsEmptyCollection()
         {
@@ -105,7 +105,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.GetAllRecipesAsync(Common.QueryOptions.QueryOptions{Recipe}?)"/>
         /// returns all recipes as dtos.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task GetAllRecipesAsync_CollectionNotEmpty_ReturnsAllRecipesAsDtosAsync()
         {
@@ -126,7 +126,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.GetRecipeAsync(string, Common.QueryOptions.QueryOptions{Recipe}?)"/>
         /// returns <see cref="BadRequestDetails"/> when id is not in correct format.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task GetRecipeAsync_IncorrectIdFormat_ReturnsBadRequestDetails()
         {
@@ -144,7 +144,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.GetRecipeAsync(string, Common.QueryOptions.QueryOptions{Recipe}?)"/>
         /// returns <see cref="NotFoundDetails"/> when no recipe with provided id exists.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task GetRecipeAsync_NoRecipeWithId_ReturnsNotFoundDetailsAsync()
         {
@@ -162,12 +162,12 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.GetRecipeAsync(string, Common.QueryOptions.QueryOptions{Recipe}?)"/>
         /// returns the correct recipe as dto.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task GetRecipeAsync_RecipeWithIdExists_ReturnsRecipeDto()
         {
             // Arrange
-            var recipe = this.recipes [0];
+            var recipe = this.recipes[0];
 
             // Act
             var getResult = await this.recipesService.GetRecipeAsync(recipe.Id);
@@ -187,7 +187,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// <param name="description">The description of the recipe.</param>
         /// <param name="ingredients">The ingredients of the recipe.</param>
         /// <param name="directions">The directions of the recipe.</param>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         [TestCase("Ic", "Delicious ice coffee", "Ice, water coffee, milk", "Brew and enjoy!")]
         [TestCase("Ice coffee", "Delicious", "Ice, water coffee, milk", "Brew and enjoy!")]
@@ -223,7 +223,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.CreateRecipeAsync(string, RecipeInputDto)"/>
         /// returns <see cref="UnauthorizedDetails"/> when a user tries to create a recipe for another user.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task CreateRecipeAsync_RecipeUserIdDoesNotMatchCurrentUserId_ReturnsUnauthorizedDetailsAsync()
         {
@@ -252,7 +252,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.CreateRecipeAsync(string, RecipeInputDto)"/>
         /// in the event of a failure when uploading the recipe image the causing problem details are returned.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task CreateRecipeAsync_RecipeImageUploadingFails_ReturnsImageUploadFailure()
         {
@@ -283,7 +283,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.CreateRecipeAsync(string, RecipeInputDto)"/>
         /// returns <see cref="InternalServerErrorDetails"/> when the creation fails.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task CreateRecipeAsync_RecipeAddingFails_ReturnsInternalServerErrorDetails()
         {
@@ -315,7 +315,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.CreateRecipeAsync(string, RecipeInputDto)"/>
         /// returns a dto of the created recipe.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task CreateRecipeAsync_RecipeIsAdded_ReturnsCreatedRecipeDto()
         {
@@ -355,7 +355,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
         /// returns <see cref="BadRequestDetails"/> when the id's format is not correct.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task UpdateRecipeAsync_IncorrectIdFormat_ReturnsBadRequestDetails()
         {
@@ -363,7 +363,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
             string id = "I'm surely not correct.";
 
             // Act
-            var updateResult = await this.recipesService.UpdateRecipeAsync(ObjectId.GenerateNewId().ToString(), id, new ());
+            var updateResult = await this.recipesService.UpdateRecipeAsync(string.Empty, id, new ());
 
             // Assert
             this.AssertResultIsFailed(updateResult, typeof(BadRequestDetails));
@@ -373,7 +373,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"
         /// return <see cref="NotFoundDetails"/> when no recipe with matching id was found.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task UpdateRecipeAsync_NoRecipeWithId_ReturnsNotFoundDetails()
         {
@@ -396,7 +396,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// <param name="description">The description of the recipe.</param>
         /// <param name="ingredients">The ingredients of the recipe.</param>
         /// <param name="directions">The directions of the recipe.</param>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         [TestCase("Ic", "Delicious ice coffee", "Ice, water coffee, milk", "Brew and enjoy!")]
         [TestCase("Ice coffee", "Delicious", "Ice, water coffee, milk", "Brew and enjoy!")]
@@ -422,17 +422,17 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
             };
 
             // Act
-            var createResult = await this.recipesService.UpdateRecipeAsync(userId, this.recipes[0].Id, recipeInputDto);
+            var updateResult = await this.recipesService.UpdateRecipeAsync(userId, this.recipes[0].Id, recipeInputDto);
 
             // Assert
-            this.AssertResultIsFailed(createResult, typeof(BadRequestDetails));
+            this.AssertResultIsFailed(updateResult, typeof(BadRequestDetails));
         }
 
         /// <summary>
         /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
         /// returns <see cref="UnauthorizedDetails"/> when the current user isn't the owner of the recipe.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task UpdateRecipeAsync_RecipeUserIdDoesNotMatchCurrentUserId_ReturnsUnauthorizedDetails()
         {
@@ -451,19 +451,19 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
             };
 
             // Act
-            var createResult = await this.recipesService.UpdateRecipeAsync(userId, this.recipes[0].Id, recipeInputDto);
+            var updateResult = await this.recipesService.UpdateRecipeAsync(userId, this.recipes[0].Id, recipeInputDto);
 
             // Assert
-            this.AssertResultIsFailed(createResult, typeof(UnauthorizedDetails));
+            this.AssertResultIsFailed(updateResult, typeof(UnauthorizedDetails));
         }
 
         /// <summary>
         /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
         /// in the event of a failure when deleting the recipe image the causing problem details are returned.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public async Task UpdateRecipeAsync_RecipeImageDeletionFails_ReturnsImageUploadFailure()
+        public async Task UpdateRecipeAsync_RecipeImageDeletionFails_ReturnsImageDeleteFailure()
         {
             // Arrange
             this.recipeImagesServiceMock.Setup(x => x.DeleteRecipeImageAsync(It.IsAny<string>()))
@@ -482,17 +482,17 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
             };
 
             // Act
-            var createResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
+            var updateResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
 
             // Assert
-            this.AssertResultIsFailed(createResult, typeof(NotFoundDetails));
+            this.AssertResultIsFailed(updateResult, typeof(NotFoundDetails));
         }
 
         /// <summary>
         /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
         /// in the event of a failure when uploading the recipe image the causing problem details are returned.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task UpdateRecipeAsync_RecipeImageUploadingFails_ReturnsImageUploadFailure()
         {
@@ -513,17 +513,17 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
             };
 
             // Act
-            var createResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
+            var updateResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
 
             // Assert
-            this.AssertResultIsFailed(createResult, typeof(NotFoundDetails));
+            this.AssertResultIsFailed(updateResult, typeof(NotFoundDetails));
         }
 
         /// <summary>
         /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
         /// returns <see cref="InternalServerErrorDetails"/> when updating fails.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task UpdateRecipeAsync_RecipeUpdatingFails_ReturnsInternalServerErrorDetails()
         {
@@ -545,17 +545,17 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
             };
 
             // Act
-            var createResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
+            var updateResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
 
             // Assert
-            this.AssertResultIsFailed(createResult, typeof(InternalServerErrorDetails));
+            this.AssertResultIsFailed(updateResult, typeof(InternalServerErrorDetails));
         }
 
         /// <summary>
         /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
         /// correctly updates the data of the recipe and returns the dto of the updated recipe.
         /// </summary>
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
         public async Task UpdateRecipeAsync_RecipeIsUpdated_ReturnsUpdatedRecipeDto()
         {
@@ -576,12 +576,12 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
             };
 
             // Act
-            var createResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
+            var updateResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
 
             // Assert
-            this.AssertResultIsSuccessful(createResult);
+            this.AssertResultIsSuccessful(updateResult);
 
-            var recipeDto = createResult.Data!;
+            var recipeDto = updateResult.Data!;
             Assert.That(recipeDto.Title, Is.EqualTo(recipeInputDto.Title));
             Assert.That(recipeDto.Description, Is.EqualTo(recipeInputDto.Description));
             Assert.That(recipeDto.Ingredients, Is.EqualTo(recipeInputDto.Ingredients));
@@ -596,52 +596,129 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
             Assert.That(recipeDto.ModifiedOn, Is.GreaterThan(DateTime.MinValue));
         }
 
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <summary>
+        /// This test whether <see cref="RecipesService.DeleteRecipeAsync(string, string)"/>
+        /// returns <see cref="BadRequestDetails"/> when the id's format is not correct.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task DeleteRecipeAsync_IncorrectIdFormat_ReturnsBadRequestDetails()
+        public async Task DeleteRecipeAsync_IncorrectIdFormat_ReturnsBadRequestDetails()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            string id = "I'm surely not correct.";
+
+            // Act
+            var deleteResult = await this.recipesService.DeleteRecipeAsync(string.Empty, id);
+
+            // Assert
+            this.AssertResultIsFailed(deleteResult, typeof(BadRequestDetails));
         }
 
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.DeleteRecipeAsync(string, string)"/>
+        /// returns <see cref="NotFoundDetails"/> when no recipe with provided id exists.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task DeleteRecipeAsync_NoRecipeWithId_ReturnsNotFoundDetails()
+        public async Task DeleteRecipeAsync_NoRecipeWithId_ReturnsNotFoundDetails()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+           // Arrange
+            string id = ObjectId.GenerateNewId().ToString();
+
+            // Act
+            var deleteResult = await this.recipesService.DeleteRecipeAsync(string.Empty, id);
+
+            // Assert
+            this.AssertResultIsFailed(deleteResult, typeof(NotFoundDetails));
         }
 
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.DeleteRecipeAsync(string, string)"/>
+        /// returns <see cref="UnauthorizedDetails"/> when the current user isn't the owner of the recipe.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task DeleteRecipeAsync_RecipeUserIdDoesNotMatchCurrentUserId_ReturnsUnauthorizedDetails()
+        public async Task DeleteRecipeAsync_RecipeUserIdDoesNotMatchCurrentUserId_ReturnsUnauthorizedDetails()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+           // Arrange
+            string userId = ObjectId.GenerateNewId().ToString();
+
+            // Act
+            var deleteResult = await this.recipesService.DeleteRecipeAsync(userId, this.recipes[0].Id);
+
+            // Assert
+            this.AssertResultIsFailed(deleteResult, typeof(UnauthorizedDetails));
         }
 
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.DeleteRecipeAsync(string, string)"/>
+        /// in the event of a failure when deleting the recipe image the causing problem details are returned.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task DeleteRecipeAsync_RecipeImageDeletionFails_ReturnsImageUploadFailure()
+        public async Task DeleteRecipeAsync_RecipeImageDeletionFails_ReturnsImageDeleteFailure()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            this.recipeImagesServiceMock.Setup(x => x.DeleteRecipeImageAsync(It.IsAny<string>()))
+                .ReturnsAsync(new NotFoundDetails(string.Empty));
+
+            var recipe = this.recipes[0];
+
+            // Act
+            var deleteResult = await this.recipesService.DeleteRecipeAsync(recipe.UserId, recipe.Id);
+
+            // Assert
+            this.AssertResultIsFailed(deleteResult, typeof(NotFoundDetails));
         }
 
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.DeleteRecipeAsync(string, string)"/>
+        /// returns <see cref="InternalServerErrorDetails"/>  when deleting fails.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task DeleteRecipeAsync_RecipeDeletingFails_ReturnsInternalServerErrorDetails()
+        public async Task DeleteRecipeAsync_RecipeDeletingFails_ReturnsInternalServerErrorDetails()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            this.recipeRepositoryFake.Mock
+                .Setup(x => x.DeleteAsync(It.IsAny<string>()))
+                .ReturnsAsync(new Exception());
+
+            var recipe = this.recipes[0];
+
+            // Act
+            var deleteResult = await this.recipesService.DeleteRecipeAsync(recipe.UserId, recipe.Id);
+
+            // Assert
+            this.AssertResultIsFailed(deleteResult, typeof(InternalServerErrorDetails));
         }
 
-        /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.DeleteRecipeAsync(string, string)"/>
+        /// returns a successful result when deletion is successful.
+        /// </summary>
+        /// <returns>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task DeleteRecipeAsync_RecipeIsDeleted_ReturnsSuccessfullResult()
+        public async Task DeleteRecipeAsync_RecipeIsDeleted_ReturnsSuccessfulResult()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            var recipe = this.recipes[0];
+
+            // Act
+            var deleteResult = await this.recipesService.DeleteRecipeAsync(recipe.UserId, recipe.Id);
+
+            // Assert
+            this.AssertResultIsSuccessful(deleteResult);
+
+            var findResult = await this.recipeRepositoryFake.Instance.FindAsync(recipe.Id, true);
+
+            this.AssertResultIsSuccessful(findResult);
+            Assert.That(findResult.Data, Is.Not.Null);
+            Assert.That(findResult.Data.IsDeleted, Is.True);
+            Assert.That(findResult.Data.DeletedOn, Is.GreaterThan(DateTime.MinValue));
+
+            findResult.Data.IsDeleted = false;
+            await this.recipeRepositoryFake.Instance.UpdateAsync(recipe.Id, findResult.Data);
         }
 
         private void AssertResultIsSuccessful<TFailure>(IResult<TFailure> result)
