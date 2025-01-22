@@ -55,7 +55,9 @@ namespace MyKitchen.Microservices.Recipes.Services.Recipes
 
             query = this.ModifyQuery(query, queryOptions);
 
-            return (await query.ToListAsync()).Select(r => this.mapper.Map<RecipeDto>(r)).ToArray();
+            var recipes = await query.ToListAsync();
+
+            return recipes.Select(r => this.mapper.Map<RecipeDto>(r)).ToArray();
         }
 
         /// <inheritdoc/>
