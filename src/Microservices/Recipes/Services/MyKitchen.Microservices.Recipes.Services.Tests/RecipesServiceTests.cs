@@ -7,7 +7,6 @@
 
 namespace MyKitchen.Microservices.Recipes.Services.Tests
 {
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
     using AutoMapper;
@@ -16,7 +15,6 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
     using Microsoft.AspNetCore.Http.Internal;
 
     using MongoDB.Bson;
-    using MongoDB.Driver;
 
     using Moq;
 
@@ -41,12 +39,14 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
             new Recipe()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
+                UserId = ObjectId.GenerateNewId().ToString(),
                 ImageId = ObjectId.GenerateNewId().ToString(),
                 Title = "Ice cream",
             },
             new Recipe()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
+                UserId = ObjectId.GenerateNewId().ToString(),
                 ImageId = ObjectId.GenerateNewId().ToString(),
                 Title = "Mayonnaise",
             },
@@ -72,6 +72,9 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
 
             this.recipeImagesServiceMock.Setup(x => x.UploadRecipeImageAsync(It.IsAny<IFormFile>()))
                 .ReturnsAsync(ObjectId.GenerateNewId().ToString());
+
+            this.recipeImagesServiceMock.Setup(x => x.DeleteRecipeImageAsync(It.IsAny<string>()))
+                .ReturnsAsync(Common.ServiceResult.ServiceResult.Success);
 
             this.recipesService = new RecipesService(
                 this.recipeImagesServiceMock.Object,
@@ -220,14 +223,14 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// This test checks whether <see cref="RecipesService.CreateRecipeAsync(string, RecipeInputDto)"/>
         /// returns <see cref="UnauthorizedDetails"/> when a user tries to create a recipe for another user.
         /// </summary>
-        /// <param name="userId">The id of the user making the request.</param>
-        /// <param name="ownerId">The id of the user owning the recipe.</param>
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        [TestCase("678e8dd45c9980448d2e2a7b", "678e88d590605d3dd639a0a6")]
-        public async Task CreateRecipeAsync_RecipeUserIdDoesNotMatchCurrentUserId_ReturnsUnauthorizedDetailsAsync(string userId, string ownerId)
+        public async Task CreateRecipeAsync_RecipeUserIdDoesNotMatchCurrentUserId_ReturnsUnauthorizedDetailsAsync()
         {
             // Arrange
+            string userId = "678e8dd45c9980448d2e2a7b";
+            string ownerId = "678e88d590605d3dd639a0a6";
+
             var recipeInputDto = new RecipeInputDto()
             {
                 Image = new FormFile(default, default, default, default, default),
@@ -314,7 +317,6 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
         /// </summary>
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        [Order(-1)]
         public async Task CreateRecipeAsync_RecipeIsAdded_ReturnsCreatedRecipeDto()
         {
             // Arrange
@@ -349,68 +351,249 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests
             Assert.That(recipe.Directions, Is.EqualTo(recipeInputDto.Directions));
         }
 
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
+        /// returns <see cref="BadRequestDetails"/> when the id's format is not correct.
+        /// </summary>
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task UpdateRecipeAsync_IncorrectIdFormat_ReturnsBadRequestDetails()
+        public async Task UpdateRecipeAsync_IncorrectIdFormat_ReturnsBadRequestDetails()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            string id = "I'm surely not correct.";
+
+            // Act
+            var updateResult = await this.recipesService.UpdateRecipeAsync(ObjectId.GenerateNewId().ToString(), id, new ());
+
+            // Assert
+            this.AssertResultIsFailed(updateResult, typeof(BadRequestDetails));
         }
 
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"
+        /// return <see cref="NotFoundDetails"/> when no recipe with matching id was found.
+        /// </summary>
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task UpdateRecipeAsync_NoRecipeWithId_ReturnsNotFoundDetails()
+        public async Task UpdateRecipeAsync_NoRecipeWithId_ReturnsNotFoundDetails()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            string id = ObjectId.GenerateNewId().ToString();
+
+            // Act
+            var updateResult = await this.recipesService.UpdateRecipeAsync(ObjectId.GenerateNewId().ToString(), id, new ());
+
+            // Assert
+            this.AssertResultIsFailed(updateResult, typeof(NotFoundDetails));
         }
 
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
+        /// returns <see cref="BadRequestDetails"/> when the recipe dto state is not valid. It checks the minimum
+        /// length constraint of the text properties.
+        /// </summary>
+        /// <param name="title">The title of the recipe.</param>
+        /// <param name="description">The description of the recipe.</param>
+        /// <param name="ingredients">The ingredients of the recipe.</param>
+        /// <param name="directions">The directions of the recipe.</param>
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task UpdateRecipeAsync_RecipeUserIdDoesNotMatchCurrentUserId_ReturnsUnauthorizedDetails()
+        [TestCase("Ic", "Delicious ice coffee", "Ice, water coffee, milk", "Brew and enjoy!")]
+        [TestCase("Ice coffee", "Delicious", "Ice, water coffee, milk", "Brew and enjoy!")]
+        [TestCase("Ice coffee", "Delicious ice coffee", "Ice,", "Brew and enjoy!")]
+        [TestCase("Ice coffee", "Delicious ice coffee", "Ice, water coffee, milk", "Brew and!")]
+        public async Task UpdateRecipeAsync_RecipeNotValid_ReturnsBadRequestDetailsAsync(
+            string title,
+            string description,
+            string ingredients,
+            string directions)
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            string userId = ObjectId.GenerateNewId().ToString();
+
+            var recipeInputDto = new RecipeInputDto()
+            {
+                Image = new FormFile(default, default, default, default, default),
+                UserId = userId,
+                Title = title,
+                Description = description,
+                Ingredients = ingredients,
+                Directions = directions,
+            };
+
+            // Act
+            var createResult = await this.recipesService.UpdateRecipeAsync(userId, this.recipes[0].Id, recipeInputDto);
+
+            // Assert
+            this.AssertResultIsFailed(createResult, typeof(BadRequestDetails));
         }
 
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
+        /// returns <see cref="UnauthorizedDetails"/> when the current user isn't the owner of the recipe.
+        /// </summary>
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task UpdateRecipeAsync_RecipeImageDeletionFails_ReturnsImageUploadFailure()
+        public async Task UpdateRecipeAsync_RecipeUserIdDoesNotMatchCurrentUserId_ReturnsUnauthorizedDetails()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            string userId = "678e8dd45c9980448d2e2a7b";
+            string ownerId = "678e88d590605d3dd639a0a6";
+
+            var recipeInputDto = new RecipeInputDto()
+            {
+                Image = new FormFile(default, default, default, default, default),
+                UserId = ownerId,
+                Title = "Ice coffee",
+                Description = "Delicious ice coffee",
+                Ingredients = "Ice, water coffee, milk",
+                Directions = "Brew and enjoy!",
+            };
+
+            // Act
+            var createResult = await this.recipesService.UpdateRecipeAsync(userId, this.recipes[0].Id, recipeInputDto);
+
+            // Assert
+            this.AssertResultIsFailed(createResult, typeof(UnauthorizedDetails));
         }
 
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
+        /// in the event of a failure when deleting the recipe image the causing problem details are returned.
+        /// </summary>
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task UpdateRecipeAsync_RecipeImageUploadingFails_ReturnsImageUploadFailure()
+        public async Task UpdateRecipeAsync_RecipeImageDeletionFails_ReturnsImageUploadFailure()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            this.recipeImagesServiceMock.Setup(x => x.DeleteRecipeImageAsync(It.IsAny<string>()))
+                .ReturnsAsync(new NotFoundDetails(string.Empty));
+
+            var ownerId = this.recipes[0].UserId;
+
+            var recipeInputDto = new RecipeInputDto()
+            {
+                Image = new FormFile(default, default, default, default, default),
+                UserId = ownerId,
+                Title = "Ice coffee",
+                Description = "Delicious ice coffee",
+                Ingredients = "Ice, water coffee, milk",
+                Directions = "Brew and enjoy!",
+            };
+
+            // Act
+            var createResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
+
+            // Assert
+            this.AssertResultIsFailed(createResult, typeof(NotFoundDetails));
         }
 
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
+        /// in the event of a failure when uploading the recipe image the causing problem details are returned.
+        /// </summary>
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task UpdateRecipeAsync_RecipeIsAdded_ReturnsCreatedRecipeDto()
+        public async Task UpdateRecipeAsync_RecipeImageUploadingFails_ReturnsImageUploadFailure()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+             // Arrange
+            this.recipeImagesServiceMock.Setup(x => x.UploadRecipeImageAsync(It.IsAny<IFormFile>()))
+                .ReturnsAsync(new NotFoundDetails(string.Empty));
+
+            var ownerId = this.recipes[0].UserId;
+
+            var recipeInputDto = new RecipeInputDto()
+            {
+                Image = new FormFile(default, default, default, default, default),
+                UserId = ownerId,
+                Title = "Ice coffee",
+                Description = "Delicious ice coffee",
+                Ingredients = "Ice, water coffee, milk",
+                Directions = "Brew and enjoy!",
+            };
+
+            // Act
+            var createResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
+
+            // Assert
+            this.AssertResultIsFailed(createResult, typeof(NotFoundDetails));
         }
 
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
+        /// returns <see cref="InternalServerErrorDetails"/> when updating fails.
+        /// </summary>
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task UpdateRecipeAsync_RecipeUpdatingFails_ReturnsInternalServerErrorDetails()
+        public async Task UpdateRecipeAsync_RecipeUpdatingFails_ReturnsInternalServerErrorDetails()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            this.recipeRepositoryFake.Mock
+                .Setup(x => x.UpdateAsync(It.IsAny<string>(), It.IsAny<Recipe>()))
+                .ReturnsAsync(new Exception());
+
+            var ownerId = this.recipes[0].UserId;
+
+            var recipeInputDto = new RecipeInputDto()
+            {
+                Image = new FormFile(default, default, default, default, default),
+                UserId = ownerId,
+                Title = "Ice coffee",
+                Description = "Delicious ice coffee",
+                Ingredients = "Ice, water coffee, milk",
+                Directions = "Brew and enjoy!",
+            };
+
+            // Act
+            var createResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
+
+            // Assert
+            this.AssertResultIsFailed(createResult, typeof(InternalServerErrorDetails));
         }
 
+        /// <summary>
+        /// This test checks whether <see cref="RecipesService.UpdateRecipeAsync(string, string, RecipeInputDto)"/>
+        /// correctly updates the data of the recipe and returns the dto of the updated recipe.
+        /// </summary>
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
         [Test]
-        public Task UpdateRecipeAsync_RecipeIsUpdated_ReturnsCreatedRecipeDto()
+        public async Task UpdateRecipeAsync_RecipeIsUpdated_ReturnsUpdatedRecipeDto()
         {
-            Assert.Pass();
-            return Task.CompletedTask;
+            // Arrange
+            var random = new Random();
+            var salt = string.Join(string.Empty, random.NextInt64().ToString().Take(5));
+
+            var ownerId = this.recipes[0].UserId;
+
+            var recipeInputDto = new RecipeInputDto()
+            {
+                Image = new FormFile(default, default, default, default, default),
+                UserId = ownerId,
+                Title = $"Ice coffee {salt}",
+                Description = $"Delicious ice coffee {salt}",
+                Ingredients = $"Ice, water coffee, milk {salt}",
+                Directions = $"Brew and enjoy! {salt}",
+            };
+
+            // Act
+            var createResult = await this.recipesService.UpdateRecipeAsync(ownerId, this.recipes[0].Id, recipeInputDto);
+
+            // Assert
+            this.AssertResultIsSuccessful(createResult);
+
+            var recipeDto = createResult.Data!;
+            Assert.That(recipeDto.Title, Is.EqualTo(recipeInputDto.Title));
+            Assert.That(recipeDto.Description, Is.EqualTo(recipeInputDto.Description));
+            Assert.That(recipeDto.Ingredients, Is.EqualTo(recipeInputDto.Ingredients));
+            Assert.That(recipeDto.Directions, Is.EqualTo(recipeInputDto.Directions));
+            Assert.That(recipeDto.ModifiedOn, Is.GreaterThan(DateTime.MinValue));
+
+            var recipe = (await this.recipeRepositoryFake.Instance.FindAsync(recipeDto.Id, false)).Data!;
+            Assert.That(recipe.Title, Is.EqualTo(recipeInputDto.Title));
+            Assert.That(recipe.Description, Is.EqualTo(recipeInputDto.Description));
+            Assert.That(recipe.Ingredients, Is.EqualTo(recipeInputDto.Ingredients));
+            Assert.That(recipe.Directions, Is.EqualTo(recipeInputDto.Directions));
+            Assert.That(recipeDto.ModifiedOn, Is.GreaterThan(DateTime.MinValue));
         }
 
         /// <returns>>Returns a <see cref="Task"/> representing the asynchronous operation.</returns>
