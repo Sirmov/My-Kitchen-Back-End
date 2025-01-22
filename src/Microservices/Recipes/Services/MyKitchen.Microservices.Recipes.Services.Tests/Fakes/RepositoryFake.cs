@@ -25,7 +25,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests.Fakes
         where TData : BaseDocument<TKey>
         where TKey : notnull
     {
-        private readonly List<TData> data;
+        private readonly List<TData> data = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RepositoryFake{TData, TKey}"/> class.
@@ -41,7 +41,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests.Fakes
         /// <param name="data">The data collection used for seeding.</param>
         public RepositoryFake(List<TData> data)
         {
-            this.data = data;
+            this.data = new List<TData>(data);
 
             this.Mock = new Mock<IRepository<TData, TKey>>();
             this.SetupBehavior(this.Mock);
@@ -95,7 +95,16 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests.Fakes
             mock.Setup(x => x.DeleteAsync(It.IsAny<TKey>()))
                 .ReturnsAsync((TKey id) =>
                 {
-                    this.data.RemoveAt(this.data.FindIndex(x => x.Id.Equals(id)));
+                    var item = this.data.FirstOrDefault(x => x.Id?.Equals(id) ?? false);
+
+                    if (item is null)
+                    {
+                        return new Exception();
+                    }
+
+                    item.IsDeleted = true;
+                    item.DeletedOn = DateTime.UtcNow;
+
                     return Result<Exception>.Success;
                 });
         }
