@@ -88,6 +88,7 @@ namespace MyKitchen.Microservices.Recipes.Services.Tests.Fakes
                 {
                     var index = this.data.FindIndex(x => x.Id.Equals(id));
                     this.data[index] = item;
+                    this.data[index].ModifiedOn = DateTime.UtcNow;
                     return Result<Exception>.Success;
                 });
 
