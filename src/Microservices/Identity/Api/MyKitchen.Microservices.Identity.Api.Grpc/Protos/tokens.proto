@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "MyKitchen.Microservices.Identity.Api.Grpc.Protos";
+
+package tokens;
+
+service Tokens {
+  rpc InvalidateAccessToken (InvalidateAccessTokenRequest) returns (InvalidateAccessTokenReply);
+}
+
+message InvalidateAccessTokenRequest {
+  string accessTokenId = 1;
+}
+  
+message InvalidateAccessTokenReply {
+  bool isValid = 1;
+}
