@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+option csharp_namespace = "MyKitchen.Microservices.Identity.Api.Grpc.Protos";
+
+package mykitchen.identity;
+
+import "tokens.proto";
