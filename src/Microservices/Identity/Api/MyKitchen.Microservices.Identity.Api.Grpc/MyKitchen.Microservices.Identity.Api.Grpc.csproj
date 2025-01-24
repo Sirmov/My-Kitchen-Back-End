@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" />
+    <PackageReference Include="Grpc.Tools" />
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
