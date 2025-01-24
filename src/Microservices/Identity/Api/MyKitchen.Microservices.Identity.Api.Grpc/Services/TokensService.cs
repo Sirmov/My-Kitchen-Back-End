@@ -32,16 +32,16 @@ namespace MyKitchen.Microservices.Identity.Api.Grpc.Services
         /// <summary>
         /// This remote procedure call invalidates a access token given it's id.
         /// </summary>
-        /// <param name="request">The <see cref="InvalidateAccessTokenRequest"/> message containing the access token id.</param>
+        /// <param name="request">The <see cref="IsAccessTokenRevokedRequest"/> message containing the access token id.</param>
         /// <param name="context">The server-side call context.</param>
-        /// <returns>Returns a <see cref="InvalidateAccessTokenReply"/> containing a <see langword="bool"/> indicating whether the access token is valid.</returns>
-        public override async Task<InvalidateAccessTokenReply> InvalidateAccessToken(InvalidateAccessTokenRequest request, ServerCallContext context)
+        /// <returns>Returns a <see cref="IsAccessTokenRevokedReply"/> containing a <see langword="bool"/> indicating whether the access token is valid.</returns>
+        public override async Task<IsAccessTokenRevokedReply> IsAccessTokenRevoked(IsAccessTokenRevokedRequest request, ServerCallContext context)
         {
             var entry = await this.cache.GetAsync(request.AccessTokenId);
 
-            return new InvalidateAccessTokenReply
+            return new IsAccessTokenRevokedReply
             {
-                IsValid = entry is null,
+                IsRevoked = entry is not null,
             };
         }
     }

@@ -5,13 +5,13 @@ option csharp_namespace = "MyKitchen.Microservices.Identity.Api.Grpc.Protos";
 package tokens;
 
 service Tokens {
-  rpc InvalidateAccessToken (InvalidateAccessTokenRequest) returns (InvalidateAccessTokenReply);
+  rpc IsAccessTokenRevoked (IsAccessTokenRevokedRequest) returns (IsAccessTokenRevokedReply);
 }
 
-message InvalidateAccessTokenRequest {
+message IsAccessTokenRevokedRequest {
   string accessTokenId = 1;
 }
   
-message InvalidateAccessTokenReply {
-  bool isValid = 1;
+message IsAccessTokenRevokedReply {
+  bool isRevoked = 1;
 }
