@@ -24,7 +24,7 @@
     <PackageVersion Include="MongoDB.Analyzer" Version="1.5.0" />
     <PackageVersion Include="MongoDB.Driver" Version="2.29.0" />
     <PackageVersion Include="MongoDB.Bson" Version="2.29.0" />
-    <PackageVersion Include="AspNetCore.Identity.Mongo" Version="9.0.0" />
+    <PackageVersion Include="AspNetCore.Identity.Mongo" Version="8.3.5" />
   </ItemGroup>
 
   <ItemGroup>
