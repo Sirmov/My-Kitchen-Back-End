@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "MyKitchen.Microservices.Identity.Api.Grpc.Protos";
+
+package mykitchen.identity.tokens;
+
+service Tokens {
+  rpc IsAccessTokenRevoked (IsAccessTokenRevokedRequest) returns (IsAccessTokenRevokedReply);
+}
+
+message IsAccessTokenRevokedRequest {
+  string accessTokenId = 1;
+}
+  
+message IsAccessTokenRevokedReply {
+  bool isRevoked = 1;
+}
