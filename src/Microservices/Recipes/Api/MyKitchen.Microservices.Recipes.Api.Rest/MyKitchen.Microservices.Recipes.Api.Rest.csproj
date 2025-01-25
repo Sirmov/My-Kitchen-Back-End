@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Grpc.Net.ClientFactory" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
@@ -19,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Recipes.Services.Clients\MyKitchen.Microservices.Recipes.Services.Clients.csproj" />
     <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Recipes.Services.Mapping\MyKitchen.Microservices.Recipes.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\MyKitchen.Microservices.Recipes.Services.Recipes\MyKitchen.Microservices.Recipes.Services.Recipes.csproj" />
   </ItemGroup>

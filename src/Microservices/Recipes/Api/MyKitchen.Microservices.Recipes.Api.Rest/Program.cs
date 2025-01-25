@@ -34,6 +34,7 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
             services.AddApplicationOptions();
             services.AddApplicationMiddlewares();
             services.AddApplicationServices();
+            services.AddApplicationClients(configuration);
 
             services.AddMongoDbClient(configuration);
             services.AddMongoRepository();
