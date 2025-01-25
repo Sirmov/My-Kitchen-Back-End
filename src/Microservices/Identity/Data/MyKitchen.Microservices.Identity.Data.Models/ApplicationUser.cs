@@ -9,12 +9,10 @@ namespace MyKitchen.Microservices.Identity.Data.Models
 {
     using AspNetCore.Identity.Mongo.Model;
 
-    using MongoDB.Bson;
-
     /// <summary>
     /// This class is a extension of the base mongo identity user class. It inherits <see cref="MongoUser{TKey}"/>.
     /// </summary>
-    public class ApplicationUser : MongoUser<ObjectId>
+    public class ApplicationUser : MongoUser<string>
     {
     }
 }

@@ -7,6 +7,7 @@
 
 namespace MyKitchen.Microservices.Identity.Data.Models.Common
 {
+    using MongoDB.Bson;
     using MongoDB.Bson.Serialization.Attributes;
 
     using MyKitchen.Microservices.Identity.Data.Models.Contracts;
@@ -22,6 +23,7 @@ namespace MyKitchen.Microservices.Identity.Data.Models.Common
         /// Gets or sets the id of the document.
         /// </summary>
         [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public TKey Id { get; set; } = default!;
 
         /// <inheritdoc/>

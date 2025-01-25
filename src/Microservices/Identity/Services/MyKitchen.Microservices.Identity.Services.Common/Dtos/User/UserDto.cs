@@ -9,8 +9,6 @@ namespace MyKitchen.Microservices.Identity.Services.Common.Dtos.User
 {
     using System.ComponentModel.DataAnnotations;
 
-    using MongoDB.Bson;
-
     using MyKitchen.Microservices.Identity.Data.Models;
     using MyKitchen.Microservices.Identity.Services.Mapping;
 
@@ -24,7 +22,7 @@ namespace MyKitchen.Microservices.Identity.Services.Common.Dtos.User
         /// <summary>
         /// Gets or sets the id of the user.
         /// </summary>
-        public ObjectId Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the email of the user.

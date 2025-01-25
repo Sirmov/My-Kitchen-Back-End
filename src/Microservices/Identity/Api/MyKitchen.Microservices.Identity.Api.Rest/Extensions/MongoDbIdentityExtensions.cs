@@ -40,7 +40,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             Action<MongoIdentityOptions> setupDatabaseAction)
         {
             services
-                .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, ObjectId>(setupIdentityAction, setupDatabaseAction);
+                .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, string>(setupIdentityAction, setupDatabaseAction);
 
             return services;
         }
@@ -61,7 +61,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             IMapper mapper = AutoMapperConfig.CreateDuplicateTypeMapper(typeof(IdentityOptions), typeof(MongoIdentityOptions));
 
             services
-                .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, ObjectId>(
+                .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, string>(
                     identity => mapper.Map(identityOptions, identity),
                     mongoIdentity => mapper.Map(mongoIdentityOptions, mongoIdentity));
 
@@ -89,7 +89,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             IMapper mapper = AutoMapperConfig.CreateDuplicateTypeMapper(typeof(IdentityOptions), typeof(MongoIdentityOptions));
 
             services
-                .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, ObjectId>(
+                .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, string>(
                     identity => mapper.Map(identityOptions, identity),
                     mongoIdentity => mapper.Map(mongoIdentityOptions, mongoIdentity));
 
@@ -114,7 +114,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
             IConfigureOptions<MongoIdentityOptions> mongoIdentityConfigureOptions)
         {
             services
-                .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, ObjectId>(
+                .AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole, string>(
                     identityConfigureOptions.Configure,
                     mongoIdentityConfigureOptions.Configure);
 

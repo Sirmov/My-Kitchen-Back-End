@@ -108,7 +108,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
             // Arrange
             var userDto = new UserDto()
             {
-                Id = ObjectId.GenerateNewId(),
+                Id = ObjectId.GenerateNewId().ToString(),
                 Username = "test",
                 Email = "test@mail.com",
                 Roles = ["Admin", "Owner", "User"],
@@ -166,7 +166,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
             // Arrange
             var userDto = new UserDto()
             {
-                Id = ObjectId.GenerateNewId(),
+                Id = ObjectId.GenerateNewId().ToString(),
             };
 
             // Act
@@ -357,7 +357,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
             // Arrange
             var userDto = new UserDto()
             {
-                Id = ObjectId.GenerateNewId(),
+                Id = ObjectId.GenerateNewId().ToString(),
                 Username = "test",
                 Email = "test@mail.com",
                 Roles = ["Admin", "Owner", "User"],

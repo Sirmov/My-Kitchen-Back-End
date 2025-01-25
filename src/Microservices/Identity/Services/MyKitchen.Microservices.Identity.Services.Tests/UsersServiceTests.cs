@@ -40,14 +40,14 @@ namespace MyKitchen.Microservices.Identity.Services.Tests
         {
             new ApplicationUser()
             {
-                Id = ObjectId.GenerateNewId(),
+                Id = ObjectId.GenerateNewId().ToString(),
                 UserName = "andrey",
                 Email = "andrey@mail.com",
                 Roles = [ "Admin "],
             },
             new ApplicationUser()
             {
-                Id = ObjectId.GenerateNewId(),
+                Id = ObjectId.GenerateNewId().ToString(),
                 UserName = "helen",
                 Email = "helen@mail.com",
             },
