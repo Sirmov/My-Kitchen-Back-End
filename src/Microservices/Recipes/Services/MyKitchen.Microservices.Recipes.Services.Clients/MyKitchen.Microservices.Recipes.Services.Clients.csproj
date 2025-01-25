@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Net.Client" />
+    <PackageReference Include="Grpc.Tools" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Identity microservice -->
+    <Protobuf Include="Identity\Grpc\Protos\identity.proto" GrpcServices="Client" ProtoRoot="Identity\Grpc\Protos" />
+    <Protobuf Include="Identity\Grpc\Protos\tokens.proto" GrpcServices="Client" ProtoRoot="Identity\Grpc\Protos" />
+  </ItemGroup>
+
+</Project>
