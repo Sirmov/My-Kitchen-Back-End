@@ -10,6 +10,7 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Extensions
     using Microsoft.AspNetCore.Authentication.JwtBearer;
 
     using MyKitchen.Microservices.Identity.Api.Grpc.Protos;
+    using MyKitchen.Microservices.Recipes.Api.Rest.Middlewares;
     using MyKitchen.Microservices.Recipes.Api.Rest.Options;
     using MyKitchen.Microservices.Recipes.Services.Clients.Identity.Grpc;
     using MyKitchen.Microservices.Recipes.Services.Clients.Identity.Grpc.Contracts;
@@ -62,6 +63,8 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Extensions
         /// <returns>Returns the service collection with all application middlewares registered.</returns>
         public static IServiceCollection AddApplicationMiddlewares(this IServiceCollection services)
         {
+            services.AddSingleton<AccessTokenInvalidationMiddleware>();
+
             return services;
         }
 
