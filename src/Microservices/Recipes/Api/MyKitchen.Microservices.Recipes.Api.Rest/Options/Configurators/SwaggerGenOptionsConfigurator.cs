@@ -41,18 +41,21 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Options.Configurators
                 },
             });
 
-            foreach (var file in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.xml", SearchOption.AllDirectories))
+            var files = Directory.EnumerateFiles(Environment.CurrentDirectory, "*.xml", SearchOption.AllDirectories);
+
+            foreach (var file in files)
             {
                 options.IncludeXmlComments(file);
             }
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
             {
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
                 In = ParameterLocation.Header,
                 Description = "Please provide a valid token",
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer",
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement()
