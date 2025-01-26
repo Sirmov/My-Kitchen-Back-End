@@ -11,11 +11,11 @@
     </PropertyGroup>
 
 
-    <!-- <PropertyGroup Condition="'$(Configuration)' != 'Release' AND $(MSBuildProjectName.Contains('.Tests')) == false" >
+    <PropertyGroup Condition="'$(Configuration)' != 'Release' AND $(MSBuildProjectName.Contains('.Tests')) == false" >
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <RelativeProjectPath>$(MSBuildProjectDirectory.Replace($(RootDir), '').TrimStart('\'))</RelativeProjectPath>
+        <!-- <RelativeProjectPath>$(MSBuildProjectDirectory.Replace($(RootDir), '').TrimStart('\'))</RelativeProjectPath>
         <ParentDirectoryPath>$([System.IO.Path]::GetDirectoryName($(RelativeProjectPath)))</ParentDirectoryPath>
-        <DocumentationFile>$(RootDir)\Documentation\$(ParentDirectoryPath)\$(MSBuildProjectName).xml</DocumentationFile>
-    </PropertyGroup> -->
+        <DocumentationFile>$(RootDir)\Documentation\$(ParentDirectoryPath)\$(MSBuildProjectName).xml</DocumentationFile> -->
+    </PropertyGroup>
 
 </Project>
