@@ -22,13 +22,13 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
 
     internal static class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task Main(string [] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             await ConfigureServicesAsync(builder.Services, builder.Configuration);
 
             var app = builder.Build();
-            ConfigurePipelineAsync(app);
+            ConfigurePipeline(app);
             app.Run();
         }
 
@@ -80,7 +80,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
             services.AddSwaggerGen();
         }
 
-        private static void ConfigurePipelineAsync(WebApplication app)
+        private static void ConfigurePipeline(WebApplication app)
         {
             app.UseExceptionHandler(RouteConstants.ErrorHandlerRoute);
 

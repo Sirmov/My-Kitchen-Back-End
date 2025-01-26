@@ -19,17 +19,17 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
 
     internal static class Program
     {
-        public static async Task Main(string [] args)
+        public static void Main(string [] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            await ConfigureServicesAsync(builder.Services, builder.Configuration);
+            ConfigureServices(builder.Services, builder.Configuration);
 
             var app = builder.Build();
-            await ConfigurePipelineAsync(app);
+            ConfigurePipeline(app);
             app.Run();
         }
 
-        private static async Task ConfigureServicesAsync(IServiceCollection services, IConfiguration configuration)
+        private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddApplicationOptions();
             services.AddApplicationMiddlewares();
@@ -67,7 +67,7 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
             services.AddSwaggerGen();
         }
 
-        private static async Task ConfigurePipelineAsync(WebApplication app)
+        private static void ConfigurePipeline(WebApplication app)
         {
             app.UseExceptionHandler(RouteConstants.ErrorHandlerRoute);
 
