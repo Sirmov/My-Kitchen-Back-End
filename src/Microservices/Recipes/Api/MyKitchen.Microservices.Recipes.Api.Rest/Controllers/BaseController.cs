@@ -25,12 +25,11 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Controllers
         /// </summary>
         public BaseController()
         {
-            this.UserId = this.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
         }
 
         /// <summary>
-        /// Gets or sets the id of the current user.
+        /// Gets the id of the current user.
         /// </summary>
-        protected string UserId { get; set; }
+        protected string UserId => this.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
     }
 }
