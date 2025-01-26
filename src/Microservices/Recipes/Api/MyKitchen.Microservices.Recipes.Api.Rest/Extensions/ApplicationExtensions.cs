@@ -93,7 +93,7 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Extensions
                     };
                 });
 
-            services.AddScoped(typeof(IIdentityTokensServiceGrpcClient), typeof(IdentityTokensServiceGrpcClient));
+            services.AddSingleton(typeof(IIdentityTokensServiceGrpcClient), typeof(IdentityTokensServiceGrpcClient));
 
             return services;
         }
