@@ -45,6 +45,9 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
             IMapper mapper = AutoMapperConfig.MapperInstance;
             services.AddSingleton<IMapper>(mapper);
 
+            services.AddControllers();
+            services.ConfigureOptions<ApiBehaviorOptionsConfigurator>();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("DevelopmentCors", policy =>
@@ -55,12 +58,11 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
                 });
             });
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer();
             services.ConfigureOptions<JwtBearerOptionsConfigurator>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme);
 
-            services.AddControllers();
-            services.ConfigureOptions<ApiBehaviorOptionsConfigurator>();
+            services.AddAuthorization();
 
             services.ConfigureOptions<SwaggerGenOptionsConfigurator>();
             services.AddEndpointsApiExplorer();
@@ -82,12 +84,9 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+            app.UseAccessTokenInvalidation();
             app.UseAuthorization();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapControllers().AllowAnonymous();
-            }
 
             app.MapControllers();
         }
