@@ -9,15 +9,19 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Options.Configurators
 {
     using System.Text;
 
+    using AutoMapper;
+
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
+
+    using MyKitchen.Microservices.Recipes.Services.Mapping;
 
     /// <summary>
     /// This class implements the <see cref="IConfigureOptions{TOptions}"/>.
     /// It is used to configure the <see cref="JwtBearerOptions"/>.
     /// </summary>
-    public class JwtBearerOptionsConfigurator : IConfigureOptions<JwtBearerOptions>
+    public class JwtBearerOptionsConfigurator : IConfigureNamedOptions<JwtBearerOptions>
     {
         private readonly IConfiguration configuration;
 
@@ -33,12 +37,23 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Options.Configurators
         /// <inheritdoc/>
         public void Configure(JwtBearerOptions options)
         {
-            string securityKey;
-            securityKey = this.configuration.GetValue(nameof(securityKey), string.Empty) !;
+            this.Configure(JwtBearerDefaults.AuthenticationScheme, options);
+        }
 
-            var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
+        /// <inheritdoc/>
+        public void Configure(string? name, JwtBearerOptions options)
+        {
+            IMapper mapper = AutoMapperConfig.CreateDuplicateTypeMapper<JwtBearerOptions>();
+            var jwtBearerOptions = this.configuration.GetSection(nameof(JwtBearerOptions)).Get<JwtBearerOptions>()!;
+            mapper.Map(jwtBearerOptions, options);
 
-            options.TokenValidationParameters.IssuerSigningKey = issuerSigningKey;
+            string securityKey = this.configuration.GetValue(nameof(securityKey), string.Empty)!;
+            options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
+
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                options.IncludeErrorDetails = true;
+            }
         }
     }
 }
