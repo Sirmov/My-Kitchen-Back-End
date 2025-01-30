@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Packages.props', '$(MSBuildThisFileDirectory)../'))">
+  <Import
+    Project="$([MSBuild]::GetPathOfFileAbove('Directory.Packages.props', '$(MSBuildThisFileDirectory)../'))">
   </Import>
 
-    <ItemGroup>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Analyzers -->
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.12.8">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageVersion>
+
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageVersion>
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- ASP.NET Core -->
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
-    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.10" />
+    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis"
+      Version="8.0.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.8.0" />
   </ItemGroup>
@@ -16,7 +35,7 @@
     <PackageVersion Include="Grpc.AspNetCore" Version="2.57.0" />
     <PackageVersion Include="Grpc.AspNetCore.Server.Reflection" Version="2.67.0" />
     <PackageVersion Include="Grpc.Tools" Version="2.69.0" />
-    
+
   </ItemGroup>
 
   <ItemGroup>
@@ -33,12 +52,13 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
   </ItemGroup>
 
-    <ItemGroup>
+  <ItemGroup>
     <!-- Redis -->
     <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.10" />
   </ItemGroup>
-  
+
   <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <!-- Test Projects -->
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
     <PackageReference Include="coverlet.collector">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
