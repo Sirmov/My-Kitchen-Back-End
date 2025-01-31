@@ -2,25 +2,22 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0@sha256:35792ea4ad1db051981f62b313f1be3b46b
 
 # Restoring
 WORKDIR /App
-COPY Directory.Packages.props .
-WORKDIR /App/src
-COPY src/Directory.Packages.props .
+COPY Microservices/Identity ./Microservices/Identity
+COPY Common ./Common
+WORKDIR /App/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Rest
 ARG BUILD_CONFIGURATION=Release
-COPY src/Microservices/Identity ./Microservices/Identity
-COPY src/Common ./Common
-WORKDIR /App/src/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Rest
 RUN dotnet restore "MyKitchen.Microservices.Identity.Api.Rest.csproj"
 
 # Building
 WORKDIR /App
 COPY . .
-WORKDIR /App/src/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Rest
+WORKDIR /App/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Rest
 RUN dotnet build "MyKitchen.Microservices.Identity.Api.Rest.csproj" -c ${BUILD_CONFIGURATION} --no-restore
 
 # Publishing
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /App/src/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Rest
+WORKDIR /App/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Rest
 RUN dotnet publish "MyKitchen.Microservices.Identity.Api.Rest.csproj" -c ${BUILD_CONFIGURATION} --no-build -o /App/publish /p:UseAppHost=false
 
 # Running
