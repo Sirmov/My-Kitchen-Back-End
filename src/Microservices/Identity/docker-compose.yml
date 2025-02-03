@@ -14,7 +14,7 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
-    env_file: ".env.development"
+    env_file: "Api/MyKitchen.Microservices.Identity.Api.Rest/.env.development"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=5000
@@ -34,7 +34,7 @@ services:
     ports:
       - "5100:5100"
       - "5101:5101"
-    env_file: ".env.development"
+    env_file: "Api/MyKitchen.Microservices.Identity.Api.Grpc/.env.development"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=5000
