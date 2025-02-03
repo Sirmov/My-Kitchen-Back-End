@@ -2,10 +2,10 @@ version: '3.4'
 services:
   mykitchen.microservices.identity.api.rest:
     container_name: mykitchen.microservices.identity.api.rest
-    image: sirmov/mykitchen-identity-service
+    image: sirmov/mykitchen-identity-rest-service
     build:
-      context: ../../../
-      dockerfile: src/Microservices/Identity/Dockerfile
+      context: ../../
+      dockerfile: Microservices/Identity/Dockerfile.rest
     depends_on:
       mykitchen.microservices.identity.mongodb:
         condition: service_started
@@ -14,7 +14,27 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
-    env_file: "secrets/identity.env"
+    env_file: ".env.development"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5000
+      - ASPNETCORE_HTTPS_PORTS=5001
+
+  mykitchen.microservices.identity.api.grpc:
+    container_name: mykitchen.microservices.identity.api.grpc
+    image: sirmov/mykitchen-identity-grpc-service
+    build:
+      context: ../../
+      dockerfile: Microservices/Identity/Dockerfile.grpc
+    depends_on:
+      mykitchen.microservices.identity.mongodb:
+        condition: service_started
+      mykitchen.microservices.identity.redis:
+        condition: service_started
+    ports:
+      - "5100:5100"
+      - "5101:5101"
+    env_file: ".env.development"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=5000
@@ -24,7 +44,7 @@ services:
     container_name: mykitchen.microservices.identity.mongodb
     image: mongo
     restart: always
-    env_file: "secrets/mongo.env"
+    env_file: ".env.mongo"
     ports:
       - "27017:27017"
     volumes:
@@ -40,6 +60,6 @@ services:
       - mykitchen-identity-redis:/data
 
 volumes:
-  mykitchen-identity-mongodb: 
+  mykitchen-identity-mongodb:
   mykitchen-identity-redis:
   
