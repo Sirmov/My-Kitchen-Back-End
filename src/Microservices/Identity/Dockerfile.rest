@@ -9,8 +9,6 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet restore "MyKitchen.Microservices.Identity.Api.Rest.csproj"
 
 # Building
-WORKDIR /App
-COPY . .
 WORKDIR /App/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Rest
 RUN dotnet build "MyKitchen.Microservices.Identity.Api.Rest.csproj" -c ${BUILD_CONFIGURATION} --no-restore
 

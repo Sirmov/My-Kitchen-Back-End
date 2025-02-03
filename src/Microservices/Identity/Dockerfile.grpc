@@ -9,8 +9,6 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet restore "MyKitchen.Microservices.Identity.Api.Grpc.csproj"
 
 # Building
-WORKDIR /App
-COPY . .
 WORKDIR /App/Microservices/Identity/Api/MyKitchen.Microservices.Identity.Api.Grpc
 RUN dotnet build "MyKitchen.Microservices.Identity.Api.Grpc.csproj" -c ${BUILD_CONFIGURATION} --no-restore
 
@@ -27,6 +25,6 @@ COPY --from=publish /App/publish .
 EXPOSE 5100
 EXPOSE 5101
 ENV ASPNETCORE_ENVIRONMENT=Development
-ENV ASPNETCORE_URLS=http://+:5000
+ENV ASPNETCORE_URLS=http://+:5100
 
 ENTRYPOINT ["dotnet", "MyKitchen.Microservices.Identity.Api.Grpc.dll"]
