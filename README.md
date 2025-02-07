@@ -34,10 +34,12 @@ docker run --rm -it {imageLayerId} sh
 1. Navigate to the root of the microservice.
 2. Run the following command
 ```bash
-docker compose up --build --detach
+docker compose up -d
 ```
-3. Note that the docker compose file may includes the dependency services also, like databases, development tools,
-message brokers and others . If you want to start only the microservice you can add the `--no-deps` flag.
+3. You can specify which services to start by adding their names as last argument.
+4. If you want to build the image you can add the `--build` flag.
+5. Note that the docker compose file may includes the dependency services also, like databases, development tools,
+message brokers and others. If you want to start only the microservice you can add the `--no-deps` flag.
 
 - Using Docker CLI
 1. Make sure you have built the service image first.
