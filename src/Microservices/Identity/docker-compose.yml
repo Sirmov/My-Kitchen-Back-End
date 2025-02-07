@@ -37,8 +37,8 @@ services:
     env_file: "Api/MyKitchen.Microservices.Identity.Api.Grpc/.env.development"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=5000
-      - ASPNETCORE_HTTPS_PORTS=5001
+      - ASPNETCORE_HTTP_PORTS=5100
+      - ASPNETCORE_HTTPS_PORTS=5101
 
   mykitchen.microservices.identity.mongodb:
     container_name: mykitchen.microservices.identity.mongodb
