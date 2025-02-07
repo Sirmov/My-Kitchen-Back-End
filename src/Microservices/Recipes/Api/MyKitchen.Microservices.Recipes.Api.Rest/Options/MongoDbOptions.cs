@@ -7,6 +7,8 @@
 
 namespace MyKitchen.Microservices.Recipes.Api.Rest.Options
 {
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// This class adapts the options patter in .NET.
     /// It is used to encapsulate the configuration of the MongoDB driver.
@@ -16,11 +18,13 @@ namespace MyKitchen.Microservices.Recipes.Api.Rest.Options
         /// <summary>
         /// Gets or sets the connection uri.
         /// </summary>
+        [Required]
         public string ConnectionURI { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the name of the database.
         /// </summary>
+        [Required]
         public string DatabaseName { get; set; } = string.Empty;
     }
 }
