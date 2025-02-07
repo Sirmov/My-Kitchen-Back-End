@@ -1,0 +1,33 @@
+version: '3.4'
+services:
+  mykitchen.microservices.recipes.api.rest:
+    container_name: mykitchen.microservices.recipes.api.rest
+    image: sirmov/mykitchen-recipes-rest-service
+    build:
+      context: ../../
+      dockerfile: Microservices/Recipes/Dockerfile.rest
+    depends_on:
+      mykitchen.microservices.recipes.mongodb:
+        condition: service_started
+    ports:
+      - "6000:6000"
+      - "6001:6001"
+    env_file: "Api/MyKitchen.Microservices.Recipes.Api.Rest/.env.development"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=6000
+      - ASPNETCORE_HTTPS_PORTS=6001
+
+  mykitchen.microservices.recipes.mongodb:
+    container_name: mykitchen.microservices.recipes.mongodb
+    image: mongo
+    restart: always
+    env_file: ".env.mongo"
+    ports:
+      - "27017:27017"
+    volumes:
+      - mykitchen-recipes-mongodb:/data/db
+
+volumes:
+  mykitchen-recipes-mongodb:
+  
