@@ -14,8 +14,6 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Options;
 
-    using MongoDB.Bson;
-
     using MyKitchen.Common.Constants;
     using MyKitchen.Microservices.Identity.Data.Models;
     using MyKitchen.Microservices.Identity.Services.Mapping;
