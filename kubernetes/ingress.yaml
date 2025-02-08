@@ -11,16 +11,16 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: "/api/v1/identity"
+        path: /api/v1/identity
         backend:
           service:
             name: mykitchen-microservices-identity-api-rest-clusterip
             port: 
-              number: 80
+              number: 5000
       - pathType: Prefix
-        path: "api/v1/recipes"
+        path: /api/v1/recipes
         backend:
           service:
             name: mykitchen-microservices-recipes-api-rest-clusterip
             port:
-              number: 80
+              number: 6000
