@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mykitchen-microservices-identity-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mykitchen-microservices-identity-redis
+  template:
+    metadata:
+      labels:
+        app: mykitchen-microservices-identity-redis
+    spec:
+      containers:
+        - name: mykitchen-microservices-identity-redis
+          image: redis
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mykitchen-microservices-identity-redis-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: mykitchen-microservices-identity-redis
+  ports:
+  - name: redis
+    protocol: TCP
+    port: 6379
+    targetPort: 6379
+---
+# Exposed only for local testing
+apiVersion: v1
+kind: Service
+metadata:
+  name: mykitchen-microservices-identity-redis-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: mykitchen-microservices-identity-redis
+  ports:
+  - protocol: TCP
+    port: 6380
+    targetPort: 6379
+

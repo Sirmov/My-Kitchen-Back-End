@@ -400,3 +400,12 @@ FodyWeavers.xsd
 
 # XML generated documentation
 src/Documentation/
+
+# Secrets and configuration
+.env*
+!.env
+appsettings.*.json
+!appsettings.json
+secrets
+*secrets.yaml
+*secret.yaml

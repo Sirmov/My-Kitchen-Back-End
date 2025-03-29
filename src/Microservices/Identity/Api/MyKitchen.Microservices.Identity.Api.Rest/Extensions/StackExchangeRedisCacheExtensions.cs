@@ -27,15 +27,16 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
         /// <param name="services">The service collection where the redis cache should be registered.</param>
         /// <param name="options">The delegate used to configure the <see cref="RedisCacheOptions"/>.</param>
         /// <returns>Returns the service collection with the redis cache configured and registered.</returns>
-        public static async Task<IConnectionMultiplexer> AddRedisCache(this IServiceCollection services, Action<RedisCacheOptions> options)
+        public static async Task<IConnectionMultiplexer> AddRedisCacheAsync(this IServiceCollection services, Action<RedisCacheOptions> options)
         {
-            services.AddSingleton<IDistributedCache, RedisCache>();
-
             RedisCacheOptions redisCacheOptions = new ();
             options.Invoke(redisCacheOptions);
+            redisCacheOptions.ConfigurationOptions!.EndPoints.Add(redisCacheOptions.Configuration!);
 
-            IConnectionMultiplexer redis = await ConnectionMultiplexer.ConnectAsync(redisCacheOptions.Configuration!);
+            IConnectionMultiplexer redis = await ConnectionMultiplexer.ConnectAsync(redisCacheOptions.ConfigurationOptions!);
+
             services.AddSingleton<IConnectionMultiplexer>(redis);
+            services.AddStackExchangeRedisCache(_ => { });
 
             return redis;
         }
@@ -48,10 +49,12 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
         /// <returns>Returns the service collection with the redis cache configured and registered.</returns>
         public static async Task<IConnectionMultiplexer> AddRedisCacheAsync(this IServiceCollection services, RedisCacheOptions redisCacheOptions)
         {
-            services.AddSingleton<IDistributedCache, RedisCache>();
+            redisCacheOptions.ConfigurationOptions!.EndPoints.Add(redisCacheOptions.Configuration!);
 
-            IConnectionMultiplexer redis = await ConnectionMultiplexer.ConnectAsync(redisCacheOptions.Configuration!);
+            IConnectionMultiplexer redis = await ConnectionMultiplexer.ConnectAsync(redisCacheOptions.ConfigurationOptions!);
+
             services.AddSingleton<IConnectionMultiplexer>(redis);
+            services.AddStackExchangeRedisCache(_ => { });
 
             return redis;
         }
@@ -65,13 +68,15 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
         /// <returns>Returns the service collection with the redis cache configured and registered.</returns>
         public static async Task<IConnectionMultiplexer> AddRedisCacheAsync(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IDistributedCache, RedisCache>();
-
             RedisCacheOptions redisCacheOptions = configuration.GetSection(nameof(RedisCacheOptions)).Get<RedisCacheOptions>() ??
                 throw new NullReferenceException(string.Format(ExceptionMessages.VariableIsNull, nameof(RedisCacheOptions)));
 
-            IConnectionMultiplexer redis = await ConnectionMultiplexer.ConnectAsync(redisCacheOptions.Configuration!);
+            redisCacheOptions.ConfigurationOptions!.EndPoints.Add(redisCacheOptions.Configuration!);
+
+            IConnectionMultiplexer redis = await ConnectionMultiplexer.ConnectAsync(redisCacheOptions.ConfigurationOptions!);
+
             services.AddSingleton<IConnectionMultiplexer>(redis);
+            services.AddStackExchangeRedisCache(_ => { });
 
             return redis;
         }
@@ -86,13 +91,14 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
         /// <returns>Returns the service collection with the redis cache configured and registered.</returns>
         public static async Task<IConnectionMultiplexer> AddRedisCacheAsync(this IServiceCollection services, IConfigureOptions<RedisCacheOptions> configureOptions)
         {
-            services.AddSingleton<IDistributedCache, RedisCache>();
-
             RedisCacheOptions redisCacheOptions = new ();
             configureOptions.Configure(redisCacheOptions);
+            redisCacheOptions.ConfigurationOptions!.EndPoints.Add(redisCacheOptions.Configuration!);
 
-            IConnectionMultiplexer redis = await ConnectionMultiplexer.ConnectAsync(redisCacheOptions.Configuration!);
+            IConnectionMultiplexer redis = await ConnectionMultiplexer.ConnectAsync(redisCacheOptions.ConfigurationOptions!);
+
             services.AddSingleton<IConnectionMultiplexer>(redis);
+            services.AddStackExchangeRedisCache(_ => { });
 
             return redis;
         }

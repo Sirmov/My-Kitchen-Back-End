@@ -20,6 +20,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
     using MyKitchen.Microservices.Identity.Services.Users;
     using MyKitchen.Microservices.Identity.Services.Users.Contracts;
 
+    using StackExchange.Redis;
+
     using TokenOptions = MyKitchen.Microservices.Identity.Common.Options.TokenOptions;
 
     /// <summary>
@@ -41,7 +43,11 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Extensions
 
             services
                 .AddOptions<RedisCacheOptions>()
-                .BindConfiguration(nameof(RedisCacheOptions));
+                .BindConfiguration(nameof(RedisCacheOptions))
+                .Configure<IServiceProvider>((options, serviceProvider) =>
+                {
+                    options.ConnectionMultiplexerFactory = () => Task.FromResult(serviceProvider.GetService<IConnectionMultiplexer>() !);
+                });
 
             services
                 .AddOptionsWithValidateOnStart<TokenOptions>()

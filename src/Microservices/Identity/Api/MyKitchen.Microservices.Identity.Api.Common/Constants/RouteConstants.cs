@@ -15,9 +15,9 @@ namespace MyKitchen.Microservices.Identity.Api.Common.Constants
         /// <summary>
         /// The uncaught error handler route.
         /// </summary>
-        public const string ErrorHandlerRoute = "/error";
+        public const string ErrorHandlerRoute = $"{BaseRoute}/error";
 
-        private const string BaseRoute = "api/v1";
+        private const string BaseRoute = "/api/v1/identity";
 
         /// <summary>
         /// This static class contains all routes and endpoints for the users controller.

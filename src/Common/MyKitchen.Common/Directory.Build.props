@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" /> -->
+
+    <PropertyGroup>
+        <RootDir Condition=" '$(RootDir)' == '' ">$(MSBuildThisFileDirectory)</RootDir>
+        <DefaultItemExcludes>$(MSBuildProjectName).Tests\**;%(DefaultItemExcludes)</DefaultItemExcludes>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="$(RootDir)\stylecop.json" Link="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="$(RootDir)\.roslynatorconfig" Link=".roslynatorconfig" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="StyleCop.Analyzers">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+
+        <PackageReference Include="Roslynator.Analyzers">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    </PropertyGroup>
+
+
+    <PropertyGroup Condition="'$(Configuration)' != 'Release' AND $(MSBuildProjectName.Contains('.Tests')) == false" >
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <!-- <RelativeProjectPath>$(MSBuildProjectDirectory.Replace($(RootDir), '').TrimStart('\'))</RelativeProjectPath>
+        <ParentDirectoryPath>$([System.IO.Path]::GetDirectoryName($(RelativeProjectPath)))</ParentDirectoryPath>
+        <DocumentationFile>$(RootDir)/Documentation/$(ParentDirectoryPath)/$(MSBuildProjectName).xml</DocumentationFile> -->
+    </PropertyGroup>
+
+</Project>

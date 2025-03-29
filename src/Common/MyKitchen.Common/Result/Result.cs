@@ -34,6 +34,11 @@ namespace MyKitchen.Common.Result
             this.Failure = failure;
         }
 
+        /// <summary>
+        /// Gets a empty successful <see cref="Result{TFailure}"/>.
+        /// </summary>
+        public static Result<TFailure> Success => new Result<TFailure>();
+
         /// <inheritdoc/>
         public TFailure? Failure { get; set; }
 

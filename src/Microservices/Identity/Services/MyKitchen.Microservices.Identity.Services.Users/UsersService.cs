@@ -114,7 +114,7 @@ namespace MyKitchen.Microservices.Identity.Services.Users
                 return new BadRequestDetails(string.Format(ExceptionMessages.InvalidModelState, nameof(userDto)));
             }
 
-            var findResult = await this.FindUserByIdAsync(userDto.Id.ToString());
+            var findResult = await this.FindUserByIdAsync(userDto.Id);
 
             if (!findResult.IsSuccessful)
             {
@@ -286,8 +286,8 @@ namespace MyKitchen.Microservices.Identity.Services.Users
 
         private async Task<ServiceResult<(string accessToken, string refreshToken)>> LoginUserWithPasswordAsync(UserDto userDto, string password, bool isPersistent, bool isLockout)
         {
-            var user = this.mapper.Map<TUser>(userDto);
-            var signInResult = await this.signInManager.PasswordSignInAsync(user, password, isPersistent, isLockout);
+            var user = await this.userManager.FindByIdAsync(userDto.Id);
+            var signInResult = await this.signInManager.PasswordSignInAsync(user!, password, isPersistent, isLockout);
 
             if (!signInResult.Succeeded)
             {

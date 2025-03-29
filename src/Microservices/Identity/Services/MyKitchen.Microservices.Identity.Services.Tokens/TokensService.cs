@@ -152,7 +152,7 @@ namespace MyKitchen.Microservices.Identity.Services.Tokens
 
                 return true;
             }
-            catch (SecurityTokenValidationException ex)
+            catch (SecurityTokenValidationException)
             {
                 return false;
             }

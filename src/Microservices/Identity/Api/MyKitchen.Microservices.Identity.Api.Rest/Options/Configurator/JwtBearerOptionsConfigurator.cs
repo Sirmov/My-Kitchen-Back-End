@@ -19,7 +19,7 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator
     /// This class implements the <see cref="IConfigureOptions{TOptions}"/>.
     /// It is used to configure the <see cref="JwtBearerOptions"/>.
     /// </summary>
-    public class JwtBearerOptionsConfigurator : IConfigureOptions<JwtBearerOptions>
+    public class JwtBearerOptionsConfigurator : IConfigureNamedOptions<JwtBearerOptions>
     {
         private readonly TokenOptions tokenOptions;
 
@@ -35,11 +35,21 @@ namespace MyKitchen.Microservices.Identity.Api.Rest.Options.Configurator
         /// <inheritdoc/>
         public void Configure(JwtBearerOptions options)
         {
-            IMapper mapper = AutoMapperConfig.CreateDuplicateTypeMapper<JwtBearerOptions>();
+            this.Configure(JwtBearerDefaults.AuthenticationScheme, options);
+        }
 
+        /// <inheritdoc/>
+        public void Configure(string? name, JwtBearerOptions options)
+        {
+            IMapper mapper = AutoMapperConfig.CreateDuplicateTypeMapper<JwtBearerOptions>();
             mapper.Map(this.tokenOptions.JwtBearerOptions, options);
 
             options.TokenValidationParameters.IssuerSigningKey = this.tokenOptions.IssuerSigningKey;
+
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                options.IncludeErrorDetails = true;
+            }
         }
     }
 }

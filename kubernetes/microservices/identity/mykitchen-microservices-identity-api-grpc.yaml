@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mykitchen-microservices-identity-api-grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mykitchen-microservices-identity-api-grpc
+  template:
+    metadata:
+      labels:
+        app: mykitchen-microservices-identity-api-grpc
+    spec:
+      containers:
+        - name: mykitchen-microservices-identity-api-grpc
+          image: sirmov/mykitchen-identity-grpc-service:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5000
+            - containerPort: 5001
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
+            - name: ASPNETCORE_HTTP_PORTS
+              value: "5100"
+            - name: ASPNETCORE_HTTPS_PORTS
+              value: "5101"
+          envFrom:
+            - secretRef:
+                name: mykitchen-microservices-identity-api-grpc
+                optional: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mykitchen-microservices-identity-api-grpc-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: mykitchen-microservices-identity-api-grpc
+  ports:
+  - name: http
+    protocol: TCP
+    port: 5100
+    targetPort: 5100
+  - name: https
+    protocol: TCP
+    port: 5101
+    targetPort: 5101
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mykitchen-microservices-identity-api-grpc
+type: Opaque
+data:
+  RedisCacheOptions__Configuration: bXlraXRjaGVuLW1pY3Jvc2VydmljZXMtaWRlbnRpdHktcmVkaXMtY2x1c3RlcmlwOjYzNzk=
+  RedisCacheOptions__ConfigurationOptions__AbortOnConnectFail: ZmFsc2U=
+  RedisCacheOptions__InstanceName: bXlraXRjaGVuLW1pY3Jvc2VydmljZS1pZGVudGl0eQ==

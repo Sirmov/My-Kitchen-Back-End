@@ -22,13 +22,13 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
 
     internal static class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task Main(string [] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             await ConfigureServicesAsync(builder.Services, builder.Configuration);
 
             var app = builder.Build();
-            ConfigurePipelineAsync(app);
+            ConfigurePipeline(app);
             app.Run();
         }
 
@@ -60,6 +60,8 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
                 .AddJwtBearer();
             services.ConfigureOptions<JwtBearerOptionsConfigurator>();
 
+            services.AddAuthorization();
+
             services.AddSingleton<IGuard>(new Guard());
             services.AddMongoDbClient(configuration);
             services.AddMongoDbIdentity(configuration);
@@ -78,14 +80,14 @@ namespace MyKitchen.Microservices.Identity.Api.Rest
             services.AddSwaggerGen();
         }
 
-        private static void ConfigurePipelineAsync(WebApplication app)
+        private static void ConfigurePipeline(WebApplication app)
         {
             app.UseExceptionHandler(RouteConstants.ErrorHandlerRoute);
 
             if (app.Environment.IsDevelopment())
             {
-                // IConfigurationRoot configurationRoot = (IConfigurationRoot)app.Configuration;
-                // Console.WriteLine(configurationRoot.GetDebugView());
+                IConfigurationRoot configurationRoot = (IConfigurationRoot)app.Configuration;
+                Console.WriteLine(configurationRoot.GetDebugView());
                 app.UseSwagger();
                 app.UseSwaggerUI();
                 app.UseCors("DevelopmentCors");

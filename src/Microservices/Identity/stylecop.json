@@ -1,0 +1,70 @@
+{
+    "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+    "settings": {
+        "indentation": {
+            "indentationSize": 4,
+            "tabSize": 4,
+            "useTabs": false
+        },
+        "spacingRules": {},
+        "readabilityRules": {
+            "allowBuiltInTypeAliases": false
+        },
+        "orderingRules": {
+            "elementOrder": [
+                "kind",
+                "accessibility",
+                "constant",
+                "readonly",
+                "static"
+            ],
+            "systemUsingDirectivesFirst": true,
+            "usingDirectivesPlacement": "insideNamespace",
+            "blankLinesBetweenUsingGroups": "require"
+        },
+        "namingRules": {
+            "allowCommonHungarianPrefixes": true,
+            "allowedHungarianPrefixes": [
+                "db",
+                "at",
+                "or",
+                "up",
+                "it",
+                "un",
+                "x",
+                "y",
+                "id",
+                "ip",
+                "bg"
+            ]
+        },
+        "maintainabilityRules": {
+            "topLevelTypes": [
+                "class",
+                "interface",
+                "enum"
+            ]
+        },
+        "layoutRules": {
+            "newlineAtEndOfFile": "require",
+            "allowConsecutiveUsings": true,
+            "allowDoWhileOnClosingBrace": false
+        },
+        "documentationRules": {
+            "companyName": "MyKitchen",
+            "copyrightText": "Copyright (c) {companyName}. All Rights Reserved.\nLicensed under the {licenseName} license. See {licenseFile} file in the project root for full license information.",
+            "headerDecoration": "|-----------------------------------------------------------------------------------------------------|",
+            "variables": {
+                "licenseName": "GPLv3",
+                "licenseFile": "LICENSE"
+            },
+            "documentInterfaces": true,
+            "documentExposedElements": true,
+            "documentInternalElements": false,
+            "documentPrivateElements": false,
+            "documentPrivateFields": false,
+            "documentationCulture": "en-US",
+            "fileNamingConvention": "stylecop"
+        }
+    }
+}

@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mykitchen-microservices-identity-mongo
+type: Opaque
+stringData:
+  MONGO_INITDB_ROOT_USERNAME: root
+  MONGO_INITDB_ROOT_PASSWORD: example
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mykitchen-microservices-identity-mongo
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mykitchen-microservices-identity-mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mykitchen-microservices-identity-mongo
+  template:
+    metadata:
+      labels:
+        app: mykitchen-microservices-identity-mongo
+    spec:
+      containers:
+        - name: mykitchen-microservices-identity-mongo
+          image: mongo
+          args: ["--dbpath","/data/db"]
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 27017
+          envFrom:
+            - secretRef:
+                name: mykitchen-microservices-identity-mongo
+                optional: false
+          volumeMounts:
+            - mountPath: /data/db
+              name: mykitchen-microservices-identity-mongo
+      volumes:
+        - name: mykitchen-microservices-identity-mongo
+          persistentVolumeClaim:
+            claimName: mykitchen-microservices-identity-mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mykitchen-microservices-identity-mongo-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: mykitchen-microservices-identity-mongo
+  ports:
+  - name: mongo
+    protocol: TCP
+    port: 27017
+    targetPort: 27017
+---
+# Exposed only for local testing
+apiVersion: v1
+kind: Service
+metadata:
+  name: mykitchen-microservices-identity-mongo-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: mykitchen-microservices-identity-mongo
+  ports:
+  - protocol: TCP
+    port: 27018
+    targetPort: 27017
