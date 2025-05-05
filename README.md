@@ -1,4 +1,4 @@
-<h1 align="center">My Kitchen Back End</h1>
+<p align="center"><img src="https://github.com/Sirmov/My-Kitchen-Back-End/blob/main/assets/images/logo-horizontal.png"></p>
 <h3 align="center">Manage your kitchen the smart way.</h3>
 
 ## 📒 Description
