@@ -1,11 +1,30 @@
-<p align="center"><img src="https://github.com/Sirmov/My-Kitchen-Back-End/blob/main/assets/images/logo-horizontal.png"></p>
-<h3 align="center">Manage your kitchen the smart way.</h3>
+<p id="title" align="center" markdown="1"><img src="https://github.com/Sirmov/My-Kitchen-Back-End/blob/main/assets/images/logo-horizontal.png"></p>
+<h3 align="center" markdown="1">Manage your kitchen the smart way.</h3>
+
+<div align="center" markdown="1">
+
+![FOSS](https://img.shields.io/badge/Free-Open_Source-blue?style=flat)
+![Issues](https://img.shields.io/github/issues/sirmov/my-kitchen-back-end?style=flat&color=red)
+![License](https://img.shields.io/github/license/sirmov/my-kitchen-back-end?style=flat)
+
+    
+</div>
+
+## 📑 Table of Contents
+1. [Title](#title)
+2. [Description](#-description)
+3. [Technologies](#-technologies)
+2. [Features](#-features)
+4. [Demo](#-demo)
+3. [Installation & Usage]()
+4. [Documentation]()
+5. [License](#-license)
 
 ## 📒 Description
 
 [My Kitchen Back End](https://github.com/Sirmov/My-Kitchen-Back-End) is the back end of the My Kitchen application. The server is built around the microservice architecture design. The core features of the app are recipes, pantry, shopping list and mealplan management.
 
-## 🌐Technologies
+## 🌐 Technologies
 
 ![Csharp](https://img.shields.io/badge/C%23-purple?style=for-the-badge&logo=data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACQBAMAAAAyxn5jAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAkUExURUdwTFgtmoRcwaJ63VoumqJ63TcCk////yMAaIBauODU8L+o4R5OXsYAAAAFdFJOUwDwPZaJ28FwzQAABNhJREFUaN6lWjFTGzkU3hiux8wFTCqYHJkrM5eh91zBpAVGMOttQoZTzHUUPl3syjfBI5LKBQ6+VCm4vUCVwnES/7nY611b0nuS3u6+wsXa3zef9D09vZUcBK6oPGPsWVA8KntsGkfFCRJ8CYYUX5hhly3ityL4x0yJp/nxK4yVYjDwjG3nNJCxUgyVPUhwVMjAggy7DI3DknhyOjxm1nhayMCcDBXmjO2SeHa0XcTAHGZ68R6GXUaIw0IGkqxYYawUAxlvMbPCWCkGbAWzyd00JiOSFRA/iUUa7Xs/A8BHC3hCMfKYCRLguzCi41zbIAHGAkTbYeYKAe9iqJDwCMO2Bd8QlujgVpgGRMIat5gVYAJiO4EYIdOwR5sAfBoO4QxEwhnmIOAIxm4Cof+6v2bmYMOD15044C/MKYh9BKqEkPMzg8ArQIiWiuenQb4ZUCWEG5AgIuAXRszwJsEJhSDNhQFPQicQpBgpeF1Bg0bQSgzkiIIxjaCt4HUFghijkHNMQYNK0FriNQXQg/ZkEk3uwONjjiuILas/Mr74wnEFZhYpe4HG8JFzXEHDUX0Uhk8aXlVw4igdETaBpoLYVYEzeR0Drypwl885fXuDWxVEllWvSmgPuF1BwylgLuGYc7uCE+denHz/BeIVBWNX9U6GmCTA+d1/U9jsw1QQ24v3PL4lgHPxV/phKvCMIFvBf+gEHCdoQXy2gq0KIrcHiwpgVdBwT8EigawKGq5WZInPFFw4FYA5zBJwU1vuuoITB8EigSEBRwlaqIE5FNxa8Py0378WF1tbD8Xrra2qrmBsIwj15Le6YCMw8PY8sBGYFSSvglrPTeBTcCNlj6gAdWEgp0GcAywPDqTUGah5kBKEUhoM1Eycp3LYzAh6FAVgNYY1KU2G8+Hwg3g9HF7PPoaeeqDgVSvIFelGSpTB6kKkV/WBNMKrQK/KB1JaGOxVWd0X2hKJDY8CbWO5QQjiY7cCbWv7G+Ivkb1ZU6BvrpDg/fTphmt31rf3rya+i/U3mgKjwTAJ/kQ6LKNHEi4JXbRH03skvdXugBmAXaahwGjzPqn4d3ifqyswG83PS/yVmmQDmwLQ7S8YLrUk08zUunXwvnGbLOnuB/Pd06bgX/hmcD+JvsOnF7iCwRX1heN/VEFfSuI7k6hJRMGsArwivvGohTojCE23XCNQ6kumIC3htDE01SKZEqQl+C0Ff6GW2VTBooTHBIIbtVDPCZYFbNOP72hl9nR2ADGAq9YRX7VCPTvB0Er4Jl1AwvAy+OkALRwUATOGF8GqUboe+ZNI3fHqQQWUf5IFmeAgCH41CN658B+NH/8zJVhFNgDSDM5GkJwoPjGfjqkDkOvzA8Wa8fgqJjkg5ZvsSLQGtkHSBHSXp9pNCsNnE6+cj4OJvIy9+GkKKPEA7KXGTLZBx1DXj7Z3wHb+UBXxDXy9Zh6u78OO4Dqt6PdhDXy3Do/3n2N90Wm1X8Wen2E3FDVJjjf4HRWZoWu5rVptlsMj6YBGr26/aNqhEKy5rroIDOvuy7Z9H/6l777weRED6WZ2KXfOzSIG0sx0GUhiqFMvnncKJIAeTwokgNfMs3z/H6jlTwB3OtAMtK/t/HjdzF49KBAPCiSAJR3Wg4KxXxKfMvxc4u9AwS/V6u/uX/wAxXzdRH4tvo4AAAAASUVORK5CYII=)
 ![.NET](https://img.shields.io/badge/.NET_8-512BD4?style=for-the-badge&logoSize=auto&logo=dotnet)
@@ -26,83 +45,16 @@
 ![StyleCop](https://img.shields.io/badge/StyleCop-faf9d6?style=for-the-badge&logoSize=auto&logo=data:image/jpeg;base64,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)
 ![Roslynator](https://img.shields.io/badge/Roslynator-cc5129?style=for-the-badge&logoSize=auto&logo=data:image/jpeg;base64,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)
 
-### Docker commands
+## ✨ Features
 
-#### Build service image
-1. Make sure the build context is the src folder of the project. There are two ways of doing this
-    1. Running the build command from the src folder.
-    2. Specify the build context relative to the current directory.
-    ```bash
-    docker build -t {namespace}/mykitchen-{serviceName}-service -f {dockerFilePath} {buildDirectory}
-    ```
-2. The `{namespace}` is replaced with either a user's or organization's name if no namespace is specified, `library` is used.
+- [x] Recipe creating, editing and deleting
+- [ ] Recipe categories and tags
+- [ ] Pantry stock tracking
+- [ ] Shopping list
+- [ ] Mealplan management.
 
-5. The `{serviceName}` is replaced with the name of the service.
+## 🔍 Demo
 
-5. The `{dockerFilePath}` is replaced with the path to the docker file relative to the current directory.
+## 📝 License
 
-6. The `{buildDirectory}` is replaced with the path to the src folder relative to the current directory.
-
-#### Debug image building
-
-1. Set `DOCKER_BUILDKIT` variable to 0.
-- Windows: 
-    - Command line: `set DOCKER_BUILDKIT=0`
-    - PowerShell: `set DOCKER_BUILDKIT=0`
-- Linux or macOS: `DOCKER_BUILDKIT=0 docker build ...`
-2. Using the image layer id start a shell session.
-```bash
-docker run --rm -it {imageLayerId} sh
-```
-
-#### Start service image
-- Using Docker Compose (recommended)
-1. Navigate to the root of the microservice.
-2. Run the following command
-```bash
-docker compose up -d
-```
-3. You can specify which services to start by adding their names as last argument.
-4. If you want to build the image you can add the `--build` flag.
-5. Note that the docker compose file may includes the dependency services also, like databases, development tools,
-message brokers and others. If you want to start only the microservice you can add the `--no-deps` flag.
-
-- Using Docker CLI
-1. Make sure you have built the service image first.
-2. Run the following command
-```bash
-docker run -d \
-  --name={containerName} \
-  --env-file {envFilePath} \
-  -p {hostPort}:{containerPort}/{protocol} \
-  -v {userSecretsDirectory}:/root/.microsoft/usersecrets `#optional` \
-  --restart unless-stopped \
-  {serviceImage}
-```
-4. Replace `{containerName}` with the name of the container.
-5. Replace `{envFilePath}` with the path to the env file holding the application secrets and configuration.
-6. To expose container ports and bind them to the host replace `{hostPort}`, `{containerPort}` and `{protocol}` accordingly.
-7. Optionally you can bind mount the user secrets on the host machine to the container by specifying the
-`-v {userSecretsDirectory}:/root/.microsoft/usersecrets` and replacing `{userSecretsDirectory}` with the directory
-where user secrets are stored on the host machine. Usually `%APPDATA%/Microsoft/UserSecrets` on Windows
-and `~/.microsoft/usersecrets` on Linux.
-8. Replace `{serviceImage}` with the image of the service.
-Example:
-
-```bash
-docker run -d \
-  --name=mykitchen-identity-rest-service \
-  --env-file ./development.env \
-  -p 5000:5000/tcp \
-  -v %APPDATA%/Microsoft/UserSecrets:/root/.microsoft/usersecrets \
-  --restart unless-stopped \
-  sirmov/mykitchen-identity-rest-service:latest
-```
-
-
-### Kubernetes
-
-Command to install ingress nginx controller
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/cloud/deploy.yaml
-
-Change add to host file 127.0.0.1 sirmov.com
+The project is licensed under the [GNU GPL v3](https://github.com/Sirmov/Roomed/blob/main/LICENSE) license.
